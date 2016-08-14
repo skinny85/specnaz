@@ -14,7 +14,21 @@ class SpecnazJUnitRunner(private val testsClass: Class<*>) : Runner() {
     private val specnazTestsRunner: SpecnazTestsRunner
 
     init {
-        specnaz = testsClass.newInstance() as Specnaz
+        val newInstance: Any
+        try {
+            newInstance = testsClass.newInstance()
+        } catch (e: Exception) {
+            throw RuntimeException(
+                    "The spec class ${testsClass.simpleName} must have a no-argument constructor", e)
+        }
+
+        try {
+            specnaz = newInstance as Specnaz
+        } catch (e: ClassCastException) {
+            throw RuntimeException(
+                    "The spec class ${testsClass.simpleName} must implement the Specnaz interface", e)
+        }
+
         specnazTestsRunner = SpecnazTestsRunner(specnaz)
     }
 
