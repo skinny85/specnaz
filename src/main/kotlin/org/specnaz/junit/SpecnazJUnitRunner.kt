@@ -5,6 +5,8 @@ import org.junit.runner.Runner
 import org.junit.runner.notification.Failure
 import org.junit.runner.notification.RunNotifier
 import org.specnaz.Specnaz
+import org.specnaz.impl.AccumulatingSuiteBuilder
+import org.specnaz.impl.SpecnazTest
 
 class SpecnazJUnitRunner(private val testsClass: Class<*>) : Runner() {
     private val specnaz: Specnaz
@@ -14,23 +16,39 @@ class SpecnazJUnitRunner(private val testsClass: Class<*>) : Runner() {
     }
 
     override fun getDescription(): Description? {
-        val description = Description.createSuiteDescription(testsClass)
-        description.addChild(childTest())
-        return description
+        val rootDescription = Description.createSuiteDescription(testsClass)
+
+        val accumulatingSuiteBuilder = AccumulatingSuiteBuilder()
+        specnaz.tests().invoke(accumulatingSuiteBuilder)
+
+        for (test in accumulatingSuiteBuilder.tests) {
+            rootDescription.addChild(childTestDescription(test))
+        }
+
+        return rootDescription
     }
 
     override fun run(notifier: RunNotifier) {
-        notifier.fireTestStarted(childTest())
-        try {
-            specnaz.tests().invoke()
-        } catch (e: Exception) {
-            notifier.fireTestFailure(Failure(childTest(), e))
-        } catch (e: AssertionError) {
-            notifier.fireTestFailure(Failure(childTest(), e))
-        } finally {
-            notifier.fireTestFinished(childTest())
+        val accumulatingSuiteBuilder = AccumulatingSuiteBuilder()
+
+        specnaz.tests().invoke(accumulatingSuiteBuilder)
+
+        for (test in accumulatingSuiteBuilder.tests) {
+            val testJUnitDescription = childTestDescription(test)
+
+            notifier.fireTestStarted(testJUnitDescription)
+            try {
+                test.testBody.invoke()
+            } catch (e: Exception) {
+                notifier.fireTestFailure(Failure(testJUnitDescription, e))
+            } catch (e: AssertionError) {
+                notifier.fireTestFailure(Failure(testJUnitDescription, e))
+            } finally {
+                notifier.fireTestFinished(testJUnitDescription)
+            }
         }
     }
 
-    private fun childTest() = Description.createTestDescription(testsClass, "specnaz tests")
+    private fun childTestDescription(test: SpecnazTest) =
+            Description.createTestDescription(testsClass, test.description)
 }
