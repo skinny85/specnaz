@@ -1,5 +1,5 @@
 package org.specnaz
 
 interface SpecnazSuiteBuilder {
-    fun should(description: String, testBody: () -> Unit)
+    fun should(description: String, testBody: (Nothing?) -> Unit)
 }

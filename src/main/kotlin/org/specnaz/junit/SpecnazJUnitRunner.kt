@@ -38,7 +38,7 @@ class SpecnazJUnitRunner(private val testsClass: Class<*>) : Runner() {
 
             notifier.fireTestStarted(testJUnitDescription)
             try {
-                test.testBody.invoke()
+                test.testBody.invoke(null)
             } catch (e: Exception) {
                 notifier.fireTestFailure(Failure(testJUnitDescription, e))
             } catch (e: AssertionError) {
