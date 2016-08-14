@@ -8,4 +8,7 @@ class TestPlanSuiteBuilder() : SpecnazSuiteBuilder {
     override fun should(description: String, testBody: (Nothing?) -> Unit) {
         plannedTests += PlannedTest(description)
     }
+
+    override fun beforeEach(setup: (Nothing?) -> Unit) {
+    }
 }

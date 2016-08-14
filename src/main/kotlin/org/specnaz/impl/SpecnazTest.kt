@@ -8,4 +8,7 @@ open class PlannedTest(description: String) {
     }
 }
 
-class SpecnazTest(description: String, val testBody: (Nothing?) -> Unit) : PlannedTest(description)
+class SpecnazTest(description: String,
+                  val testBody: (Nothing?) -> Unit,
+                  val befores: List<(Nothing?) -> Unit>) :
+        PlannedTest(description)
