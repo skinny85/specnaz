@@ -17,21 +17,7 @@ class SpecnazTestsRunner(private val specnaz: Specnaz) {
         specnaz.tests().invoke(testExecutionSuiteBuilder)
 
         for (test in testExecutionSuiteBuilder.tests) {
-            runSingleTestCase(notifier, test)
-        }
-    }
-
-    private fun runSingleTestCase(notifier: Notifier, test: SpecnazTest) {
-        notifier.started(test)
-        try {
-            test.befores.forEach { it.invoke(null) }
-
-            test.testBody.invoke(null)
-            notifier.passed(test)
-        } catch (e: AssertionError) {
-            notifier.failed(test, e)
-        } catch (e: Exception) {
-            notifier.threw(test, e)
+            SpecnazSingleTestExecutor(test, notifier).run()
         }
     }
 }

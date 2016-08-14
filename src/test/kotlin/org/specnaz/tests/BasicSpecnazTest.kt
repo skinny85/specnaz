@@ -7,7 +7,7 @@ class BasicSpecnazTest : SpecnazJUnit({
     var two = 0
 
     it.beforeEach {
-        two = 1
+        two++
     }
 
     it.beforeEach {
@@ -20,5 +20,13 @@ class BasicSpecnazTest : SpecnazJUnit({
 
     it.should("subtract two numbers correctly") {
         assertThat(two - 2).isZero()
+    }
+
+    it.afterEach {
+        two--
+    }
+
+    it.afterEach {
+        two--
     }
 })
