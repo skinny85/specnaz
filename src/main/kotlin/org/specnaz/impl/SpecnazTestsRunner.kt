@@ -1,10 +1,12 @@
 package org.specnaz.impl
 
+import org.specnaz.SpecName
 import org.specnaz.Specnaz
 import org.specnaz.impl.tree.TreeNode
 
 class SpecnazTestsRunner(private val specnaz: Specnaz) {
-    val name = specnaz.javaClass.simpleName
+    val name = specnaz.javaClass.getAnnotation(SpecName::class.java)?.value
+            ?: specnaz.javaClass.simpleName
 
     private val testPlan: TestPlan by lazy {
         val testPlanSuiteBuilder = TestPlanSuiteBuilder(name)

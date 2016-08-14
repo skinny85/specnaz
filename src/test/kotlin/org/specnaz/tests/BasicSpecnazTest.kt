@@ -1,8 +1,10 @@
 package org.specnaz.tests
 
 import org.assertj.core.api.Assertions.assertThat
+import org.specnaz.SpecName
 import org.specnaz.junit.SpecnazJUnit
 
+@SpecName("arithmetic functions")
 class BasicSpecnazTest : SpecnazJUnit({
     var two = -2
 
