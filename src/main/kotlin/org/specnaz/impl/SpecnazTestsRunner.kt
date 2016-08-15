@@ -16,10 +16,13 @@ class SpecnazTestsRunner(private val specnaz: Specnaz) {
 
         specnaz.tests().invoke(testExecutionSuiteBuilder)
 
-        for (test in testExecutionSuiteBuilder.tests) {
-            SpecnazSingleTestExecutor(test, notifier).run()
-        }
+        SpecnazTestsGroupExecutor(testExecutionSuiteBuilder.tests, notifier).run()
     }
 }
 
 class TestPlan(val plannedTests: List<PlannedTest>)
+
+class TestsGroup(val beforeAlls: List<(Nothing?) -> Unit>,
+                 val befores: List<(Nothing?) -> Unit>,
+                 val testCases: List<TestCase>,
+                 val afters: List<(Nothing?) -> Unit>)

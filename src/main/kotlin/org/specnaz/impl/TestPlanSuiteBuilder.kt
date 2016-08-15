@@ -9,6 +9,9 @@ class TestPlanSuiteBuilder() : SpecnazSuiteBuilder {
         plannedTests += PlannedTest(description)
     }
 
+    override fun beforeAll(setup: (Nothing?) -> Unit) {
+    }
+
     override fun beforeEach(setup: (Nothing?) -> Unit) {
     }
 

@@ -1,9 +1,9 @@
 package org.specnaz.impl
 
 interface Notifier {
-    fun started(test: SpecnazTest)
-    fun passed(test: SpecnazTest)
-    fun failed(test: SpecnazTest, assertion: AssertionError)
-    fun threw(test: SpecnazTest, error: Throwable)
-    fun ignored(test: SpecnazTest)
+    fun started(test: TestCase)
+    fun passed(test: TestCase)
+    fun failed(test: TestCase, assertion: AssertionError)
+    fun threw(test: TestCase, error: Throwable)
+    fun ignored(test: TestCase)
 }
