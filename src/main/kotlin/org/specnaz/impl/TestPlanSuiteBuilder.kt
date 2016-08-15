@@ -17,4 +17,7 @@ class TestPlanSuiteBuilder() : SpecnazSuiteBuilder {
 
     override fun afterEach(teardown: (Nothing?) -> Unit) {
     }
+
+    override fun afterAll(teardown: (Nothing?) -> Unit) {
+    }
 }

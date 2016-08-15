@@ -33,4 +33,9 @@ class BasicSpecnazTest : SpecnazJUnit({
     it.afterEach {
         two--
     }
+
+    it.afterAll {
+        assertThat(two).isZero()
+        two -= 2
+    }
 })

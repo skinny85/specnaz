@@ -7,13 +7,15 @@ class TestExecutionSuiteBuilder() : SpecnazSuiteBuilder {
     private var befores: List<(Nothing?) -> Unit> = emptyList()
     private var testCases: List<TestCase> = emptyList()
     private var afters: List<(Nothing?) -> Unit> = emptyList()
+    private var afterAlls: List<(Nothing?) -> Unit> = emptyList()
 
     val tests: TestsGroup
         get() = TestsGroup(
                 beforeAlls,
                 befores,
                 testCases,
-                afters)
+                afters,
+                afterAlls)
 
     override fun beforeAll(setup: (Nothing?) -> Unit) {
         beforeAlls += setup
@@ -29,5 +31,9 @@ class TestExecutionSuiteBuilder() : SpecnazSuiteBuilder {
 
     override fun afterEach(teardown: (Nothing?) -> Unit) {
         afters += teardown
+    }
+
+    override fun afterAll(teardown: (Nothing?) -> Unit) {
+        afterAlls += teardown
     }
 }

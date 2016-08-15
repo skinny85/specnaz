@@ -25,4 +25,5 @@ class TestPlan(val plannedTests: List<PlannedTest>)
 class TestsGroup(val beforeAlls: List<(Nothing?) -> Unit>,
                  val befores: List<(Nothing?) -> Unit>,
                  val testCases: List<TestCase>,
-                 val afters: List<(Nothing?) -> Unit>)
+                 val afters: List<(Nothing?) -> Unit>,
+                 val afterAlls: List<(Nothing?) -> Unit>)

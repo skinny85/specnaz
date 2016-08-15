@@ -9,16 +9,18 @@ class SpecnazTestsGroupExecutor(private val testsGroup: TestsGroup,
             return
         }
 
-        val e = invokeFixtures(testsGroup.beforeAlls)
-
-        if (e != null) {
-            val fakeTestCase = TestCase("not fail in a beforeAll method", {})
-            notifier.started(fakeTestCase)
-            notifier.threw(fakeTestCase, e)
+        val beforeAllsError = invokeFixtures(testsGroup.beforeAlls)
+        if (beforeAllsError != null) {
+            registerFixtureFailure("not fail in a 'beforeAll' method", beforeAllsError)
         }
 
         for (testCase in testsGroup.testCases) {
-            runSingleTestCase(testCase, e)
+            runSingleTestCase(testCase, beforeAllsError)
+        }
+
+        val afterAllsError = invokeFixtures(testsGroup.afterAlls)
+        if (afterAllsError != null) {
+            registerFixtureFailure("not fail in an 'afterAll' method", afterAllsError)
         }
     }
 
@@ -75,5 +77,11 @@ class SpecnazTestsGroupExecutor(private val testsGroup: TestsGroup,
         } catch (e: Exception) {
             return e
         }
+    }
+
+    private fun registerFixtureFailure(message: String, e: Throwable) {
+        val fakeTestCase = TestCase(message, {})
+        notifier.started(fakeTestCase)
+        notifier.threw(fakeTestCase, e)
     }
 }
