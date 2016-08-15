@@ -4,6 +4,6 @@ import org.junit.runner.Description
 import org.specnaz.impl.PlannedTest
 
 object JUnitUtils {
-    fun testDescription(test: PlannedTest, testsClass: Class<*>) =
-            Description.createTestDescription(testsClass, test.description)
+    fun testDescription(name: String, parentDescription: Description) =
+            Description.createTestDescription(parentDescription.displayName, name)
 }

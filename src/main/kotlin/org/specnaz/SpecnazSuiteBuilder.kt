@@ -6,4 +6,6 @@ interface SpecnazSuiteBuilder {
     fun should(description: String, testBody: (Nothing?) -> Unit)
     fun afterEach(teardown: (Nothing?) -> Unit)
     fun afterAll(teardown: (Nothing?) -> Unit)
+
+    fun grouping(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit)
 }

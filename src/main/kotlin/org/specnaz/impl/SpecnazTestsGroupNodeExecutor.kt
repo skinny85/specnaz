@@ -1,8 +1,23 @@
 package org.specnaz.impl
 
-class SpecnazTestsGroupExecutor(private val testsGroup: TestsGroup,
-                                private val notifier: Notifier) {
+import org.specnaz.impl.tree.TreeNode
+
+class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGroup>,
+                                    private val notifier: Notifier) {
+    private val testsGroup = testsGroupNode.value
+
     fun run() {
+        runCurrentNodeTestsGroup()
+
+        for (subGroupTestsNode in testsGroupNode.children) {
+            SpecnazTestsGroupNodeExecutor(
+                    subGroupTestsNode,
+                    notifier.subgroup(subGroupTestsNode.value.groupDescription))
+                    .run()
+        }
+    }
+
+    private fun runCurrentNodeTestsGroup() {
         if (testsGroup.testCases.isEmpty()) {
             // No point in running anything if there are no tests,
             // so we just return immediately.
@@ -11,7 +26,7 @@ class SpecnazTestsGroupExecutor(private val testsGroup: TestsGroup,
 
         val beforeAllsError = invokeFixtures(testsGroup.beforeAlls)
         if (beforeAllsError != null) {
-            registerFixtureFailure("not fail in a 'beforeAll' method", beforeAllsError)
+            notifier.setupFailed(beforeAllsError)
         }
 
         for (testCase in testsGroup.testCases) {
@@ -20,7 +35,7 @@ class SpecnazTestsGroupExecutor(private val testsGroup: TestsGroup,
 
         val afterAllsError = invokeFixtures(testsGroup.afterAlls)
         if (afterAllsError != null) {
-            registerFixtureFailure("not fail in an 'afterAll' method", afterAllsError)
+            notifier.teardownFailed(afterAllsError)
         }
     }
 
@@ -77,11 +92,5 @@ class SpecnazTestsGroupExecutor(private val testsGroup: TestsGroup,
         } catch (e: Exception) {
             return e
         }
-    }
-
-    private fun registerFixtureFailure(message: String, e: Throwable) {
-        val fakeTestCase = TestCase(message, {})
-        notifier.started(fakeTestCase)
-        notifier.threw(fakeTestCase, e)
     }
 }
