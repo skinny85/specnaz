@@ -2,9 +2,11 @@ package org.specnaz.impl
 
 class SpecnazSingleTestExecutor(private val test: SpecnazTest,
                                 private val notifier: Notifier) {
-    private var passing = true
+    private var passing = false
 
     fun run() {
+        passing = true
+
         notifier.started(test)
 
         invokeFixtures(test.befores)
