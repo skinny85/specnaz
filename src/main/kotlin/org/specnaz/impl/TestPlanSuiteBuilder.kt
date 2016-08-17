@@ -23,7 +23,7 @@ class TestPlanSuiteBuilder(private val groupDescription: String) :
         testsInThisGroup += PlannedTest(description)
     }
 
-    override fun grouping(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit) {
+    override fun spec(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit) {
         val subGroupTestPlanSuiteBuilder = TestPlanSuiteBuilder(description)
         subSpec.invoke(subGroupTestPlanSuiteBuilder)
         subGroups += subGroupTestPlanSuiteBuilder.testPlan

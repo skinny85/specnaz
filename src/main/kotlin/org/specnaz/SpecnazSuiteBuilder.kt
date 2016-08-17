@@ -7,5 +7,5 @@ interface SpecnazSuiteBuilder {
     fun afterEach(teardown: (Nothing?) -> Unit)
     fun afterAll(teardown: (Nothing?) -> Unit)
 
-    fun grouping(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit)
+    fun spec(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit)
 }

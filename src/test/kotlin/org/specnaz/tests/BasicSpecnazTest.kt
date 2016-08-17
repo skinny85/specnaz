@@ -28,7 +28,7 @@ class BasicSpecnazTest : SpecnazJUnit({
         assertThat(two - 2).isZero()
     }
 
-    it.grouping("with a subgroup") {
+    it.spec("with a subgroup") {
         it.should("the parent before callbacks are not called") {
             assertThat(two).isEqualTo(-2)
         }
@@ -37,7 +37,7 @@ class BasicSpecnazTest : SpecnazJUnit({
             two--
         }
 
-        it.grouping("and a third-degree subgroup") {
+        it.spec("and a third-degree subgroup") {
             it.should("the parent after callbacks are not called as well") {
                 assertThat(two).isEqualTo(-3)
             }

@@ -48,7 +48,7 @@ class TestExecutionSuiteBuilder(private val groupDescription: String) : SpecnazS
         afterAlls += teardown
     }
 
-    override fun grouping(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit) {
+    override fun spec(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit) {
         val subGroupsTestExecutionSuiteBuilder = TestExecutionSuiteBuilder(description)
         subSpec.invoke(subGroupsTestExecutionSuiteBuilder)
         subGroups += subGroupsTestExecutionSuiteBuilder.tests
