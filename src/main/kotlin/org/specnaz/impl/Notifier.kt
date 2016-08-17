@@ -6,8 +6,7 @@ interface Notifier {
 
     fun started(test: TestCase)
     fun passed(test: TestCase)
-    fun failed(test: TestCase, assertion: AssertionError)
-    fun threw(test: TestCase, error: Throwable)
+    fun failed(test: TestCase, error: Throwable)
     fun ignored(test: TestCase)
 
     fun subgroup(description: String): Notifier

@@ -17,11 +17,7 @@ class JUnitNotifier(private val runNotifier: RunNotifier,
         runNotifier.fireTestFinished(currentTestDescription())
     }
 
-    override fun failed(test: TestCase, assertion: AssertionError) {
-        threw(test, assertion)
-    }
-
-    override fun threw(test: TestCase, error: Throwable) {
+    override fun failed(test: TestCase, error: Throwable) {
         val testDescription = currentTestDescription()
         runNotifier.fireTestFailure(Failure(testDescription, error))
         runNotifier.fireTestFinished(testDescription)

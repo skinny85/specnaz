@@ -4,8 +4,6 @@ import org.specnaz.impl.tree.TreeNode
 
 class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGroup>,
                                     private val notifier: Notifier) {
-    private val testsGroup = testsGroupNode.value
-
     fun run() {
         runCurrentNodeTestsGroup()
 
@@ -18,13 +16,15 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
     }
 
     private fun runCurrentNodeTestsGroup() {
+        val testsGroup = testsGroupNode.value
+
         if (testsGroup.testCases.isEmpty()) {
             // No point in running anything if there are no tests,
             // so we just return immediately.
             return
         }
 
-        val beforeAllsError = invokeFixtures(testsGroup.beforeAlls)
+        val beforeAllsError = invokeBeforeAlls()
         if (beforeAllsError != null) {
             notifier.setupFailed(beforeAllsError)
         }
@@ -33,7 +33,7 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
             runSingleTestCase(testCase, beforeAllsError)
         }
 
-        val afterAllsError = invokeFixtures(testsGroup.afterAlls)
+        val afterAllsError = invokeAfterAlls()
         if (afterAllsError != null) {
             notifier.teardownFailed(afterAllsError)
         }
@@ -52,20 +52,60 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
     private fun runSingleTestCase(testCase: TestCase) {
         notifier.started(testCase)
 
-        var e = invokeFixtures(testsGroup.befores)
+        var e = invokeBefores()
 
         e = invokeTestBody(testCase, e)
 
-        e = invokeFixtures(testsGroup.afters, e)
+        e = invokeAfters(e)
 
-        if (e == null) {
+        if (e == null)
             notifier.passed(testCase)
-        } else {
-            if (e is AssertionError)
-                notifier.failed(testCase, e)
-            else
-                notifier.threw(testCase, e)
-        }
+        else
+            notifier.failed(testCase, e)
+    }
+
+    private fun invokeBeforeAlls() =
+            recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, { it.beforeAlls })
+
+    private fun invokeBefores() =
+            recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, { it.befores })
+
+    private fun invokeTestBody(testCase: TestCase, previousError: Throwable?) =
+            // we only run the test if none of the 'beforeEach' methods failed
+            previousError ?: invokeCallback(testCase.testBody)
+
+    private fun invokeAfters(previousError: Throwable?): Throwable? {
+        val aftersError = recursivelyInvokeFixturesAncestorsLast(testsGroupNode, { it.afters })
+        return previousError ?: aftersError
+    }
+
+    private fun invokeAfterAlls() =
+            recursivelyInvokeFixturesAncestorsLast(testsGroupNode, { it.afterAlls })
+
+    private fun recursivelyInvokeFixturesAncestorsFirst(testsGroupNode: TreeNode<TestsGroup>?,
+                                                        extractor: (TestsGroup) -> List<(Nothing?) -> Unit>):
+            Throwable? {
+        if (testsGroupNode == null)
+            return null
+
+        val ancestorsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode.parent, extractor)
+
+        val myError = invokeFixtures(extractor(testsGroupNode.value))
+
+        return ancestorsError ?: myError
+    }
+
+    private fun recursivelyInvokeFixturesAncestorsLast(testsGroupNode: TreeNode<TestsGroup>?,
+                                                       extractor: (TestsGroup) -> List<(Nothing?) -> Unit>):
+            Throwable? {
+        if (testsGroupNode == null)
+            return null
+
+        val myError = invokeFixtures(extractor(testsGroupNode.value))
+
+        val ancestorsError = recursivelyInvokeFixturesAncestorsLast(testsGroupNode.parent, extractor)
+
+        return myError ?: ancestorsError
     }
 
     private fun invokeFixtures(fixtures: List<(Nothing?) -> Unit>,
@@ -79,13 +119,9 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
         return ret
     }
 
-    private fun invokeTestBody(testCase: TestCase, previousError: Throwable?) =
-            // we only run the test if none of the 'beforeEach' methods failed
-            previousError ?: invokeCallback(testCase.testBody)
-
-    private fun invokeCallback(fixture: (Nothing?) -> Unit): Throwable? {
+    private fun invokeCallback(callback: (Nothing?) -> Unit): Throwable? {
         try {
-            fixture.invoke(null)
+            callback.invoke(null)
             return null
         } catch (e: AssertionError) {
             return e

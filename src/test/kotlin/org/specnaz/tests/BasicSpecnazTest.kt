@@ -29,18 +29,30 @@ class BasicSpecnazTest : SpecnazJUnit({
     }
 
     it.spec("with a subgroup") {
-        it.should("the parent before callbacks are not called") {
-            assertThat(two).isEqualTo(-2)
+        it.beforeAll {
+            two += 3
         }
 
-        it.afterEach {
-            two--
+        it.should("run all parent 'before' callbacks") {
+            assertThat(two).isEqualTo(5)
         }
 
         it.spec("and a third-degree subgroup") {
-            it.should("the parent after callbacks are not called as well") {
-                assertThat(two).isEqualTo(-3)
+            it.beforeEach {
+                two += 4
             }
+
+            it.should("run all ancestors 'before' callbacks") {
+                assertThat(two).isEqualTo(9)
+            }
+
+            it.afterEach {
+                two -= 4
+            }
+        }
+
+        it.afterAll {
+            two -= 3
         }
     }
 
