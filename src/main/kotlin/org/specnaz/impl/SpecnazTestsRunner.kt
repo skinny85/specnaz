@@ -27,11 +27,14 @@ class SpecnazTestsRunner(private val specnaz: Specnaz) {
 
 class TestPlan(val plannedTests: TreeNode<PlannedTestGroup>)
 
-class PlannedTestGroup(val groupDescription: String, val testsInThisGroup: List<PlannedTest>)
+class PlannedTestGroup(val groupDescription: String,
+                       val testsInThisGroup: List<PlannedTest>,
+                       val testsInSubtree: Int)
 
 class TestsGroup(val groupDescription: String,
                  val beforeAlls: List<(Nothing?) -> Unit>,
                  val befores: List<(Nothing?) -> Unit>,
                  val testCases: List<TestCase>,
                  val afters: List<(Nothing?) -> Unit>,
-                 val afterAlls: List<(Nothing?) -> Unit>)
+                 val afterAlls: List<(Nothing?) -> Unit>,
+                 val testsInSubtree: Int)

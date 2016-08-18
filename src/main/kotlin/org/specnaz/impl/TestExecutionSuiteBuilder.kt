@@ -13,6 +13,8 @@ class TestExecutionSuiteBuilder(private val groupDescription: String) : SpecnazS
 
     val tests: TreeNode<TestsGroup>
         get() {
+            val testsInSubtree = testCases.size + subGroups.map{it.value.testsInSubtree}.sum()
+
             val rootNode = TreeNode(
                     TestsGroup(
                             groupDescription,
@@ -20,7 +22,8 @@ class TestExecutionSuiteBuilder(private val groupDescription: String) : SpecnazS
                             befores,
                             testCases,
                             afters,
-                            afterAlls))
+                            afterAlls,
+                            testsInSubtree))
 
             for (subGroupNode in subGroups)
                 rootNode.attach(subGroupNode)

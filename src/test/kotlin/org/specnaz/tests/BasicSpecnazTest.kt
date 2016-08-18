@@ -49,6 +49,9 @@ class BasicSpecnazTest : SpecnazJUnit({
             it.afterEach {
                 two -= 4
             }
+
+            it.spec("with a subgroup without tests") {
+            }
         }
 
         it.afterAll {

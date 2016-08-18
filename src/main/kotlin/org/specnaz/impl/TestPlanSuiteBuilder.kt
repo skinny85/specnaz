@@ -10,8 +10,10 @@ class TestPlanSuiteBuilder(private val groupDescription: String) :
 
     val testPlan: TreeNode<PlannedTestGroup>
         get() {
+            val testsInSubtree = testsInThisGroup.size + subGroups.map{it.value.testsInSubtree}.sum()
+
             val rootNode = TreeNode(
-                    PlannedTestGroup(groupDescription, testsInThisGroup))
+                    PlannedTestGroup(groupDescription, testsInThisGroup, testsInSubtree))
 
             for (subGroupNode in subGroups)
                 rootNode.attach(subGroupNode)

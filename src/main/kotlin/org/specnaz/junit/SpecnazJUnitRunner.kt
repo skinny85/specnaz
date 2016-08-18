@@ -59,9 +59,11 @@ class SpecnazJUnitRunner(testsClass: Class<*>) : Runner() {
         }
 
         for (child in node.children) {
-            val description = createSuiteDescription(child.value.groupDescription)
-            parentDescription.addChild(description)
-            parseSubGroupDescriptions(child, description)
+            if (child.value.testsInSubtree > 0) {
+                val description = createSuiteDescription(child.value.groupDescription)
+                parentDescription.addChild(description)
+                parseSubGroupDescriptions(child, description)
+            }
         }
     }
 }

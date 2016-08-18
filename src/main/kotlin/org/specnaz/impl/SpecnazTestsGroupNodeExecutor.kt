@@ -8,10 +8,12 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
         runCurrentNodeTestsGroup()
 
         for (subGroupTestsNode in testsGroupNode.children) {
-            SpecnazTestsGroupNodeExecutor(
-                    subGroupTestsNode,
-                    notifier.subgroup(subGroupTestsNode.value.groupDescription))
-                    .run()
+            if (subGroupTestsNode.value.testsInSubtree > 0) {
+                SpecnazTestsGroupNodeExecutor(
+                        subGroupTestsNode,
+                        notifier.subgroup(subGroupTestsNode.value.groupDescription))
+                        .run()
+            }
         }
     }
 
