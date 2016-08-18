@@ -8,28 +8,20 @@ class SpecnazTestsRunner(private val specnaz: Specnaz) {
     val name = specnaz.javaClass.getAnnotation(SpecName::class.java)?.value
             ?: specnaz.javaClass.simpleName
 
-    private val testPlan: TestPlan by lazy {
-        val testPlanSuiteBuilder = TestPlanSuiteBuilder(name)
-        specnaz.tests().invoke(testPlanSuiteBuilder)
-        TestPlan(testPlanSuiteBuilder.testPlan)
+    private val testPlan: TestsTree by lazy {
+        val suiteBuilder = TestsTreeSuiteBuilder(name)
+        specnaz.tests().invoke(suiteBuilder)
+        TestsTree(suiteBuilder.tests)
     }
 
     fun testPlan() = testPlan
 
     fun executeTests(notifier: Notifier) {
-        val testExecutionSuiteBuilder = TestExecutionSuiteBuilder(name)
-
-        specnaz.tests().invoke(testExecutionSuiteBuilder)
-
-        SpecnazTestsGroupNodeExecutor(testExecutionSuiteBuilder.tests, notifier).run()
+        SpecnazTestsGroupNodeExecutor(testPlan.rootTestsGroup, notifier).run()
     }
 }
 
-class TestPlan(val plannedTests: TreeNode<PlannedTestGroup>)
-
-class PlannedTestGroup(val groupDescription: String,
-                       val testsInThisGroup: List<PlannedTest>,
-                       val testsInSubtree: Int)
+class TestsTree(val rootTestsGroup: TreeNode<TestsGroup>)
 
 class TestsGroup(val groupDescription: String,
                  val beforeAlls: List<(Nothing?) -> Unit>,

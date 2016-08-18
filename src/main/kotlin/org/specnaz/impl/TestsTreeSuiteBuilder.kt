@@ -3,7 +3,7 @@ package org.specnaz.impl
 import org.specnaz.SpecnazSuiteBuilder
 import org.specnaz.impl.tree.TreeNode
 
-class TestExecutionSuiteBuilder(private val groupDescription: String) : SpecnazSuiteBuilder {
+class TestsTreeSuiteBuilder(private val groupDescription: String) : SpecnazSuiteBuilder {
     private var beforeAlls: List<(Nothing?) -> Unit> = emptyList()
     private var befores: List<(Nothing?) -> Unit> = emptyList()
     private var testCases: List<TestCase> = emptyList()
@@ -52,7 +52,7 @@ class TestExecutionSuiteBuilder(private val groupDescription: String) : SpecnazS
     }
 
     override fun spec(description: String, subSpec: (SpecnazSuiteBuilder) -> Unit) {
-        val subGroupsTestExecutionSuiteBuilder = TestExecutionSuiteBuilder(description)
+        val subGroupsTestExecutionSuiteBuilder = TestsTreeSuiteBuilder(description)
         subSpec.invoke(subGroupsTestExecutionSuiteBuilder)
         subGroups += subGroupsTestExecutionSuiteBuilder.tests
     }

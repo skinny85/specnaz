@@ -5,8 +5,8 @@ import org.junit.runner.Description.createSuiteDescription
 import org.junit.runner.Runner
 import org.junit.runner.notification.RunNotifier
 import org.specnaz.Specnaz
-import org.specnaz.impl.PlannedTestGroup
 import org.specnaz.impl.SpecnazTestsRunner
+import org.specnaz.impl.TestsGroup
 import org.specnaz.impl.tree.TreeNode
 import org.specnaz.junit.impl.JUnitNotifier
 import org.specnaz.junit.impl.JUnitUtils.testDescription
@@ -41,7 +41,7 @@ class SpecnazJUnitRunner(testsClass: Class<*>) : Runner() {
 
         val rootDescription = createSuiteDescription(specnazTestsRunner.name)
 
-        parseSubGroupDescriptions(testPlan.plannedTests, rootDescription)
+        parseSubGroupDescriptions(testPlan.rootTestsGroup, rootDescription)
 
         this.rootDescription = rootDescription
 
@@ -52,10 +52,10 @@ class SpecnazJUnitRunner(testsClass: Class<*>) : Runner() {
         specnazTestsRunner.executeTests(JUnitNotifier(runNotifier, rootDescription!!))
     }
 
-    private fun parseSubGroupDescriptions(node: TreeNode<PlannedTestGroup>,
+    private fun parseSubGroupDescriptions(node: TreeNode<TestsGroup>,
                                           parentDescription: Description) {
-        for (plannedTest in node.value.testsInThisGroup) {
-            parentDescription.addChild(testDescription(plannedTest.description, parentDescription))
+        for (testCase in node.value.testCases) {
+            parentDescription.addChild(testDescription(testCase.description, parentDescription))
         }
 
         for (child in node.children) {
