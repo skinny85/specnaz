@@ -1,2 +1,7 @@
-rootProject.name = 'specnaz'
-
+rootProject.name = 'specnaz-all'
+include 'src:main:specnaz-kotlin-old',
+        'src:main:specnaz-kotlin-junit-old',
+        'src:main:specnaz-java-old',
+        'src:main:specnaz-java-junit-old',
+        'src:examples:specnaz-kotlin-examples-old',
+        'src:examples:specnaz-java-examples-old'

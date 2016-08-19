@@ -1,0 +1,3 @@
+dependencies {
+    compile project(':src:main:specnaz-kotlin-old')
+}

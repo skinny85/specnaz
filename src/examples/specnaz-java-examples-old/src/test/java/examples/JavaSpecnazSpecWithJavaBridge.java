@@ -1,4 +1,4 @@
-package org.specnaz.examples;
+package examples;
 
 import org.specnaz.java.junit.SpecnazJunitJava;
 

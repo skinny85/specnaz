@@ -1,4 +1,4 @@
-package org.specnaz.examples;
+package examples;
 
 import kotlin.Unit;
 import org.specnaz.junit.SpecnazJUnit;

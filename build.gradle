@@ -1,31 +1,40 @@
-group 'org.specnaz'
-version '0.1-SNAPSHOT'
+allprojects {
+    group 'org.specnaz'
+    version '0.1'
+}
 
-buildscript {
+subprojects {
     repositories {
         mavenCentral()
     }
+
+    apply plugin: 'java'
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.3'
+
+    repositories {
+        mavenCentral()
+    }
+
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'kotlin'
+configure(subprojects.findAll { it.name.contains('kotlin') }) {
+    buildscript {
+        ext.kotlin_version = '1.0.3'
 
-repositories {
-    mavenCentral()
+        repositories {
+            mavenCentral()
+        }
 
-    // for Spek
-    maven {
-        url "http://repository.jetbrains.com/all"
+        dependencies {
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        }
     }
-}
 
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.1"
-    compile group: 'junit', name: 'junit', version: '4.11'
-
-    testCompile 'org.jetbrains.spek:spek:1.0.25'
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.5.2'
+    apply plugin: 'kotlin'
 }
