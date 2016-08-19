@@ -46,8 +46,11 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
             runSingleTestCase(testCase)
         } else {
             // If any of the 'beforeAll' methods failed,
-            // mark the test as ignored.
-            notifier.ignored(testCase)
+            // mark the test as failed.
+            // We might make it a config option later (what to do
+            // in this case - ignore the tests, or fail them).
+            notifier.started(testCase)
+            notifier.failed(testCase, beforeAllsError)
         }
     }
 

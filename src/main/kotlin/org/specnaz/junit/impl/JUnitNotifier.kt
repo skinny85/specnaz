@@ -69,15 +69,18 @@ class JUnitNotifier(private val runNotifier: RunNotifier,
     }
 
     override fun setupFailed(e: Throwable) {
-        fixtureFailed("should not fail in a 'beforeAll' method", e)
+        // We do nothing here, because adding a Description not present in the original
+        // test plan messes up JUnit's tree view. Instead, the Executor will mark the
+        // tests as failed.
     }
 
     override fun teardownFailed(e: Throwable) {
-        fixtureFailed("should not fail in an 'afterAll' method", e)
-    }
+        // In case of an 'afterAll' failure, we have no choice - the tests were already
+        // marked as passed, so we cannot do anything (marking them as 'failed' after
+        // does not work, JUnit just creates a new Description for it in the tree).
+        // We accept that the tree will be broken in this case - hopefully, it's a rare situation.
 
-    private fun fixtureFailed(message: String, e: Throwable) {
-        val description = JUnitUtils.testDescription(message, parentDescription)
+        val description = JUnitUtils.testDescription("should not fail in an 'afterAll' method", parentDescription)
         parentDescription.addChild(description)
         runNotifier.fireTestStarted(description)
         runNotifier.fireTestFailure(Failure(description, e))
