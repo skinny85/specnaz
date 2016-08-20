@@ -11,7 +11,7 @@ import org.specnaz.impl.tree.TreeNode
 import org.specnaz.junit.impl.JUnitNotifier
 import org.specnaz.junit.impl.JUnitUtils.testDescription
 
-class SpecnazJUnitRunner(testsClass: Class<*>) : Runner() {
+class SpecnazJUnitRunnerOld(testsClass: Class<*>) : Runner() {
     private val specnazTestsRunner: SpecnazTestsRunner
 
     init {

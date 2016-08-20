@@ -1,11 +1,11 @@
 package examples;
 
 import kotlin.Unit;
-import org.specnaz.junit.SpecnazJUnit;
+import org.specnaz.junit.SpecnazJUnitOld;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StandardJavaSpecnazSpec extends SpecnazJUnit {
+public class StandardJavaSpecnazSpec extends SpecnazJUnitOld {
     public StandardJavaSpecnazSpec() {
         super(it -> {
             int[] two = {0};

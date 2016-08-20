@@ -4,7 +4,7 @@ import org.junit.runner.RunWith
 import org.specnaz.SpecnazOld
 import org.specnaz.SpecnazSuiteBuilder
 
-@RunWith(SpecnazJUnitRunner::class)
-abstract class SpecnazJUnit(private val tests: (SpecnazSuiteBuilder) -> Unit) : SpecnazOld {
+@RunWith(SpecnazJUnitRunnerOld::class)
+abstract class SpecnazJUnitOld(private val tests: (SpecnazSuiteBuilder) -> Unit) : SpecnazOld {
     override fun tests() = tests
 }
