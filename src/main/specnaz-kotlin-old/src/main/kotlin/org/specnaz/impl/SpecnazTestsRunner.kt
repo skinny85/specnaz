@@ -21,12 +21,12 @@ class SpecnazTestsRunner(private val specnaz: SpecnazOld) {
     }
 }
 
-class TestsTree(val rootTestsGroup: TreeNode2<TestsGroup>)
+class TestsTree(val rootTestsGroup: TreeNode2<TestsGroupOld>)
 
-class TestsGroup(val groupDescription: String,
-                 val beforeAlls: List<(Nothing?) -> Unit>,
-                 val befores: List<(Nothing?) -> Unit>,
-                 val testCases: List<TestCase>,
-                 val afters: List<(Nothing?) -> Unit>,
-                 val afterAlls: List<(Nothing?) -> Unit>,
-                 val testsInSubtree: Int)
+class TestsGroupOld(val groupDescription: String,
+                    val beforeAlls: List<(Nothing?) -> Unit>,
+                    val befores: List<(Nothing?) -> Unit>,
+                    val testCases: List<TestCase>,
+                    val afters: List<(Nothing?) -> Unit>,
+                    val afterAlls: List<(Nothing?) -> Unit>,
+                    val testsInSubtree: Int)

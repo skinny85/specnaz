@@ -9,14 +9,14 @@ class TestsTreeSuiteBuilder(private val groupDescription: String) : SpecnazSuite
     private var testCases: List<TestCase> = emptyList()
     private var afters: List<(Nothing?) -> Unit> = emptyList()
     private var afterAlls: List<(Nothing?) -> Unit> = emptyList()
-    private var subGroups: List<TreeNode2<TestsGroup>> = emptyList()
+    private var subGroups: List<TreeNode2<TestsGroupOld>> = emptyList()
 
-    val tests: TreeNode2<TestsGroup>
+    val tests: TreeNode2<TestsGroupOld>
         get() {
             val testsInSubtree = testCases.size + subGroups.map{it.value.testsInSubtree}.sum()
 
             val rootNode = TreeNode2(
-                    TestsGroup(
+                    TestsGroupOld(
                             groupDescription,
                             beforeAlls,
                             befores,
