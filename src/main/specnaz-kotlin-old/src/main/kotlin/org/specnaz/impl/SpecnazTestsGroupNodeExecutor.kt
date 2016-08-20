@@ -3,7 +3,7 @@ package org.specnaz.impl
 import org.specnaz.impl.tree.TreeNode
 
 class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGroup>,
-                                    private val notifier: Notifier) {
+                                    private val notifier: NotifierOld) {
     fun run() {
         runCurrentNodeTestsGroup()
 

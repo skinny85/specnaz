@@ -16,7 +16,7 @@ class SpecnazTestsRunner(private val specnaz: SpecnazOld) {
 
     fun testPlan() = testPlan
 
-    fun executeTests(notifier: Notifier) {
+    fun executeTests(notifier: NotifierOld) {
         SpecnazTestsGroupNodeExecutor(testPlan.rootTestsGroup, notifier).run()
     }
 }

@@ -3,12 +3,12 @@ package org.specnaz.junit.impl
 import org.junit.runner.Description
 import org.junit.runner.notification.Failure
 import org.junit.runner.notification.RunNotifier
-import org.specnaz.impl.Notifier
+import org.specnaz.impl.NotifierOld
 import org.specnaz.impl.TestCase
 
-class JUnitNotifier(private val runNotifier: RunNotifier,
-                    private val parentDescription: Description) :
-        Notifier {
+class JUnitNotifierOld(private val runNotifier: RunNotifier,
+                       private val parentDescription: Description) :
+        NotifierOld {
     override fun started(test: TestCase) {
         runNotifier.fireTestStarted(advanceToNextTestDescription(test))
     }
@@ -48,8 +48,8 @@ class JUnitNotifier(private val runNotifier: RunNotifier,
         return parentDescription.children[testIndex]
     }
 
-    override fun subgroup(description: String): Notifier {
-        return JUnitNotifier(runNotifier,
+    override fun subgroup(description: String): NotifierOld {
+        return JUnitNotifierOld(runNotifier,
                 advanceToNextSuiteDescription(description))
     }
 

@@ -1,6 +1,6 @@
 package org.specnaz.impl
 
-interface Notifier {
+interface NotifierOld {
     fun setupFailed(e: Throwable)
     fun teardownFailed(e: Throwable)
 
@@ -9,5 +9,5 @@ interface Notifier {
     fun failed(test: TestCase, error: Throwable)
     fun ignored(test: TestCase)
 
-    fun subgroup(description: String): Notifier
+    fun subgroup(description: String): NotifierOld
 }
