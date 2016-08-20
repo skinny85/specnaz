@@ -40,7 +40,8 @@ public final class SpecnazJUnitRunner extends Runner {
          * JUnit sucks, and behaves differently when running a single test
          * and running a group of tests. In the former case, the top-level description
          * is always the name of the class, even if you overwrite it like we do
-         * here with the spec name. To make the behavior consistent, we add an extra
+         * here with the spec name (and it messes up the names of the tests in the root group).
+         * To make the behavior consistent, we add an extra
          * description with the class name at the top level ourselves.
          */
         TreeNode<TestsGroup> testsPlan = specnazSpecRunner.testsPlan();
@@ -68,7 +69,8 @@ public final class SpecnazJUnitRunner extends Runner {
             for (SingleTestCase testCase : testCases) {
                 addChildDescription(testCase.description, parentDescription);
             }
-            addChildDescription("teardown", parentDescription);
+            if (testsGroupNode.value.afterAllsCount() > 0)
+                addChildDescription("teardown", parentDescription);
         }
 
         for (TreeNode<TestsGroup> child : testsGroupNode.children()) {

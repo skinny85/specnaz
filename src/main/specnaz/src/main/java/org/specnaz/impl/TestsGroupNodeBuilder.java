@@ -49,7 +49,18 @@ public final class TestsGroupNodeBuilder {
         TreeNode<TestsGroup> testsGroupTreeNode = new TreeNode<>(testsGroup);
         for (TreeNode<TestsGroup> subgroupNode: subgroups) {
             testsGroupTreeNode.attach(subgroupNode);
+            incrementFixturesCount(subgroupNode);
         }
         return testsGroupTreeNode;
+    }
+
+    private void incrementFixturesCount(TreeNode<TestsGroup> testsGroupNode) {
+        TestsGroup testsGroup = testsGroupNode.value;
+        testsGroup.incrementBeforeAllsCount(beforeAlls.size());
+        testsGroup.incrementAfterAllsCount(afterAlls.size());
+
+        for (TreeNode<TestsGroup> child : testsGroupNode.children()) {
+            incrementFixturesCount(child);
+        }
     }
 }

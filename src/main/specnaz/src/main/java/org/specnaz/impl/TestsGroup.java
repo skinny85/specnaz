@@ -13,6 +13,8 @@ public final class TestsGroup {
                                    afters,
                                    afterAlls;
     public final List<SingleTestCase> testCases;
+
+    private int beforeAllsCount, afterAllsCount;
     public final int testsInTree;
 
     public TestsGroup(String description,
@@ -28,7 +30,26 @@ public final class TestsGroup {
         this.testCases = copyToImmutableList(testCases);
         this.afters = copyToImmutableList(afters);
         this.afterAlls = copyToImmutableList(afterAlls);
+
+        this.beforeAllsCount = beforeAlls.size();
+        this.afterAllsCount = afterAlls.size();
         this.testsInTree = testsInSubgroups + testCases.size();
+    }
+
+    public int beforeAllsCount() {
+        return beforeAllsCount;
+    }
+
+    public int afterAllsCount() {
+        return afterAllsCount;
+    }
+
+    void incrementBeforeAllsCount(int count) {
+        this.beforeAllsCount += count;
+    }
+
+    void incrementAfterAllsCount(int count) {
+        this.afterAllsCount += count;
     }
 
     private <T> List<T> copyToImmutableList(List<T> list) {

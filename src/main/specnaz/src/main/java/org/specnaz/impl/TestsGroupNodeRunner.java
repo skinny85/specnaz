@@ -74,6 +74,9 @@ public class TestsGroupNodeRunner {
     }
 
     private Throwable invokeBeforeAlls() {
+        if (testsGroupNode.value.beforeAllsCount() == 0)
+            return null;
+
         notifier.setupStarted();
         Throwable beforeAllsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
         if (beforeAllsError == null) {
@@ -101,6 +104,9 @@ public class TestsGroupNodeRunner {
     }
 
     private void invokeAfterAlls() {
+        if (testsGroupNode.value.afterAllsCount() == 0)
+            return;
+
         notifier.teardownStarted();
         Throwable afterAllsError = recursivelyInvokeFixturesAncestorsLast(testsGroupNode, g -> g.afterAlls);
         if (afterAllsError == null)
