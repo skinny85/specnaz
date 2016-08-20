@@ -5,9 +5,9 @@ public final class IntBox {
         return new IntBox(value);
     }
 
-    public int _;
+    public int $;
 
     private IntBox(int value) {
-        this._ = value;
+        this.$ = value;
     }
 }

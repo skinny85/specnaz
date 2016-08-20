@@ -9,45 +9,45 @@ public class BasicSpecnazSpec extends SpecnazJUnit {{
         IntBox two = boxWith(-2);
 
         it.beginsAll(() -> {
-            two._ += 2;
+            two.$ += 2;
         });
 
         it.beginsEach(() -> {
-            two._++;
+            two.$++;
         });
 
         it.beginsEach(() -> {
-            two._++;
+            two.$++;
         });
 
         it.should("sum two numbers correctly", () -> {
-            assertThat(two._ + 2).isEqualTo(4);
+            assertThat(two.$ + 2).isEqualTo(4);
         });
 
         it.should("subtract two numbers correctly", () -> {
-            assertThat(two._ - 2).isZero();
+            assertThat(two.$ - 2).isZero();
         });
 
         it.describes("with a subgroup", () -> {
             it.beginsAll(() -> {
-                two._ += 3;
+                two.$ += 3;
             });
 
             it.should("run all parent 'before' callbacks", () -> {
-                assertThat(two._).isEqualTo(5);
+                assertThat(two.$).isEqualTo(5);
             });
 
             it.describes("and a third-degree subgroup", () -> {
                 it.beginsEach(() -> {
-                    two._ += 4;
+                    two.$ += 4;
                 });
 
                 it.should("run all ancestors 'before' callbacks", () -> {
-                    assertThat(two._).isEqualTo(9);
+                    assertThat(two.$).isEqualTo(9);
                 });
 
                 it.endsEach(() -> {
-                    two._ -= 4;
+                    two.$ -= 4;
                 });
 
                 it.describes("with a subgroup without tests", () -> {
@@ -56,21 +56,21 @@ public class BasicSpecnazSpec extends SpecnazJUnit {{
             });
 
             it.endsAll(() -> {
-                two._ -= 3;
+                two.$ -= 3;
             });
         });
 
         it.endsEach(() -> {
-            two._--;
+            two.$--;
         });
 
         it.endsEach(() -> {
-            two._--;
+            two.$--;
         });
 
         it.endsAll(() -> {
-            assertThat(two._).isZero();
-            two._ -= 2;
+            assertThat(two.$).isZero();
+            two.$ -= 2;
         });
     });
 }}

@@ -11,9 +11,9 @@ public final class Box<T> {
         return new Box<>(requireNonNull(thing));
     }
 
-    public T _;
+    public T $;
 
     private Box(T thing) {
-        this._ = thing;
+        this.$ = thing;
     }
 }
