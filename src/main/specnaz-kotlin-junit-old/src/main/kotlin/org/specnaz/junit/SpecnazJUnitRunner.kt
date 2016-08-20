@@ -4,7 +4,7 @@ import org.junit.runner.Description
 import org.junit.runner.Description.createSuiteDescription
 import org.junit.runner.Runner
 import org.junit.runner.notification.RunNotifier
-import org.specnaz.Specnaz
+import org.specnaz.SpecnazOld
 import org.specnaz.impl.SpecnazTestsRunner
 import org.specnaz.impl.TestsGroup
 import org.specnaz.impl.tree.TreeNode
@@ -23,12 +23,12 @@ class SpecnazJUnitRunner(testsClass: Class<*>) : Runner() {
                     "The spec class ${testsClass.simpleName} must have a no-argument constructor", e)
         }
 
-        val specnaz: Specnaz
+        val specnaz: SpecnazOld
         try {
-            specnaz = newInstance as Specnaz
+            specnaz = newInstance as SpecnazOld
         } catch (e: ClassCastException) {
             throw RuntimeException(
-                    "The spec class ${testsClass.simpleName} must implement the Specnaz interface", e)
+                    "The spec class ${testsClass.simpleName} must implement the SpecnazOld interface", e)
         }
 
         specnazTestsRunner = SpecnazTestsRunner(specnaz)

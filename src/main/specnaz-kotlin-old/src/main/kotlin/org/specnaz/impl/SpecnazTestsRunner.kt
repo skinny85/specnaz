@@ -1,10 +1,10 @@
 package org.specnaz.impl
 
 import org.specnaz.SpecName
-import org.specnaz.Specnaz
+import org.specnaz.SpecnazOld
 import org.specnaz.impl.tree.TreeNode
 
-class SpecnazTestsRunner(private val specnaz: Specnaz) {
+class SpecnazTestsRunner(private val specnaz: SpecnazOld) {
     val name = specnaz.javaClass.getAnnotation(SpecName::class.java)?.value
             ?: specnaz.javaClass.simpleName
 

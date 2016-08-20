@@ -1,5 +1,5 @@
 package org.specnaz
 
-interface Specnaz {
+interface SpecnazOld {
     fun tests(): (SpecnazSuiteBuilder) -> Unit
 }
