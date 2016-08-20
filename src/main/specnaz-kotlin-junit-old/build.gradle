@@ -1,5 +1,5 @@
 dependencies {
     compile project(':src:main:specnaz-kotlin-old')
 
-    provided group: 'junit', name: 'junit', version: '4.11'
+    provided "junit:junit:$junit_version"
 }
