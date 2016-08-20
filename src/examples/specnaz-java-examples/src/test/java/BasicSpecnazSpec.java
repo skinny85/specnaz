@@ -1,33 +1,35 @@
 import org.specnaz.junit.SpecnazJUnit;
+import org.specnaz.utils.IntBox;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.specnaz.utils.IntBox.boxWith;
 
 public class BasicSpecnazSpec extends SpecnazJUnit {{
     describes("arithmetic functions", it -> {
-        int[] two = {2};
+        IntBox two = boxWith(2);
 
         it.beginsEach(() -> {
-            two[0]++;
+            two._++;
         });
 
         it.beginsEach(() -> {
-            two[0]++;
+            two._++;
         });
 
         it.should("correctly add two numbers", () -> {
-            assertThat(two[0] + 2).isEqualTo(4);
+            assertThat(two._ + 2).isEqualTo(4);
         });
 
         it.should("correctly subtract two numbers", () -> {
-            assertThat(two[0] - 2).isZero();
+            assertThat(two._ - 2).isZero();
         });
 
         it.endsEach(() -> {
-            two[0]--;
+            two._--;
         });
 
         it.endsEach(() -> {
-            two[0]--;
+            two._--;
         });
     });
 }}
