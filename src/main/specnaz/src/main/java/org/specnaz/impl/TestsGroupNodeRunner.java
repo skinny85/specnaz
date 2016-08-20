@@ -130,12 +130,7 @@ public class TestsGroupNodeRunner {
     }
 
     private Throwable invokeFixtures(List<TestClosure> fixtures) {
-        return invokeFixtures(fixtures, null);
-    }
-
-    private Throwable invokeFixtures(List<TestClosure> fixtures,
-                                     Throwable previousError) {
-        Throwable ret = previousError;
+        Throwable ret = null;
         for (TestClosure fixture : fixtures) {
             Throwable result = invokeCallback(fixture);
             if (ret == null)
