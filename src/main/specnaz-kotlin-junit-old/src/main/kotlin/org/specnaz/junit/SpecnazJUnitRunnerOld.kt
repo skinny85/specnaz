@@ -7,7 +7,7 @@ import org.junit.runner.notification.RunNotifier
 import org.specnaz.SpecnazOld
 import org.specnaz.impl.SpecnazTestsRunner
 import org.specnaz.impl.TestsGroup
-import org.specnaz.impl.tree.TreeNode
+import org.specnaz.impl.tree.TreeNode2
 import org.specnaz.junit.impl.JUnitNotifierOld
 import org.specnaz.junit.impl.JUnitUtils.testDescription
 
@@ -52,7 +52,7 @@ class SpecnazJUnitRunnerOld(testsClass: Class<*>) : Runner() {
         specnazTestsRunner.executeTests(JUnitNotifierOld(runNotifier, rootDescription!!))
     }
 
-    private fun parseSubGroupDescriptions(node: TreeNode<TestsGroup>,
+    private fun parseSubGroupDescriptions(node: TreeNode2<TestsGroup>,
                                           parentDescription: Description) {
         for (testCase in node.value.testCases) {
             parentDescription.addChild(testDescription(testCase.description, parentDescription))

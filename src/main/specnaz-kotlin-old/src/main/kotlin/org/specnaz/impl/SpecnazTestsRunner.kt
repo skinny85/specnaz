@@ -2,7 +2,7 @@ package org.specnaz.impl
 
 import org.specnaz.SpecName
 import org.specnaz.SpecnazOld
-import org.specnaz.impl.tree.TreeNode
+import org.specnaz.impl.tree.TreeNode2
 
 class SpecnazTestsRunner(private val specnaz: SpecnazOld) {
     val name = specnaz.javaClass.getAnnotation(SpecName::class.java)?.value
@@ -21,7 +21,7 @@ class SpecnazTestsRunner(private val specnaz: SpecnazOld) {
     }
 }
 
-class TestsTree(val rootTestsGroup: TreeNode<TestsGroup>)
+class TestsTree(val rootTestsGroup: TreeNode2<TestsGroup>)
 
 class TestsGroup(val groupDescription: String,
                  val beforeAlls: List<(Nothing?) -> Unit>,

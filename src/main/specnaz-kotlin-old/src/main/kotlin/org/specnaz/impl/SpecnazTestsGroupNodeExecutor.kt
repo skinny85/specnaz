@@ -1,8 +1,8 @@
 package org.specnaz.impl
 
-import org.specnaz.impl.tree.TreeNode
+import org.specnaz.impl.tree.TreeNode2
 
-class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGroup>,
+class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode2<TestsGroup>,
                                     private val notifier: NotifierOld) {
     fun run() {
         runCurrentNodeTestsGroup()
@@ -87,7 +87,7 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
     private fun invokeAfterAlls() =
             recursivelyInvokeFixturesAncestorsLast(testsGroupNode, { it.afterAlls })
 
-    private fun recursivelyInvokeFixturesAncestorsFirst(testsGroupNode: TreeNode<TestsGroup>?,
+    private fun recursivelyInvokeFixturesAncestorsFirst(testsGroupNode: TreeNode2<TestsGroup>?,
                                                         extractor: (TestsGroup) -> List<(Nothing?) -> Unit>):
             Throwable? {
         if (testsGroupNode == null)
@@ -100,7 +100,7 @@ class SpecnazTestsGroupNodeExecutor(private val testsGroupNode: TreeNode<TestsGr
         return ancestorsError ?: myError
     }
 
-    private fun recursivelyInvokeFixturesAncestorsLast(testsGroupNode: TreeNode<TestsGroup>?,
+    private fun recursivelyInvokeFixturesAncestorsLast(testsGroupNode: TreeNode2<TestsGroup>?,
                                                        extractor: (TestsGroup) -> List<(Nothing?) -> Unit>):
             Throwable? {
         if (testsGroupNode == null)

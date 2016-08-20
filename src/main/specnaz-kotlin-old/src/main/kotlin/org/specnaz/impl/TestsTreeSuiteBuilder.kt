@@ -1,7 +1,7 @@
 package org.specnaz.impl
 
 import org.specnaz.SpecnazSuiteBuilder
-import org.specnaz.impl.tree.TreeNode
+import org.specnaz.impl.tree.TreeNode2
 
 class TestsTreeSuiteBuilder(private val groupDescription: String) : SpecnazSuiteBuilder {
     private var beforeAlls: List<(Nothing?) -> Unit> = emptyList()
@@ -9,13 +9,13 @@ class TestsTreeSuiteBuilder(private val groupDescription: String) : SpecnazSuite
     private var testCases: List<TestCase> = emptyList()
     private var afters: List<(Nothing?) -> Unit> = emptyList()
     private var afterAlls: List<(Nothing?) -> Unit> = emptyList()
-    private var subGroups: List<TreeNode<TestsGroup>> = emptyList()
+    private var subGroups: List<TreeNode2<TestsGroup>> = emptyList()
 
-    val tests: TreeNode<TestsGroup>
+    val tests: TreeNode2<TestsGroup>
         get() {
             val testsInSubtree = testCases.size + subGroups.map{it.value.testsInSubtree}.sum()
 
-            val rootNode = TreeNode(
+            val rootNode = TreeNode2(
                     TestsGroup(
                             groupDescription,
                             beforeAlls,
