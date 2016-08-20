@@ -1,5 +1,6 @@
 dependencies {
     compile project(':src:main:specnaz-java-old')
     compile project(':src:main:specnaz-kotlin-junit-old')
-    compile group: 'junit', name: 'junit', version: '4.11'
+
+    provided group: 'junit', name: 'junit', version: '4.11'
 }

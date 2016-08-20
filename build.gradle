@@ -9,6 +9,15 @@ subprojects {
     }
 
     apply plugin: 'java'
+
+    configurations {
+        provided {
+            dependencies.all { dep ->
+                configurations.default.exclude group: dep.group, module: dep.name
+            }
+        }
+        compile.extendsFrom provided
+    }
 }
 
 buildscript {
@@ -37,4 +46,8 @@ configure(subprojects.findAll { it.name.contains('kotlin') }) {
     }
 
     apply plugin: 'kotlin'
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    }
 }
