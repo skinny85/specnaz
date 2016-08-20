@@ -14,7 +14,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 import static org.junit.runner.Description.createSuiteDescription;
-import static org.junit.runner.Description.createTestDescription;
+import static org.specnaz.junit.impl.JUnitDescUtils.addChildDescription;
 
 public final class SpecnazJUnitRunner extends Runner {
     private final SpecRunner specnazSpecRunner;
@@ -63,9 +63,12 @@ public final class SpecnazJUnitRunner extends Runner {
     }
 
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription) {
-        for (SingleTestCase testCase : testsGroupNode.value.testCases) {
-            parentDescription.addChild(
-                    createTestDescription(parentDescription.getDisplayName(), testCase.description));
+        List<SingleTestCase> testCases = testsGroupNode.value.testCases;
+        if (!testCases.isEmpty()) {
+            for (SingleTestCase testCase : testCases) {
+                addChildDescription(testCase.description, parentDescription);
+            }
+            addChildDescription("teardown", parentDescription);
         }
 
         for (TreeNode<TestsGroup> child : testsGroupNode.children()) {

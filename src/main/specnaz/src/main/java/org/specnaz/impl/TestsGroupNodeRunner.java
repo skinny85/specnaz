@@ -37,18 +37,12 @@ public class TestsGroupNodeRunner {
         }
 
         Throwable beforeAllsError = invokeBeforeAlls();
-        if (beforeAllsError != null) {
-            notifier.setupFailed(beforeAllsError);
-        }
 
         for (SingleTestCase testCase : testsGroup.testCases) {
             runSingleTestCase(testCase, beforeAllsError);
         }
 
-        Throwable afterAllsError = invokeAfterAlls();
-        if (afterAllsError != null) {
-            notifier.teardownFailed(afterAllsError);
-        }
+        invokeAfterAlls();
     }
 
     private void runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
@@ -80,7 +74,14 @@ public class TestsGroupNodeRunner {
     }
 
     private Throwable invokeBeforeAlls() {
-        return recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
+        notifier.setupStarted();
+        Throwable beforeAllsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
+        if (beforeAllsError == null) {
+            notifier.setupSucceeded();
+        } else {
+            notifier.setupFailed(beforeAllsError);
+        }
+        return beforeAllsError;
     }
 
     private Throwable invokeBefores() {
@@ -99,8 +100,13 @@ public class TestsGroupNodeRunner {
         return previousError == null ? aftersError : previousError;
     }
 
-    private Throwable invokeAfterAlls() {
-        return recursivelyInvokeFixturesAncestorsLast(testsGroupNode, g -> g.afterAlls);
+    private void invokeAfterAlls() {
+        notifier.teardownStarted();
+        Throwable afterAllsError = recursivelyInvokeFixturesAncestorsLast(testsGroupNode, g -> g.afterAlls);
+        if (afterAllsError == null)
+            notifier.teardownSucceeded();
+        else
+            notifier.teardownFailed(afterAllsError);
     }
 
     private Throwable recursivelyInvokeFixturesAncestorsFirst(

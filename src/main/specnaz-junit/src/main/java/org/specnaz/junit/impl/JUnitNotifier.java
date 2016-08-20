@@ -9,7 +9,6 @@ import org.specnaz.impl.SingleTestCase;
 import java.util.ArrayList;
 
 import static java.lang.String.format;
-import static org.junit.runner.Description.createTestDescription;
 
 public final class JUnitNotifier implements Notifier {
     private final RunNotifier runNotifier;
@@ -47,6 +46,10 @@ public final class JUnitNotifier implements Notifier {
     private int testIndex = -1;
 
     private Description advanceToNextTestDescription(SingleTestCase test)  {
+        return advanceToNextTestDescription(test.description);
+    }
+
+    private Description advanceToNextTestDescription(String message) {
         testIndex++;
         ArrayList<Description> children = parentDescription.getChildren();
         while (testIndex < children.size()) {
@@ -56,7 +59,7 @@ public final class JUnitNotifier implements Notifier {
             else
                 testIndex++;
         }
-        throw new IllegalStateException(format("Could not find Description for test '%s'", test.description));
+        throw new IllegalStateException(format("Could not find Description for test '%s'", message));
     }
 
     private Description currentTestDescription() {
@@ -85,6 +88,14 @@ public final class JUnitNotifier implements Notifier {
     }
 
     @Override
+    public void setupStarted() {
+    }
+
+    @Override
+    public void setupSucceeded() {
+    }
+
+    @Override
     public void setupFailed(Throwable e) {
         // We do nothing here, because adding a Description not present in the original
         // test plan messes up JUnit's tree view. Instead, the Executor will mark the
@@ -92,16 +103,17 @@ public final class JUnitNotifier implements Notifier {
     }
 
     @Override
-    public void teardownFailed(Throwable e) {
-        // In case of an 'afterAll' failure, we have no choice - the tests were already
-        // marked as passed, so we cannot do anything (marking them as 'failed' after
-        // does not work, JUnit just creates a new Description for it in the tree).
-        // We accept that the tree will be broken in this case - hopefully, it's a rare situation.
+    public void teardownStarted() {
+        runNotifier.fireTestStarted(advanceToNextTestDescription("teardown"));
+    }
 
-        Description description = createTestDescription(parentDescription.getDisplayName(),
-                "should not fail in an 'afterAll' method");
-        parentDescription.addChild(description);
-        runNotifier.fireTestStarted(description);
-        runNotifier.fireTestFailure(new Failure(description, e));
+    @Override
+    public void teardownSucceeded() {
+        runNotifier.fireTestFinished(currentTestDescription());
+    }
+
+    @Override
+    public void teardownFailed(Throwable e) {
+        runNotifier.fireTestFailure(new Failure(currentTestDescription(), e));
     }
 }
