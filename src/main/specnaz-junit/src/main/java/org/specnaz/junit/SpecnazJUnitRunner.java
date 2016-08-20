@@ -18,15 +18,17 @@ import static org.junit.runner.Description.createTestDescription;
 
 public final class SpecnazJUnitRunner extends Runner {
     private final SpecRunner specnazSpecRunner;
+    private final String className;
 
     public SpecnazJUnitRunner(Class<?> classs) {
+        className = classs.getSimpleName();
         if (Specnaz.class.isAssignableFrom(classs)) {
             Class<? extends Specnaz> specClass = classs.asSubclass(Specnaz.class);
             specnazSpecRunner = new SpecRunner(specClass);
         } else {
             throw new IllegalArgumentException(format(
                     "A Specnaz spec class must implement the Specnaz interface; %s does not",
-                    classs.getSimpleName()));
+                    className));
         }
     }
 
@@ -34,15 +36,25 @@ public final class SpecnazJUnitRunner extends Runner {
 
     @Override
     public Description getDescription() {
+        /*
+         * JUnit sucks, and behaves differently when running a single test
+         * and running a group of tests. In the former case, the top-level description
+         * is always the name of the class, even if you overwrite it like we do
+         * here with the spec name. To make the behavior consistent, we add an extra
+         * description with the class name at the top level ourselves.
+         */
         TreeNode<TestsGroup> testsPlan = specnazSpecRunner.testsPlan();
 
+        Description extraDescription = createSuiteDescription(className);
+
         Description rootDescription = createSuiteDescription(specnazSpecRunner.name());
+        extraDescription.addChild(rootDescription);
 
         parseSubGroupDescriptions(testsPlan, rootDescription);
 
         this.rootDescription = rootDescription;
 
-        return rootDescription;
+        return extraDescription;
     }
 
     @Override
