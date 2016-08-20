@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':src:main:specnaz')
+
+    provided "junit:junit:$junit_version"
+}
