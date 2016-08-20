@@ -7,7 +7,7 @@ public final class SingleTestCase {
     public final TestClosure testBody;
 
     public SingleTestCase(String description, TestClosure testBody) {
-        this.description = description;
+        this.description = "should " + description;
         this.testBody = testBody;
     }
 }
