@@ -26,7 +26,7 @@ public class StackSpec extends SpecnazJUnit {{
             });
 
             it.should("have 20 as the top element", () -> {
-                Assert.assertEquals(20, stack.peek().intValue());
+                Assert.assertEquals(20, (int)stack.peek());
             });
         });
     });
