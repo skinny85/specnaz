@@ -72,13 +72,10 @@ public final class SpecnazJUnitRunner extends Runner {
 
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription) {
         List<SingleTestCase> testCases = testsGroupNode.value.testCases;
-        if (!testCases.isEmpty()) {
-            for (SingleTestCase testCase : testCases) {
-                addChildDescription(testCase.description, parentDescription);
-            }
-            if (testsGroupNode.value.afterAllsCount() > 0)
-                addChildDescription("teardown", parentDescription);
-        }
+        for (SingleTestCase testCase : testCases)
+            addChildDescription(testCase.description, parentDescription);
+        if (!testCases.isEmpty() && testsGroupNode.value.afterAllsCount() > 0)
+            addChildDescription("teardown", parentDescription);
 
         for (TreeNode<TestsGroup> child : testsGroupNode.children()) {
             if (child.value.testsInTree > 0) {
