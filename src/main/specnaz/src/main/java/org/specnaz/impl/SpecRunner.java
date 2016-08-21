@@ -2,8 +2,6 @@ package org.specnaz.impl;
 
 import org.specnaz.Specnaz;
 
-import static java.lang.String.format;
-
 public class SpecRunner {
     private final SpecDescriptor specDescriptor;
     private TreeNode<TestsGroup> rootTestsGroupNode;
@@ -23,7 +21,7 @@ public class SpecRunner {
     }
 
     public void run(Notifier notifier) {
-        new TestsGroupNodeRunner(rootTestsGroupNode, notifier).run();
+        new TestsGroupNodeRunner(testsPlan(), notifier).run();
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {
