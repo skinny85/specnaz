@@ -1,5 +1,0 @@
-dependencies {
-    testCompile project(":src:main:specnaz-kotlin-junit-old")
-    testCompile "junit:junit:$junit_version"
-    testCompile "org.assertj:assertj-core:$assertj_version"
-}

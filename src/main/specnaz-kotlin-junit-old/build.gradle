@@ -1,5 +1,0 @@
-dependencies {
-    compile project(':src:main:specnaz-kotlin-old')
-
-    provided "junit:junit:$junit_version"
-}
