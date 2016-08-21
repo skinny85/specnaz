@@ -16,12 +16,9 @@ import static java.lang.String.format;
 import static org.junit.runner.Description.createSuiteDescription;
 import static org.specnaz.junit.impl.JUnitDescUtils.addChildDescription;
 
-public final class SpecnazJUnitRunner extends Runner {
-    private final SpecRunner specnazSpecRunner;
-    private final String className;
-
-    public SpecnazJUnitRunner(Class<?> classs) {
-        className = classs.getSimpleName();
+public class SpecnazJUnitRunner extends Runner {
+    private static Specnaz instantiate(Class<?> classs) {
+        String className = classs.getSimpleName();
         if (Specnaz.class.isAssignableFrom(classs)) {
             Class<? extends Specnaz> specClass = classs.asSubclass(Specnaz.class);
             Specnaz specInstance;
@@ -31,12 +28,24 @@ public final class SpecnazJUnitRunner extends Runner {
                 throw new IllegalArgumentException(format(
                         "Could not instantiate test class '%s'", className), e);
             }
-            specnazSpecRunner = new SpecRunner(specInstance);
+            return specInstance;
         } else {
             throw new IllegalArgumentException(format(
                     "A Specnaz spec class must implement the Specnaz interface; %s does not",
                     className));
         }
+    }
+
+    private final SpecRunner specnazSpecRunner;
+    private final String className;
+
+    public SpecnazJUnitRunner(Class<?> classs) {
+        this(classs.getSimpleName(), instantiate(classs));
+    }
+
+    protected SpecnazJUnitRunner(String className, Specnaz specInstance) {
+        this.className = className;
+        this.specnazSpecRunner = new SpecRunner(specInstance);
     }
 
     private Description rootDescription;

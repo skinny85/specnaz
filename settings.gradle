@@ -1,6 +1,9 @@
 rootProject.name = 'specnaz-all'
+
 include 'src:main:specnaz',
         'src:main:specnaz-junit',
+        'src:main:specnaz-kotlin',
+        'src:main:specnaz-kotlin-junit',
         'src:main:specnaz-kotlin-old',
         'src:main:specnaz-kotlin-junit-old',
         'src:main:specnaz-java-old',
@@ -8,4 +11,5 @@ include 'src:main:specnaz',
         'src:examples:specnaz-kotlin-examples-old',
         'src:examples:specnaz-java-examples-old',
         'src:examples:specnaz-java-examples',
+        'src:examples:specnaz-kotlin-examples',
         'src:examples:specnaz-groovy-examples'
