@@ -24,7 +24,14 @@ public final class SpecnazJUnitRunner extends Runner {
         className = classs.getSimpleName();
         if (Specnaz.class.isAssignableFrom(classs)) {
             Class<? extends Specnaz> specClass = classs.asSubclass(Specnaz.class);
-            specnazSpecRunner = new SpecRunner(specClass);
+            Specnaz specInstance;
+            try {
+                specInstance = specClass.newInstance();
+            } catch (Exception e) {
+                throw new IllegalArgumentException(format(
+                        "Could not instantiate test class '%s'", className), e);
+            }
+            specnazSpecRunner = new SpecRunner(specInstance);
         } else {
             throw new IllegalArgumentException(format(
                     "A Specnaz spec class must implement the Specnaz interface; %s does not",

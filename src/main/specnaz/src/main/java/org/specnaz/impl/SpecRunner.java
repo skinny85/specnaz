@@ -8,14 +8,7 @@ public class SpecRunner {
     private final SpecDescriptor specDescriptor;
     private TreeNode<TestsGroup> rootTestsGroupNode;
 
-    public SpecRunner(Class<? extends Specnaz> specClass) {
-        Specnaz specInstance;
-        try {
-            specInstance = specClass.newInstance();
-        } catch (Exception e) {
-            throw new IllegalArgumentException(format(
-                    "Could not instantiate test class '%s'", specClass.getSimpleName()), e);
-        }
+    public SpecRunner(Specnaz specInstance) {
         this.specDescriptor = SpecsRegistry.specFor(specInstance);
     }
 
