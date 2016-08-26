@@ -19,6 +19,20 @@ public final class JUnitNotifier implements Notifier {
         this.parentDescription = parentDescription;
     }
 
+    /*
+     * This class is a work of art.
+     *
+     * Because of the weird way JUnit is structured,
+     * there is no easy way to associate a description with a test.
+     * So, in this class, we take advantage of knowing in
+     * which order the tests are executed, and traverse the
+     * description tree in lock-step with the test execution.
+     *
+     * This is the ugliest code I've ever written, but I've ran
+     * out of ideas on how to handle this problem differently,
+     * and it works. I'd love to hear ideas on how to improve it.
+     */
+
     @Override
     public void started(SingleTestCase test) {
         runNotifier.fireTestStarted(advanceToNextTestDescription(test));

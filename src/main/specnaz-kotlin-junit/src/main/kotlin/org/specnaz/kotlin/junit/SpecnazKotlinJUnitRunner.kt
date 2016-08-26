@@ -4,7 +4,26 @@ import org.specnaz.Specnaz
 import org.specnaz.junit.SpecnazJUnitRunner
 import org.specnaz.kotlin.SpecnazKotlin
 import org.specnaz.kotlin.impl.KotlinSpecsRegistry
+import org.junit.runner.Runner
+import org.junit.runner.RunWith
 
+/**
+ * The equivalent of [SpecnazJUnitRunner] for Kotlin -
+ * the JUnit [Runner] for running [SpecnazKotlin] specifications.
+ *
+ * The easiest way to use it is to extend [SpecnazKotlinJUnit].
+ * If your test class has to extend from a particular class,
+ * you can always specify it with JUnit's [RunWith] annotation:
+ *
+ * ```
+ * @RunWith(SpecnazKotlinJUnitRunner::class)
+ * class SomeSpec : SomeClass(), SpecnazKotlin { init {
+ *     describes("my spec") {
+ *         // spec body here...
+ *     }
+ * }
+ * ```
+ */
 class SpecnazKotlinJUnitRunner(classs: Class<*>) :
         SpecnazJUnitRunner(classs.simpleName, toSpecInstance(classs)) {
     companion object {

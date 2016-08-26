@@ -1,10 +1,13 @@
-import org.specnaz.junit.SpecnazJUnit;
+import org.junit.runner.RunWith;
+import org.specnaz.Specnaz;
+import org.specnaz.junit.SpecnazJUnitRunner;
 import org.specnaz.utils.IntBox;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.specnaz.utils.IntBox.boxWith;
 
-public class BasicSpecnazSpec extends SpecnazJUnit {{
+@RunWith(SpecnazJUnitRunner.class)
+public class BasicSpecnazSpec implements Specnaz {{
     describes("arithmetic operations", it -> {
         IntBox two = boxWith(-2);
 

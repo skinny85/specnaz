@@ -1,6 +1,7 @@
 package org.specnaz.junit;
 
 import org.junit.runner.Description;
+import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.specnaz.Specnaz;
@@ -16,6 +17,23 @@ import static java.lang.String.format;
 import static org.junit.runner.Description.createSuiteDescription;
 import static org.specnaz.junit.impl.JUnitDescUtils.addChildDescription;
 
+/**
+ * The JUnit {@link Runner} used for running {@link Specnaz} specifications.
+ * The shortest way to use it is to extend {@link SpecnazJUnit}.
+ * If your test class needs to extend a different class,
+ * you can always specify this runner with the {@link RunWith} annotation:
+ *
+ * <pre>
+ * <code>
+ * {@literal @}RunWith(SpecnazJUnitRunner.class)
+ *     public class MySpec extends SomeCustomClass implements Specnaz {{
+ *         describes("something", it -&gt; {
+ *             // specification body here
+ *         });
+ *     }}
+ * </code>
+ * </pre>
+ */
 public class SpecnazJUnitRunner extends Runner {
     private static Specnaz instantiate(Class<?> classs) {
         String className = classs.getSimpleName();
@@ -39,10 +57,31 @@ public class SpecnazJUnitRunner extends Runner {
     private final SpecRunner specnazSpecRunner;
     private final String className;
 
+    /**
+     * This is JUnit's entry point for {@link Runner}s.
+     *
+     * @param classs
+     *     the class of the tests currently being run.
+     *     It must implement and obey the contract of the
+     *     {@link Specnaz} interface
+     */
     public SpecnazJUnitRunner(Class<?> classs) {
         this(classs.getSimpleName(), instantiate(classs));
     }
 
+    /**
+     * This is the extension point for custom {@link Runner}s that want
+     * to leverage existing JUnit infrastructure provided by this class.
+     * <p>
+     * It's used by the Kotlin Specnaz bindings, for example.
+     *
+     * @param className
+     *     the name of the original class that was run as a test class
+     * @param specInstance
+     *     an instance of the {@link Specnaz} interface.
+     *     Note that it's assumed that the {@link Specnaz#describes} method
+     *     has already been called for this object.
+     */
     protected SpecnazJUnitRunner(String className, Specnaz specInstance) {
         this.className = className;
         this.specnazSpecRunner = new SpecRunner(specInstance);

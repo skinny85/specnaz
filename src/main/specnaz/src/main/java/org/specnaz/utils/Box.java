@@ -49,7 +49,7 @@ import static java.util.Objects.requireNonNull;
  * To make code read a little better
  * (and use Java's type inference to the maximum),
  * {@code Box} has a private constructor, and provides two static methods
- * to create instances of it: {@link Box#emptyBox()} and {@link Box#boxWith(T thing)}.
+ * to create instances of it: {@link Box#emptyBox()} and {@link Box#boxWith}.
  * <p>
  * There are also equivalent Box classes for primitives:
  * {@link IntBox}, {@link BoolBox} etc.
@@ -63,6 +63,7 @@ import static java.util.Objects.requireNonNull;
  * @see DoubleBox
  * @see CharBox
  * @see ShortBox
+ * @see ByteBox
  */
 public final class Box<T> {
     /**
