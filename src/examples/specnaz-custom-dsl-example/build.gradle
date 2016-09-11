@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':src:main:specnaz-junit')
+    compile "junit:junit:$junit_version"
+
+    testCompile "org.assertj:assertj-core:$assertj_version"
+}
