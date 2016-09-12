@@ -2,7 +2,8 @@ package org.specnaz.kotlin
 
 import org.specnaz.SpecBuilder
 import org.specnaz.Specnaz
-import org.specnaz.kotlin.impl.KotlinSpecsRegistry
+import org.specnaz.impl.SpecsRegistry
+import org.specnaz.kotlin.impl.KotlinSpecBuilderWrapper
 
 /**
  * The equivalent of the [Specnaz] interface for Kotlin code.
@@ -33,6 +34,8 @@ interface SpecnazKotlin {
      *     that defines the specification
      */
     fun describes(description: String, specClosure: (KotlinSpecBuilder) -> Unit) {
-        KotlinSpecsRegistry.register(this, description, specClosure)
+        SpecsRegistry.register(this, description, {
+            specBuilder -> specClosure(KotlinSpecBuilderWrapper(specBuilder))
+        })
     }
 }
