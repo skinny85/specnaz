@@ -1,7 +1,6 @@
 package org.specnaz.impl;
 
-import org.specnaz.SpecBuilder;
-import org.specnaz.Specnaz;
+import org.specnaz.core.CoreDslBuilder;
 
 import java.util.IdentityHashMap;
 import java.util.function.Consumer;
@@ -13,19 +12,19 @@ public final class SpecsRegistry {
             new IdentityHashMap<>();
 
     public static void register(Object specInstance, String description,
-                                Consumer<SpecBuilder> specClosure) throws IllegalStateException {
+                                Consumer<CoreDslBuilder> specClosure) throws SpecsRegistryViolation {
         SpecDescriptor prev = REGISTRY.putIfAbsent(specInstance,
                 new SpecDescriptor(description, specClosure));
         if (prev != null)
-            throw new IllegalStateException(format(
-                    "Test object '%s' already registered", specInstance));
+            throw new SpecsRegistryViolation(
+                    "Test object '%s' already registered", specInstance);
     }
 
-    static SpecDescriptor specFor(Object specInstance) throws IllegalStateException {
+    static SpecDescriptor specFor(Object specInstance) throws SpecsRegistryViolation {
         SpecDescriptor ret = REGISTRY.get(specInstance);
         if (ret == null)
-            throw new IllegalStateException(format(
-                    "Test object '%s' was never registered", specInstance));
+            throw new SpecsRegistryViolation(
+                    "Test object '%s' was never registered", specInstance);
         return ret;
     }
 

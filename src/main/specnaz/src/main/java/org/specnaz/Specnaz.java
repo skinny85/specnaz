@@ -1,6 +1,8 @@
 package org.specnaz;
 
+import org.specnaz.impl.SpecBuilderCoreDslAdapter;
 import org.specnaz.impl.SpecsRegistry;
+import org.specnaz.impl.SpecsRegistryViolation;
 
 import java.util.function.Consumer;
 
@@ -45,6 +47,13 @@ public interface Specnaz {
      *     doing so will result in an error during the test initialization phase.
      */
     default void describes(String description, Consumer<SpecBuilder> specClosure) {
-        SpecsRegistry.register(this, description, specClosure);
+        try {
+            SpecsRegistry.register(this, description, coreDslBuilder -> {
+                specClosure.accept(new SpecBuilderCoreDslAdapter(coreDslBuilder));
+            });
+        } catch (SpecsRegistryViolation e) {
+            throw new IllegalStateException("Specnaz.describes() was called multiple times in the " +
+                    "no-argument constructor of " + this.getClass().getSimpleName());
+        }
     }
 }

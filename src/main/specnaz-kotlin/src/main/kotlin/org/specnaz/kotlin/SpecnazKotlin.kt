@@ -2,7 +2,9 @@ package org.specnaz.kotlin
 
 import org.specnaz.SpecBuilder
 import org.specnaz.Specnaz
+import org.specnaz.impl.SpecBuilderCoreDslAdapter
 import org.specnaz.impl.SpecsRegistry
+import org.specnaz.impl.SpecsRegistryViolation
 import org.specnaz.kotlin.impl.KotlinSpecBuilderWrapper
 
 /**
@@ -34,8 +36,14 @@ interface SpecnazKotlin {
      *     that defines the specification
      */
     fun describes(description: String, specClosure: (KotlinSpecBuilder) -> Unit) {
-        SpecsRegistry.register(this, description, {
-            specBuilder -> specClosure(KotlinSpecBuilderWrapper(specBuilder))
-        })
+        try {
+            SpecsRegistry.register(this, description, {
+                coreDslBuilder -> specClosure(KotlinSpecBuilderWrapper(
+                    SpecBuilderCoreDslAdapter(coreDslBuilder)))
+            })
+        } catch (e: SpecsRegistryViolation) {
+            throw IllegalStateException("SpecnazKotlin.describes() was called multiple times in the " +
+                "no-argument constructor of ${this.javaClass.simpleName}")
+        }
     }
 }

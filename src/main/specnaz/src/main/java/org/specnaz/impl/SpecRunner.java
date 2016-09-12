@@ -4,7 +4,7 @@ public class SpecRunner {
     private final SpecDescriptor specDescriptor;
     private TreeNode<TestsGroup> rootTestsGroupNode;
 
-    public SpecRunner(Object specInstance) throws IllegalStateException {
+    public SpecRunner(Object specInstance) throws SpecsRegistryViolation {
         this.specDescriptor = SpecsRegistry.specFor(specInstance);
     }
 
@@ -23,8 +23,8 @@ public class SpecRunner {
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {
-        TestsTreeSpecBuilder testsTreeSpecBuilder = new TestsTreeSpecBuilder(name());
-        specDescriptor.specClosure.accept(testsTreeSpecBuilder);
-        return testsTreeSpecBuilder.spec();
+        TestsTreeCoreDslBuilder testsTreeCoreDslBuilder = new TestsTreeCoreDslBuilder(name());
+        specDescriptor.specClosure.accept(testsTreeCoreDslBuilder);
+        return testsTreeCoreDslBuilder.spec();
     }
 }

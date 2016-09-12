@@ -1,8 +1,12 @@
 package org.specnaz.kotlin.junit
 
+import org.junit.runner.Description
 import org.junit.runner.RunWith
 import org.junit.runner.Runner
+import org.junit.runner.notification.RunNotifier
 import org.specnaz.junit.SpecnazJUnitRunner
+import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner
+import org.specnaz.junit.utils.Utils
 import org.specnaz.kotlin.SpecnazKotlin
 
 /**
@@ -22,25 +26,23 @@ import org.specnaz.kotlin.SpecnazKotlin
  * }
  * ```
  */
-class SpecnazKotlinJUnitRunner(classs: Class<*>) :
-        SpecnazJUnitRunner(classs.simpleName, toSpecInstance(classs)) {
-    companion object {
-        private fun toSpecInstance(classs: Class<*>): SpecnazKotlin {
-            if (SpecnazKotlin::class.java.isAssignableFrom(classs)) {
-                val kotlinClass = classs.asSubclass(SpecnazKotlin::class.java)
-                val specnazKotlinInstance: SpecnazKotlin
-                try {
-                    specnazKotlinInstance = kotlinClass.newInstance()
-                } catch (e: Exception) {
-                    throw IllegalArgumentException(
-                            "Could not instantiate spec class ${classs.simpleName}", e)
-                }
-                return specnazKotlinInstance
-            } else {
-                throw IllegalArgumentException(
-                        "A Kotlin spec class must implement the SpecnazKotlin interface; " +
-                                "${classs.simpleName} does not")
-            }
+class SpecnazKotlinJUnitRunner(classs: Class<*>) : Runner() {
+    private val coreDslRunner: SpecnazCoreDslJUnitRunner
+
+    init {
+        val className = classs.simpleName
+        try {
+            coreDslRunner = SpecnazCoreDslJUnitRunner(className,
+                    Utils.instantiateTestClass(classs, SpecnazKotlin::class.java))
+        } catch (e: IllegalStateException) {
+            throw IllegalStateException(
+                    "SpecnazKotlin.describes() was never called in the no-argument constructor of $className")
         }
+    }
+
+    override fun getDescription(): Description = coreDslRunner.description
+
+    override fun run(runNotifier: RunNotifier) {
+        coreDslRunner.run(runNotifier)
     }
 }
