@@ -9,23 +9,23 @@ import java.util.function.Consumer;
 import static java.lang.String.format;
 
 public final class SpecsRegistry {
-    private static final IdentityHashMap<Specnaz, SpecDescriptor> REGISTRY =
+    private static final IdentityHashMap<Object, SpecDescriptor> REGISTRY =
             new IdentityHashMap<>();
 
-    public static void register(Specnaz specInstance, String description, Consumer<SpecBuilder> specClosure) {
-        if (REGISTRY.containsKey(specInstance))
+    public static void register(Object specInstance, String description,
+                                Consumer<SpecBuilder> specClosure) throws IllegalStateException {
+        SpecDescriptor prev = REGISTRY.putIfAbsent(specInstance,
+                new SpecDescriptor(description, specClosure));
+        if (prev != null)
             throw new IllegalStateException(format(
-                    "Specnaz.describes() was called multiple times in class '%s'",
-                    specInstance.getClass().getSimpleName()));
-        REGISTRY.put(specInstance, new SpecDescriptor(description, specClosure));
+                    "Test object '%s' already registered", specInstance));
     }
 
-    static SpecDescriptor specFor(Specnaz specInstance) {
+    static SpecDescriptor specFor(Object specInstance) throws IllegalStateException {
         SpecDescriptor ret = REGISTRY.get(specInstance);
         if (ret == null)
             throw new IllegalStateException(format(
-                    "Specnaz.describes() was never called in class '%s'",
-                    specInstance.getClass().getSimpleName()));
+                    "Test object '%s' was never registered", specInstance));
         return ret;
     }
 

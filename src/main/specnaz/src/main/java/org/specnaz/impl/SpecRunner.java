@@ -1,12 +1,10 @@
 package org.specnaz.impl;
 
-import org.specnaz.Specnaz;
-
 public class SpecRunner {
     private final SpecDescriptor specDescriptor;
     private TreeNode<TestsGroup> rootTestsGroupNode;
 
-    public SpecRunner(Specnaz specInstance) {
+    public SpecRunner(Object specInstance) throws IllegalStateException {
         this.specDescriptor = SpecsRegistry.specFor(specInstance);
     }
 

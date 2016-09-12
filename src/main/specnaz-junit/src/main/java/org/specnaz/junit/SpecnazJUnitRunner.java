@@ -7,6 +7,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.specnaz.Specnaz;
 import org.specnaz.impl.SingleTestCase;
 import org.specnaz.impl.SpecRunner;
+import org.specnaz.impl.SpecsRegistry;
 import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitNotifier;
@@ -78,11 +79,11 @@ public class SpecnazJUnitRunner extends Runner {
      * @param className
      *     the name of the original class that was run as a test class
      * @param specInstance
-     *     an instance of the {@link Specnaz} interface.
-     *     Note that it's assumed that the {@link Specnaz#describes} method
-     *     has already been called for this object.
+     *     an instance of the test object that was registered in {@link SpecsRegistry}
+     *     (most likely by calling something like {@link Specnaz#describes})
      */
-    protected SpecnazJUnitRunner(String className, Specnaz specInstance) {
+    protected SpecnazJUnitRunner(String className, Object specInstance)
+            throws IllegalStateException {
         this.className = className;
         this.specnazSpecRunner = new SpecRunner(specInstance);
     }
