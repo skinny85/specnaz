@@ -2,7 +2,7 @@ import org.specnaz.junit.SpecnazJUnit
 
 public class StackGroovySpec extends SpecnazJUnit {{
     describes("A Stack") {
-        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> stack = new Stack<>()
 
         it.should("be empty when first created") {
             assert stack.isEmpty()
