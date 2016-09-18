@@ -42,9 +42,5 @@ public class GivenWhenThenStandaloneStackSpec implements SpecnazGivenWhenThenSta
                     }
             );
         });
-
-        given("a", then -> {
-
-        });
     }
 }

@@ -14,6 +14,7 @@ import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.utils.Utils;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.junit.runner.Description.createSuiteDescription;
 import static org.specnaz.junit.impl.JUnitDescUtils.addChildDescription;
@@ -50,7 +51,7 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
      *     an instance of the test object.
      *     It had to be registered for running, most likely by calling,
      *     directly or indirectly, a method like {@link Specnaz#describes},
-     *     or it's equivalent
+     *     {@link SpecnazCoreDsl#specification}, or its equivalent
      * @throws IllegalStateException
      *     if the {@code specInstance} was never registered for running
      */
