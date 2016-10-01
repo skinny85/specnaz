@@ -41,6 +41,9 @@ You can even go as far as making your override always throw an exception:
 
 ```
 public interface SpecnazGivenWhenThen extends SpecnazCoreDsl {
+    /**
+     * Do not call! Use {@link SpecnazGivenWhenThen#given} instead.
+     */
     @Override
     @Deprecated
     default void specification(String description, Consumer<CoreDslBuilder> specClosure) {

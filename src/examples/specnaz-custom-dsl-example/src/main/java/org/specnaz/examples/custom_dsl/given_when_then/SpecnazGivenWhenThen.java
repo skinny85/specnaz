@@ -12,6 +12,9 @@ public interface SpecnazGivenWhenThen extends SpecnazCoreDsl {
         });
     }
 
+    /**
+     * Do not call! Use {@link SpecnazGivenWhenThen#given} instead.
+     */
     @Override
     @Deprecated
     default void specification(String description, Consumer<CoreDslBuilder> specClosure) {
