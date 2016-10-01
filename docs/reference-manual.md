@@ -190,7 +190,7 @@ to them, so formulate your descriptions with that in mind.
 Note that you cannot nest `should` methods inside each other;
 something like this:
 
-```
+```java
 it.should("first test", () -> {
     it.should("nested test", () -> { // this is wrong!
 ```
@@ -342,7 +342,7 @@ which share their parent's fixtures.
 
 Example:
 
-```
+```java
 public class StackSpec extends SpecnazJUnit {{
     describes("A Stack", it -> {
         Stack<Integer> stack = new Stack<>();
@@ -389,7 +389,7 @@ level of nesting in the specification tree.
 
 That may sound a little abstract, so here's an example:
 
-```
+```java
 public class NestedSpec extends SpecnazJUnit {{
     describes("Outer group", it -> {
         it.beginsAll(() -> {
@@ -723,7 +723,7 @@ tailor-made to be used from Kotlin.
 
 Here is an example of using them:
 
-```
+```kotlin
 class StackKotlinSpec : SpecnazKotlinJUnit("A Stack", {
     var stack = Stack<Int>()
 
@@ -779,7 +779,7 @@ If your test class has to extend a particular class, you can still get
 the last two benefits by using the `org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner`
 JUnit `Runner` and implementing `SpecnazKotlin`:
 
-```
+```kotlin
 @RunWith(SpecnazKotlinJUnitRunner::class)
 class StackKotlinSpec : SpecCommon(), SpecnazKotlin { init {
     describes("A Stack") {
@@ -795,7 +795,7 @@ checks both for `null` values and forces variables to be always initialized
 before being used. That's of course great in production code, but gets
 tedious in tests. For example:
 
-```
+```kotlin
 class KotlinSpec : SpecnazKotlinJUnit("A spec", {
     var someDomainClass: MyDomainClass
     
@@ -818,7 +818,7 @@ Because of that, Specnaz ships with a simple helper class,
 `org.specnaz.kotlin.utils.Deferred`.
 You use it like this:
 
-```
+```kotlin
 class KotlinSpec : SpecnazKotlinJUnit("A spec", {
     val someDomainClass = Deferred<MyDomainClass>()
 
@@ -840,7 +840,7 @@ compile.
 If you're willing to use inheritance (`Deferred` is an open class),
 you can make your tests read even better:
 
-```
+```kotlin
 class KotlinSpec : SpecnazKotlinJUnit("A spec", {
     val someDomainClass = object : Deferred<MyDomainClass>() {
         val something: Boolean get() = v.something

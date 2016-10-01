@@ -20,7 +20,7 @@ This interface needs to extends `org.specnaz.core.SpecnazCoreDsl`,
 and call its `specification` method in the entry method body.
 For our Given-When-Then example, it looks like this:
 
-```
+```java
 public interface SpecnazGivenWhenThen extends SpecnazCoreDsl {
     default void given(String description, Consumer<GivenBuilder> closure) {
         specification("Given " + description, coreDslBuilder -> {
@@ -39,7 +39,7 @@ method, and use your DSL entry one instead, you might want to override
 that method and mark it with the `@Deprecated` annotation.
 You can even go as far as making your override always throw an exception:
 
-```
+```java
 public interface SpecnazGivenWhenThen extends SpecnazCoreDsl {
     /**
      * Do not call! Use {@link SpecnazGivenWhenThen#given} instead.
@@ -55,7 +55,7 @@ public interface SpecnazGivenWhenThen extends SpecnazCoreDsl {
 However, note that if you decide to do that, you need to use the `super`
 syntax when calling it in your entry method:
 
-```
+```java
 public interface SpecnazGivenWhenThen extends SpecnazCoreDsl {
     default void given(String description, Consumer<GivenBuilder> closure) {
         SpecnazCoreDsl.super.specification("Given " + description, coreDslBuilder -> {
@@ -74,7 +74,7 @@ This will determine the shape of your DSL.
 
 As an example, in the Given-When-Then DSL, we decided on an API like this:
 
-```
+```java
 public interface GivenBuilder {
     default void given(String description, Runnable closure) {
         given(description, () -> {}, closure);
@@ -101,7 +101,7 @@ The implementation should delegate all of the logic to the
 are a little different).
 In our `GivenWhenThenBuilder` from above, this looks like this:
 
-```
+```java
 public class GivenWhenThenBuilder implements GivenBuilder, ThensBuilder {
     private final CoreDslBuilder coreDslBuilder;
 
@@ -140,7 +140,7 @@ You can provide a helper class for your clients, similar to
 `org.specnaz.junit.SpecnazJUnit`, which specifies your interface and the
 JUnit Runner with the `@RunWith` annotation:
 
-```
+```java
 @RunWith(SpecnazCoreDslJUnitRunner.class)
 public abstract class MyDslJUnitHelper implements MyDslInterface {
 }
@@ -151,7 +151,7 @@ public abstract class MyDslJUnitHelper implements MyDslInterface {
 And... that's it! You can now use your DSL to write specifications.
 For example, using our Given-When-Then DSL looks something like this:
 
-```
+```java
 @RunWith(SpecnazCoreDslJUnitRunner.class)
 public class GivenWhenThenStackSpec implements SpecnazGivenWhenThen {
     {

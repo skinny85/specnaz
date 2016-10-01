@@ -3,7 +3,7 @@ Using Specnaz from Groovy
 
 You can use the Specnaz Java API directly from Groovy:
 
-```
+```groovy
 public class StackGroovySpec extends SpecnazJUnit {{
     describes("A Stack") {
         Stack<Integer> stack = new Stack<>()
@@ -57,13 +57,13 @@ zero-argument closure by using the `->` syntax after the opening brace.
 
 So, it should be:
 
-```
+```groovy
 describes("a subgroup", { ->
 ```
 
 and _not_:
 
 
-```
+```groovy
 describes("a subgroup", { // wrong!
 ```

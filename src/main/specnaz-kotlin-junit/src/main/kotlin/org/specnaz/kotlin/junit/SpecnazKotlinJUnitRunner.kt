@@ -17,7 +17,7 @@ import org.specnaz.kotlin.SpecnazKotlin
  * If your test class has to extend from a particular class,
  * you can always specify it with JUnit's [RunWith] annotation:
  *
- * ```
+ * ```kotlin
  * @RunWith(SpecnazKotlinJUnitRunner::class)
  * class SomeSpec : SomeClass(), SpecnazKotlin { init {
  *     describes("my spec") {

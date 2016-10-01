@@ -16,7 +16,7 @@ import org.specnaz.kotlin.SpecnazKotlin
  * it allows you to save some code and one level of indentation
  * compared to implementing [SpecnazKotlin] directly:
  *
- * ```
+ * ```kotlin
  * @RunWith(SpecnazKotlinJUnitRunner::class)
  * class SomeSpec : SpecnazKotlin { init {
  *     describes("my spec") {
@@ -27,7 +27,7 @@ import org.specnaz.kotlin.SpecnazKotlin
  *
  * versus:
  *
- * ```
+ * ```kotlin
  * class SomeSpec : SpecnazKotlinJunit("my spec", {
  *     // spec body here...
  * })
