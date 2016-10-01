@@ -6,8 +6,8 @@ This means that you can create your own Domain-Specific Languages
 (DSLs) for writing tests if the default one does not fit your needs.
 
 This project shows a simple example of implementing a Given-When-Then test DSL.
-The code is in `src/main/java/org/specnaz/examples/custom_dsl/given_when_then`,
-and `src/test/java` shows a sample usage.
+The code is in [src/main/java/org/specnaz/examples/custom_dsl/given_when_then](src/main/java/org/specnaz/examples/custom_dsl/given_when_then),
+and [src/test/java](src/test/java) shows a sample usage.
 
 The process of extending Specnaz consists of several easy steps:
 
@@ -206,7 +206,7 @@ If you can't stand the extra method in your interface, read on.
 
 We will be using the same Given-When-Then DSL that we developed previously.
 The example code is in
-[here](src/main/java/org.specnaz/examples/custom_dsl/given_when_then/standalone),
+[here](src/main/java/org/specnaz/examples/custom_dsl/given_when_then/standalone),
 and [here](src/test/java/standalone) is an example test using the standalone extension.
 
 ### Step 1: create an interface
