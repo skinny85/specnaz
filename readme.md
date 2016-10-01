@@ -128,7 +128,7 @@ Check out the [reference manual](docs/reference-manual.md) for more documentatio
 
 #### Getting Specnaz
 
-Specnaz is available from the Bintray Maven repository, also known as JCenter.
+Specnaz is available from the [Bintray](https://bintray.com/) Maven repository.
 The group ID is always `org.specnaz`, while the artifact ID depends on the language and testing framework you want to use
 (Specnaz currently supports only JUnit, but there are plans to add support for others in the future):
 
@@ -136,6 +136,8 @@ The group ID is always `org.specnaz`, while the artifact ID depends on the langu
 |----------------------|-------------------|------------------------|
 | Java                 | JUnit             | `specnaz-junit`        |
 | Kotlin               | JUnit             | `specnaz-kotlin-junit` |
+
+The repository URL is: `http://dl.bintray.com/skinny85/maven-repo`.
 
 ###### Example Maven settings
 
@@ -145,9 +147,9 @@ The group ID is always `org.specnaz`, while the artifact ID depends on the langu
         <snapshots>
             <enabled>false</enabled>
         </snapshots>
-        <id>central</id>
-        <name>bintray</name>
-        <url>http://jcenter.bintray.com</url>
+        <id>bintray-specnaz</id>
+        <name>bintray-specnaz</name>
+        <url>http://dl.bintray.com/skinny85/maven-repo</url>
     </repository>
 </repositories>
 
@@ -167,7 +169,9 @@ The group ID is always `org.specnaz`, while the artifact ID depends on the langu
 
 ```groovy
 repositories {
-    jcenter()
+    maven {
+        url 'http://dl.bintray.com/skinny85/maven-repo'
+    }
 }
 
 dependencies {
