@@ -94,7 +94,7 @@ public class TestsGroupNodeRunner {
     private Throwable invokeTestBody(SingleTestCase testCase, Throwable previousError) {
         // we only run the test if none of the 'beforeEach' methods failed
         return previousError == null
-                ? invokeCallback(testCase.testBody)
+                ? testCase.exercise()
                 : previousError;
     }
 
@@ -144,21 +144,10 @@ public class TestsGroupNodeRunner {
     private Throwable invokeFixtures(List<TestClosure> fixtures) {
         Throwable ret = null;
         for (TestClosure fixture : fixtures) {
-            Throwable result = invokeCallback(fixture);
+            Throwable result = SingleTestCase.invokeCallback(fixture);
             if (ret == null)
                 ret = result;
         }
         return ret;
-    }
-
-    private Throwable invokeCallback(TestClosure callback) {
-        try {
-            callback.invoke();
-            return null;
-        } catch (AssertionError e) {
-            return e;
-        } catch (Exception e) {
-            return e;
-        }
     }
 }

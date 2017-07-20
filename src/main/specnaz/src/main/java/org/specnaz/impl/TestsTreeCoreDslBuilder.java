@@ -22,7 +22,13 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
 
     @Override
     public void test(String description, TestClosure testBody) {
-        testsGroupNodeBuilder.addTestCase(new SingleTestCase(description, testBody));
+        testsGroupNodeBuilder.addTestCase(new SinglePositiveTestCase(description, testBody));
+    }
+
+    @Override
+    public void testExpectingException(Class<? extends Throwable> exceptionClass,
+                                       String description, TestClosure closure) {
+        testsGroupNodeBuilder.addTestCase(new SingleExceptionTestCase(exceptionClass, description, closure));
     }
 
     @Override

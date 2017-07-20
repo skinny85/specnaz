@@ -2,20 +2,19 @@ package org.specnaz;
 
 import org.specnaz.utils.TestClosure;
 
-import java.util.function.Consumer;
-
 /**
  * The class used to create the specification.
  * An instance of this interface is passed to the
  * {@link Specnaz#describes} method to build the
  * test plan, and then later execute it.
  *
- * @see SpecBuilder#should
- * @see SpecBuilder#beginsEach
- * @see SpecBuilder#beginsAll
- * @see SpecBuilder#endsEach
- * @see SpecBuilder#endsAll
- * @see SpecBuilder#describes
+ * @see #should
+ * @see #shouldThrow
+ * @see #beginsEach
+ * @see #beginsAll
+ * @see #endsEach
+ * @see #endsAll
+ * @see #describes
  */
 public interface SpecBuilder {
     /**
@@ -32,11 +31,12 @@ public interface SpecBuilder {
      * @param closure
      *     the body of the callback
      *
-     * @see SpecBuilder#should
-     * @see SpecBuilder#beginsEach
-     * @see SpecBuilder#endsEach
-     * @see SpecBuilder#endsAll
-     * @see SpecBuilder#describes
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
      */
     void beginsAll(TestClosure closure);
 
@@ -54,11 +54,12 @@ public interface SpecBuilder {
      * @param closure
      *     the body of the callback
      *
-     * @see SpecBuilder#should
-     * @see SpecBuilder#beginsAll
-     * @see SpecBuilder#endsEach
-     * @see SpecBuilder#endsAll
-     * @see SpecBuilder#describes
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
      */
     void beginsEach(TestClosure closure);
 
@@ -75,13 +76,45 @@ public interface SpecBuilder {
      * @param testBody
      *     the body of the test case
      *
-     * @see SpecBuilder#beginsEach
-     * @see SpecBuilder#beginsAll
-     * @see SpecBuilder#endsEach
-     * @see SpecBuilder#endsAll
-     * @see SpecBuilder#describes
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
      */
     void should(String description, TestClosure testBody);
+
+    /**
+     * Define a test expecting an Exception to be thrown.
+     * <p>
+     * This is very similar to the {@link #should} method, except the test passes
+     * only if it results in an Exception (of type {@code expectedException})
+     * being thrown, similarly to JUnit's {@code @Test.expected}.
+     *
+     * @param expectedException
+     *     the type of Exception expected from the test.
+     *     The Exception resulting from executing the test must be of this type
+     *     (so, be an instance of either the {@code expectedException} class,
+     *     or a subclass of {@code expectedException})
+     *     for the test to have been deemed passing
+     * @param description
+     *     the description of this test.
+     *     It will serve as the name for this test in the reports.
+     *     Note that the words 'should throw &lt;ExpectedExceptionClass&gt;'
+     *     will be prepended to it by the library
+     * @param testBody
+     *     the body of the test case
+     *
+     * @see #should
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
+     */
+    void shouldThrow(Class<? extends Throwable> expectedException,
+                     String description, TestClosure testBody);
 
     /**
      * A lifecycle callback executed after each test case.
@@ -98,11 +131,12 @@ public interface SpecBuilder {
      * @param closure
      *     the body of the callback
      *
-     * @see SpecBuilder#should
-     * @see SpecBuilder#beginsEach
-     * @see SpecBuilder#beginsAll
-     * @see SpecBuilder#endsAll
-     * @see SpecBuilder#describes
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsAll
+     * @see #describes
      */
     void endsEach(TestClosure closure);
 
@@ -121,11 +155,12 @@ public interface SpecBuilder {
      * @param closure
      *     the body of the callback
      *
-     * @see SpecBuilder#should
-     * @see SpecBuilder#beginsEach
-     * @see SpecBuilder#beginsAll
-     * @see SpecBuilder#endsEach
-     * @see SpecBuilder#describes
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #describes
      */
     void endsAll(TestClosure closure);
 
@@ -145,11 +180,12 @@ public interface SpecBuilder {
      *    similarly to how {@link Specnaz#describes} defines the
      *    top-level group
      *
-     * @see SpecBuilder#should
-     * @see SpecBuilder#beginsEach
-     * @see SpecBuilder#beginsAll
-     * @see SpecBuilder#endsEach
-     * @see SpecBuilder#endsAll
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
      */
     void describes(String description, Runnable specClosure);
 }

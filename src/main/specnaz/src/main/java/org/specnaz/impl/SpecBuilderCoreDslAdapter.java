@@ -4,6 +4,8 @@ import org.specnaz.SpecBuilder;
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.utils.TestClosure;
 
+import static java.lang.String.format;
+
 public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     private final CoreDslBuilder coreDslBuilder;
 
@@ -24,6 +26,13 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     @Override
     public void should(String description, TestClosure testBody) {
         coreDslBuilder.test("should " + description, testBody);
+    }
+
+    @Override
+    public void shouldThrow(Class<? extends Throwable> expectedException, String description, TestClosure testBody) {
+        coreDslBuilder.testExpectingException(expectedException,
+                format("should throw %s %s", expectedException.getSimpleName(), description),
+                testBody);
     }
 
     @Override

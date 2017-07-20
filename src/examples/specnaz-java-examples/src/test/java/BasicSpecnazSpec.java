@@ -31,6 +31,10 @@ public class BasicSpecnazSpec implements Specnaz {{
             assertThat(two.$ - 2).isZero();
         });
 
+        it.shouldThrow(ArithmeticException.class, "when dividing by zero", () -> {
+            int unused = 1 / 0;
+        });
+
         it.describes("with a subgroup", () -> {
             it.beginsAll(() -> {
                 two.$ += 3;

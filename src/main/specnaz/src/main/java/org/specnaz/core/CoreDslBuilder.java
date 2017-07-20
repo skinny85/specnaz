@@ -17,12 +17,13 @@ import org.specnaz.utils.TestClosure;
  * own custom Specnaz DSL.
  *
  * @see SpecnazCoreDsl
- * @see CoreDslBuilder#beforeAll
- * @see CoreDslBuilder#beforeEach
- * @see CoreDslBuilder#test
- * @see CoreDslBuilder#afterEach
- * @see CoreDslBuilder#afterAll
- * @see CoreDslBuilder#subSpecification
+ * @see #beforeAll
+ * @see #beforeEach
+ * @see #test
+ * @see #testExpectingException
+ * @see #afterEach
+ * @see #afterAll
+ * @see #subSpecification
  */
 public interface CoreDslBuilder {
     /**
@@ -43,7 +44,7 @@ public interface CoreDslBuilder {
 
     /**
      * The core equivalent of {@link SpecBuilder#should}.
-     * The main difference is that it doesn't prepend {@code 'should'}
+     * The only difference is that it doesn't prepend {@code 'should'}
      * to the {@code description}.
      *
      * @param description
@@ -52,6 +53,22 @@ public interface CoreDslBuilder {
      *     the body of the test case
      */
     void test(String description, TestClosure testBody);
+
+    /**
+     * The core equivalent of {@link SpecBuilder#shouldThrow}.
+     * The only difference is that it doesn't prepend the text
+     * 'should throw &lt;simple name of {@code exceptionClass}&gt;'
+     * to the {@code description}.
+     *
+     * @param exceptionClass
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param closure
+     *     the body of the test case
+     */
+    void testExpectingException(Class<? extends Throwable> exceptionClass,
+                                String description, TestClosure closure);
 
     /**
      * The core equivalent of {@link SpecBuilder#endsEach}.

@@ -14,7 +14,6 @@ import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.utils.Utils;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.junit.runner.Description.createSuiteDescription;
 import static org.specnaz.junit.impl.JUnitDescUtils.addChildDescription;
@@ -102,7 +101,7 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription) {
         List<SingleTestCase> testCases = testsGroupNode.value.testCases;
         for (SingleTestCase testCase : testCases)
-            addChildDescription(testCase.description, parentDescription);
+            addChildDescription(testCase.description(), parentDescription);
         if (!testCases.isEmpty() && testsGroupNode.value.afterAllsCount() > 0)
             addChildDescription("teardown", parentDescription);
 

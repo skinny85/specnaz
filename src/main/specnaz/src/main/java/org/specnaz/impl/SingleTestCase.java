@@ -2,12 +2,25 @@ package org.specnaz.impl;
 
 import org.specnaz.utils.TestClosure;
 
-public final class SingleTestCase {
-    public final String description;
-    public final TestClosure testBody;
+public abstract class SingleTestCase {
+    public static Throwable invokeCallback(TestClosure callback) {
+        try {
+            callback.invoke();
+            return null;
+        } catch (AssertionError | Exception e) {
+            return e;
+        }
+    }
 
-    public SingleTestCase(String description, TestClosure testBody) {
+    private final String description;
+
+    SingleTestCase(String description) {
         this.description = description;
-        this.testBody = testBody;
+    }
+
+    public abstract Throwable exercise();
+
+    public String description() {
+        return description;
     }
 }
