@@ -38,6 +38,10 @@ class BasicSpecWithJavaBindings : SpecnazJUnit() { init {
             assertThat(two - 2).isZero()
         }
 
+        it.shouldThrow(ArithmeticException::class.java, "when dividing by zero") {
+            1 / (two - 2)
+        }
+
         it.describes("with a subgroup") {
             it.beginsAll {
                 two += 3

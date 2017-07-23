@@ -5,7 +5,6 @@ import org.specnaz.Specnaz
 import org.specnaz.impl.SpecBuilderCoreDslAdapter
 import org.specnaz.impl.SpecsRegistry
 import org.specnaz.impl.SpecsRegistryViolation
-import org.specnaz.kotlin.impl.KotlinSpecBuilderWrapper
 
 /**
  * The equivalent of the [Specnaz] interface for Kotlin code.
@@ -38,7 +37,7 @@ interface SpecnazKotlin {
     fun describes(description: String, specClosure: (KotlinSpecBuilder) -> Unit) {
         try {
             SpecsRegistry.register(this, description, {
-                coreDslBuilder -> specClosure(KotlinSpecBuilderWrapper(
+                coreDslBuilder -> specClosure(KotlinSpecBuilder(
                     SpecBuilderCoreDslAdapter(coreDslBuilder)))
             })
         } catch (e: SpecsRegistryViolation) {
