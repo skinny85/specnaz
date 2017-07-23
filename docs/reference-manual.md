@@ -19,6 +19,7 @@ Table of Contents
     * [Calling describes](#calling-describes)
     * [Creating the spec](#creating-the-spec)
       * [should](#should)
+      * [shouldThrow](#shouldThrow)
       * [beginsEach](#beginseach)
       * [endsEach](#endseach)
       * [beginsAll](#beginsall)
@@ -197,6 +198,24 @@ it.should("first test", () -> {
 
 wil not work. Take a look at the `describes` method below if you want to
 nest test contexts within each other.
+
+### shouldThrow
+
+This method is very similar to the `should` method - it also introduces a test.
+The difference is that the test passes only if executing it results in an Exception
+of the type passed to this method.
+
+Example:
+
+```java
+it.shouldThrow(ArithmeticException.class, "when dividing by zero", () -> {
+    int unused = 1 / 0;
+});
+```
+
+The description you give as the second argument will become the test name in the report -
+except it will have the words "should throw ExpectedExceptionClass" prepended to them,
+so formulate your descriptions with that in mind.
 
 ### beginsEach
 
