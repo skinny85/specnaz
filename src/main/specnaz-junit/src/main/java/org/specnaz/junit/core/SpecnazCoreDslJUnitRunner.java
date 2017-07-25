@@ -66,10 +66,13 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
         }
     }
 
-    private Description rootDescription;
+    private Description extraDescription, rootDescription;
 
     @Override
     public Description getDescription() {
+        if (extraDescription != null)
+            return extraDescription;
+
         /*
          * JUnit sucks, and behaves differently when running a single test
          * and running a group of tests. In the former case, the top-level description
@@ -78,15 +81,14 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
          * To make the behavior consistent, we add an extra
          * description with the class name at the top level ourselves.
          */
-        TreeNode<TestsGroup> testsPlan = specRunner.testsPlan();
-
         Description extraDescription = createSuiteDescription(className);
-
         Description rootDescription = createSuiteDescription(specRunner.name());
         extraDescription.addChild(rootDescription);
 
+        TreeNode<TestsGroup> testsPlan = specRunner.testsPlan();
         parseSubGroupDescriptions(testsPlan, rootDescription);
 
+        this.extraDescription = extraDescription;
         this.rootDescription = rootDescription;
 
         return extraDescription;
