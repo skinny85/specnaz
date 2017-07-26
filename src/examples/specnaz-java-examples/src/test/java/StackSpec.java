@@ -3,6 +3,9 @@ import org.specnaz.junit.SpecnazJUnit;
 
 import java.util.Stack;
 
+/**
+ * This is the example spec from the Readme file.
+ */
 public class StackSpec extends SpecnazJUnit {{
     describes("A Stack", it -> {
         Stack<Integer> stack = new Stack<>();

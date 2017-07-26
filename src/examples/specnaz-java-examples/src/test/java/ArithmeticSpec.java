@@ -6,8 +6,18 @@ import org.specnaz.utils.IntBox;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.specnaz.utils.IntBox.boxWith;
 
+/**
+ * This spec illustrates how are the various fixtures
+ * ({@code begins/ends}) executed.
+ * It also doesn't inherit from {@link org.specnaz.junit.SpecnazJUnit},
+ * instead setting the JUnit Runner explicitly with the {@link RunWith} annotation.
+ * <p>
+ * Addiotionally, it demonstrates the usage of a {@link org.specnaz.utils.Box}
+ * (more specifically, an {@link IntBox}) to get around Java's
+ * 'variables referenced in lambdas must be effectively final' restriction.
+ */
 @RunWith(SpecnazJUnitRunner.class)
-public class BasicSpecnazSpec implements Specnaz {{
+public class ArithmeticSpec implements Specnaz {{
     describes("arithmetic operations", it -> {
         IntBox two = boxWith(-2);
 

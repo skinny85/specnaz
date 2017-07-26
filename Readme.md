@@ -5,7 +5,7 @@
 
 ![Specnaz logo](docs/img/specnaz-logo.png)
 
-### Write beautiful, [RSpec](http://rspec.info/) or [Jasmine](http://jasmine.github.io/)-style specifications in Java, [Kotlin](https://kotlinlang.org/) and [Groovy](http://www.groovy-lang.org/)
+### Library for writing beautiful, [RSpec](http://rspec.info/) or [Jasmine](http://jasmine.github.io/)-style specifications in Java, [Kotlin](https://kotlinlang.org/) and [Groovy](http://www.groovy-lang.org/)
 
 ```java
 import java.util.Stack;
@@ -96,7 +96,8 @@ Notable features:
     })
     ```
 
-Check out the [reference manual](docs/reference-manual.md) for more documentation and examples.
+Check out the [reference manual](docs/reference-manual.md) for more in-depth documentation.
+There is also an [examples directory](src/examples) with code samples.
 
 I've also written [a post on my blog](http://endoflineblog.com/specnaz-my-java-testing-library)
 demonstrating how you can structure your tests with Specnaz.

@@ -3,8 +3,13 @@ import org.junit.runner.RunWith
 import org.specnaz.kotlin.SpecnazKotlin
 import org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner
 
+/**
+ * This spec uses the Specnaz Kotlin bindings.
+ * It also doesn't inherit from [org.specnaz.kotlin.junit.SpecnazKotlinJUnit],
+ * but sets the JUnit Runner explicitly with the [RunWith] annotation.
+ */
 @RunWith(SpecnazKotlinJUnitRunner::class)
-class BasicSpecWithKotlinBindings : SpecnazKotlin { init {
+class ArithmeticSpecWithKotlinBindings : SpecnazKotlin { init {
     describes("arithmetic operations") {
         var two = -2
 
@@ -76,5 +81,4 @@ class BasicSpecWithKotlinBindings : SpecnazKotlin { init {
             }
         }
     }
-}
-}
+}}

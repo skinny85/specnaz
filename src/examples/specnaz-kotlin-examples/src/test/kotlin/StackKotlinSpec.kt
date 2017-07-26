@@ -2,6 +2,9 @@ import org.junit.Assert
 import org.specnaz.kotlin.junit.SpecnazKotlinJUnit
 import java.util.Stack
 
+/**
+ * This is the example spec from the Readme file.
+ */
 class StackKotlinSpec : SpecnazKotlinJUnit("A Stack", {
     var stack = Stack<Int>()
 

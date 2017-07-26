@@ -1,7 +1,10 @@
 import org.assertj.core.api.Assertions.assertThat
 import org.specnaz.junit.SpecnazJUnit
 
-class BasicSpecWithJavaBindings : SpecnazJUnit() { init {
+/**
+ * This spec uses the Java Specnaz version from Kotlin.
+ */
+class ArithmeticSpecWithJavaBindings : SpecnazJUnit() { init {
     describes("arithmetic operations") {
         var two = -2
 

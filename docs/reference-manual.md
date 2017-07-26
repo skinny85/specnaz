@@ -1,11 +1,12 @@
 ![specnaz logo](img/specnaz-logo.png)
 
-Jasmine-inspired, extensible test and specification library for Java and Kotlin
+RSpec and Jasmine-inspired, extensible test and specification library for Java and Kotlin
 -------------------------------------------------------------------------------
 
 This is the reference documentation for the Specnaz library.
 For a quick introduction to Specnaz, check out the main
-[Readme file](../Readme.md).
+[Readme file](../Readme.md). For code examples, look into the
+[src/examples directory](../src/examples).
 
 Table of Contents
 =================
