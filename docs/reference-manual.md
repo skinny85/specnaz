@@ -5,7 +5,7 @@ Jasmine-inspired, extensible test and specification library for Java and Kotlin
 
 This is the reference documentation for the Specnaz library.
 For a quick introduction to Specnaz, check out the main
-[readme](../readme.md).
+[Readme file](../Readme.md).
 
 Table of Contents
 =================
@@ -42,7 +42,7 @@ Table of Contents
 ## Using dependency managers (Maven, Gradle etc.)
 
 Specnaz is available through the Bintray Maven repository.
-Take a look at the [main readme](../readme.md#getting-specnaz) on how to get it using
+Take a look at the [main Readme file](../Readme.md#getting-specnaz) on how to get it using
 build tools that also do dependency management
 (Maven, Gradle, SBT, Ivy etc.).
 
@@ -878,7 +878,7 @@ class KotlinSpec : SpecnazKotlinJUnit("A spec", {
 ### Groovy
 
 You can use the Specnaz from Groovy without any special bindings.
-Check out the [readme of the Groovy examples](../src/examples/specnaz-groovy-examples/readme.md)
+Check out the [Readme file of the Groovy examples](../src/examples/specnaz-groovy-examples/Readme.md)
 for more info.
 
 # Extending Specnaz
@@ -889,5 +889,5 @@ In fact, the `begins`/`ends`/`should` DSL that you've seen used in this
 documentation is not built-in into the framework -
 it's created using the core Specnaz API, which the library clients can use as well.
 
-Take a look at the [specnaz-custom-dsl-example project readme](../src/examples/specnaz-custom-dsl-example/readme.md)
+Take a look at the [specnaz-custom-dsl-example project Readme file](../src/examples/specnaz-custom-dsl-example/Readme.md)
 for documentation and a working example of how to extend Specnaz.

@@ -170,4 +170,4 @@ If yours doesn't, remember to add it
 ### License
 
 Specnaz is open-source software, released under the Apache v2 license.
-See [the license file](license.txt) for details.
+See [the License file](License.txt) for details.
