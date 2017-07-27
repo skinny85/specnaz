@@ -20,7 +20,7 @@ Table of Contents
     * [Calling describes](#calling-describes)
     * [Creating the spec](#creating-the-spec)
       * [should](#should)
-      * [shouldThrow](#shouldThrow)
+      * [shouldThrow](#shouldthrow)
       * [beginsEach](#beginseach)
       * [endsEach](#endseach)
       * [beginsAll](#beginsall)
