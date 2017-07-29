@@ -27,8 +27,18 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
 
     @Override
     public void testExpectingException(Class<? extends Throwable> exceptionClass,
-                                       String description, TestClosure closure) {
-        testsGroupNodeBuilder.addTestCase(new SingleExceptionTestCase(exceptionClass, description, closure));
+                                       String description, TestClosure testBody) {
+        testsGroupNodeBuilder.addTestCase(new SingleExceptionTestCase(exceptionClass, description, testBody));
+    }
+
+    @Override
+    public void focusedTest(String description, TestClosure testBody) {
+        testsGroupNodeBuilder.addFocusedTestCase(new SinglePositiveTestCase(description, testBody));
+    }
+
+    @Override
+    public void focusedTestExpectingException(Class<? extends Throwable> exceptionClass, String description, TestClosure testBody) {
+        testsGroupNodeBuilder.addFocusedTestCase(new SingleExceptionTestCase(exceptionClass, description, testBody));
     }
 
     @Override

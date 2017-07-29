@@ -28,6 +28,8 @@ Table of Contents
       * [describes](#describes)
         * [Nested specifications and fixture execution order](#nested-specifications-and-fixture-execution-order)
           * [Difference between RSpec and Jasmine](#difference-between-rspec-and-jasmine)
+      * [fshould](#fshould)
+      * [fshouldThrow](#fshouldthrow)
     * [Using Boxes](#using-boxes)
     * [Using Specnaz in other JVM languages](#using-specnaz-in-other-jvm-languages)
       * [Kotlin](#kotlin)
@@ -624,6 +626,59 @@ and they won't have access to the variables of the closure.
 
 For these reasons, Specnaz changes the traditional behavior of the
 `beginsAll` and `endsAll` fixtures.
+
+### fshould
+
+`fshould` is a way to temporary mark a given `should` test as 'focused'.
+This works exactly like in [RSpec](http://rspec.info/) and [Jasmine](http://jasmine.github.io/).
+If a class contains at least one focused test, then only focused tests will be ran when it is executed -
+unfocused (that is, created with `should`) tests will be ignored.
+This is useful when wanting to run and debug a single test in a class -
+it's easy to run a single test when using 'vanilla' JUnit, but quite hard with Specnaz
+(the IDEs and build tools were not really designed for tree-based tests).
+With this method, you can simply add an 'f' in front of a call to `should`,
+and the next time this spec class is ran, only the `fshould` tests will actually be executed.
+
+Naturally, all of the fixtures
+(`beginsAll/Each` and `endsAll/Each`) in the tree will be executed,
+just like for regular, 'unfocused' tests -
+including fixtures from parent groups whose tests were all ignored
+because of not being focused. Example:
+
+```java
+class FocusedSpec {
+    int counter = 1;
+
+    {
+        describes("A focused test", it -> {
+            it.beginsAll(() -> {
+                counter++;
+            });
+            
+            it.should("not run this test", () -> {
+                Assert.fail("this should not be executed");
+            });
+            
+            it.describes("with a focused subgroup", () -> {
+                it.fshould("run this test", () -> {
+                    Assert.equals(2, counter);
+                });
+            });
+        });
+    }
+}
+```
+
+This method is deprecated, as it's only meant as a temporary stop gap to aid you in debugging a failing test -
+it's not meant to be part of the test suite permanently.
+Deprecating it means there is a higher chance you notice it,
+and remember to remove the 'f' at the beginning before committing the change to source control.
+
+### fshouldThrow
+
+This is the focused equivalent of `shouldThrow`.
+The thinking behind this method is the same as behind `fshould`,
+and it's deprecated for exactly the same reason.
 
 ## Using `Box`es
 

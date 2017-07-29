@@ -54,7 +54,6 @@ public final class JUnitNotifier implements Notifier {
     public void ignored(SingleTestCase test) {
         Description testDescription = advanceToNextTestDescription(test);
         runNotifier.fireTestIgnored(testDescription);
-        runNotifier.fireTestFinished(testDescription);
     }
 
     private int testIndex = -1;

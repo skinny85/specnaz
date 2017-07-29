@@ -8,6 +8,7 @@ import org.specnaz.kotlin.utils.Deferred
 class DeferredKotlinSpec : SpecnazKotlinJUnit("uses deferred delegates", {
     // the irritating thing with Kotlin is that you have to provide
     // either default values to the variables, or make them nullable
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     var resultOfSomeComplicatedCalculation: MyCustomHardToInstantiateClass
 
     fun doAComplicatedCalculation() = MyCustomHardToInstantiateClass()

@@ -19,7 +19,8 @@ public class SpecRunner {
     }
 
     public void run(Notifier notifier) {
-        new TestsGroupNodeRunner(testsPlan(), notifier).run();
+        TreeNode<TestsGroup> testsPlan = testsPlan();
+        new TestsGroupNodeRunner(testsPlan, notifier, testsPlan.value.containsFocusedTests).run();
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {

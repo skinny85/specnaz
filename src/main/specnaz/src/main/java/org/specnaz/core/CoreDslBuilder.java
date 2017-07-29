@@ -21,6 +21,8 @@ import org.specnaz.utils.TestClosure;
  * @see #beforeEach
  * @see #test
  * @see #testExpectingException
+ * @see #focusedTest
+ * @see #focusedTestExpectingException
  * @see #afterEach
  * @see #afterAll
  * @see #subSpecification
@@ -64,11 +66,39 @@ public interface CoreDslBuilder {
      *     the class of the Exception we expect in this test
      * @param description
      *     the description of the test case
-     * @param closure
+     * @param testBody
      *     the body of the test case
      */
     void testExpectingException(Class<? extends Throwable> exceptionClass,
-                                String description, TestClosure closure);
+                                String description, TestClosure testBody);
+
+    /**
+     * The core equivalent of {@link SpecBuilder#fshould}.
+     * The only difference is that it doesn't prepend {@code 'should'}
+     * to the {@code description}.
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     */
+    void focusedTest(String description, TestClosure testBody);
+
+    /**
+     * The core equivalent of {@link SpecBuilder#fshouldThrow}.
+     * The only difference is that it doesn't prepend the text
+     * 'should throw &lt;simple name of {@code exceptionClass}&gt;'
+     * to the {@code description}.
+     *
+     * @param exceptionClass
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     */
+    void focusedTestExpectingException(Class<? extends Throwable> exceptionClass,
+                                String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#endsEach}.

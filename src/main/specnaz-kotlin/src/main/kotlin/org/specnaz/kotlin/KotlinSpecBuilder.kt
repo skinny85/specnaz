@@ -13,6 +13,8 @@ import org.specnaz.SpecBuilder
  *
  * @see should
  * @see shouldThrow
+ * @see fshould
+ * @see fshouldThrow
  * @see beginsAll
  * @see beginsEach
  * @see endsEach
@@ -25,6 +27,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.beginsAll] for Kotlin.
      */
     fun beginsAll(closure: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
         specBuilder.beginsAll { closure.invoke(null) }
     }
 
@@ -32,6 +35,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.beginsEach] for Kotlin.
      */
     fun beginsEach(closure: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
         specBuilder.beginsEach { closure.invoke(null) }
     }
 
@@ -39,6 +43,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.should] for Kotlin.
      */
     fun should(description: String, testBody: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
         specBuilder.should(description, { testBody.invoke(null) })
     }
 
@@ -55,13 +60,33 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * ```
      */
     inline fun <reified E : Throwable> shouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
         specBuilder.shouldThrow(E::class.java, description, { testBody.invoke(null) })
+    }
+
+    /**
+     * The equivalent of [SpecBuilder.fshould] for Kotlin.
+     */
+    @Deprecated("Deprecated for the same reason SpecBuilder#fshould is")
+    fun fshould(description: String, testBody: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
+        specBuilder.fshould(description, { testBody.invoke(null) })
+    }
+
+    /**
+     * The equivalent of [SpecBuilder.fshouldThrow] for Kotlin.
+     */
+    @Deprecated("Deprecated for the same reason SpecBuilder#fshouldThrow is")
+    inline fun <reified E : Throwable> fshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
+        specBuilder.fshouldThrow(E::class.java, description, { testBody.invoke(null) })
     }
 
     /**
      * The equivalent of [SpecBuilder.endsEach] for Kotlin.
      */
     fun endsEach(closure: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
         specBuilder.endsEach { closure.invoke(null) }
     }
 
@@ -69,6 +94,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.endsAll] for Kotlin.
      */
     fun endsAll(closure: (Nothing?) -> Unit) {
+        @Suppress("DEPRECATION")
         specBuilder.endsAll { closure.invoke(null) }
     }
 
@@ -76,6 +102,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.describes] for Kotlin.
      */
     fun describes(description: String, specClosure: () -> Unit) {
+        @Suppress("DEPRECATION")
         specBuilder.describes(description, { specClosure.invoke() })
     }
 }

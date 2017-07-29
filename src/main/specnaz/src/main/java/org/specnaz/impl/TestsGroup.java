@@ -12,18 +12,20 @@ public final class TestsGroup {
                                    befores,
                                    afters,
                                    afterAlls;
-    public final List<SingleTestCase> testCases;
+    public final List<Example> testCases;
 
     private int beforeAllsCount, afterAllsCount;
     public final int testsInTree;
+    public final boolean containsFocusedTests;
 
     public TestsGroup(String description,
                       List<TestClosure> beforeAlls,
                       List<TestClosure> befores,
-                      List<SingleTestCase> testCases,
+                      List<Example> testCases,
                       List<TestClosure> afters,
                       List<TestClosure> afterAlls,
-                      int testsInSubgroups) {
+                      int testsInSubgroups,
+                      boolean containsFocusedTests) {
         this.description = description;
         this.beforeAlls = copyToImmutableList(beforeAlls);
         this.befores = copyToImmutableList(befores);
@@ -34,6 +36,7 @@ public final class TestsGroup {
         this.beforeAllsCount = beforeAlls.size();
         this.afterAllsCount = afterAlls.size();
         this.testsInTree = testsInSubgroups + testCases.size();
+        this.containsFocusedTests = containsFocusedTests;
     }
 
     public int beforeAllsCount() {

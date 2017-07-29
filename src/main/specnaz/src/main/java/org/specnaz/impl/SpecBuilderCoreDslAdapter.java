@@ -36,6 +36,20 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public void fshould(String description, TestClosure testBody) {
+        coreDslBuilder.focusedTest("should " + description, testBody);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void fshouldThrow(Class<? extends Throwable> expectedException, String description, TestClosure testBody) {
+        coreDslBuilder.focusedTestExpectingException(expectedException,
+                format("should throw %s %s", expectedException.getSimpleName(), description),
+                testBody);
+    }
+
+    @Override
     public void endsEach(TestClosure closure) {
         coreDslBuilder.afterEach(closure);
     }

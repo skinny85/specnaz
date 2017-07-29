@@ -11,8 +11,9 @@ public final class TestsGroupNodeBuilder {
                                     befores    = new LinkedList<>(),
                                     afters     = new LinkedList<>(),
                                     afterAlls  = new LinkedList<>();
-    private final List<SingleTestCase> testCases  = new LinkedList<>();
+    private final List<Example> testCases  = new LinkedList<>();
     private final List<TreeNode<TestsGroup>> subgroups = new LinkedList<>();
+    private boolean containsFocusedTests = false;
 
     public TestsGroupNodeBuilder(String description) {
         this.description = description;
@@ -27,7 +28,12 @@ public final class TestsGroupNodeBuilder {
     }
 
     public void addTestCase(SingleTestCase testCase) {
-        testCases.add(testCase);
+        testCases.add(new UnfocusedExample(testCase));
+    }
+
+    public void addFocusedTestCase(SingleTestCase testCase) {
+        testCases.add(new FocusedExample(testCase));
+        containsFocusedTests = true;
     }
 
     public void addAfterEach(TestClosure closure) {
@@ -43,9 +49,15 @@ public final class TestsGroupNodeBuilder {
     }
 
     public TreeNode<TestsGroup> build() {
+        // count tests in subgroups
         int testsInSubgroups = subgroups.stream().mapToInt(node -> node.value.testsInTree).sum();
+        // see if any subgroup contains focused tests
+        for (TreeNode<TestsGroup> subgroupNode : subgroups) {
+            containsFocusedTests |= subgroupNode.value.containsFocusedTests;
+        }
+
         TestsGroup testsGroup = new TestsGroup(description, beforeAlls, befores,
-                testCases, afters, afterAlls, testsInSubgroups);
+                testCases, afters, afterAlls, testsInSubgroups, containsFocusedTests);
         TreeNode<TestsGroup> testsGroupTreeNode = new TreeNode<>(testsGroup);
         for (TreeNode<TestsGroup> subgroupNode: subgroups) {
             testsGroupTreeNode.attach(subgroupNode);

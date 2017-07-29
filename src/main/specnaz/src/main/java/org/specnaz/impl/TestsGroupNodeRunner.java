@@ -8,10 +8,12 @@ import java.util.function.Function;
 public class TestsGroupNodeRunner {
     private final TreeNode<TestsGroup> testsGroupNode;
     private final Notifier notifier;
+    private final boolean runOnlyFocusedTests;
 
-    public TestsGroupNodeRunner(TreeNode<TestsGroup> testsGroupNode, Notifier notifier) {
+    public TestsGroupNodeRunner(TreeNode<TestsGroup> testsGroupNode, Notifier notifier, boolean runOnlyFocusedTests) {
         this.testsGroupNode = testsGroupNode;
         this.notifier = notifier;
+        this.runOnlyFocusedTests = runOnlyFocusedTests;
     }
 
     public void run() {
@@ -21,7 +23,7 @@ public class TestsGroupNodeRunner {
             if (subGroupTestsNode.value.testsInTree > 0) {
                 new TestsGroupNodeRunner(
                         subGroupTestsNode,
-                        notifier.subgroup(subGroupTestsNode.value.description))
+                        notifier.subgroup(subGroupTestsNode.value.description), runOnlyFocusedTests)
                         .run();
             }
         }
@@ -36,29 +38,42 @@ public class TestsGroupNodeRunner {
             return;
         }
 
-        Throwable beforeAllsError = invokeBeforeAlls();
+        // If we're supposed to run only focused tests, but this group doesn't contain any,
+        // we should not run the beforeAll/afterAll fixtures for this group
+        // (there's no point).
+        boolean skipAllsFixtures = runOnlyFocusedTests &&
+                testsGroup.testCases.stream().noneMatch(Example::focused);
 
-        for (SingleTestCase testCase : testsGroup.testCases) {
+        Throwable beforeAllsError = invokeBeforeAlls(skipAllsFixtures);
+
+        for (Example testCase : testsGroup.testCases) {
             runSingleTestCase(testCase, beforeAllsError);
         }
 
-        invokeAfterAlls();
+        invokeAfterAlls(skipAllsFixtures);
     }
 
-    private void runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
+    private void runSingleTestCase(Example example, Throwable beforeAllsError) {
         if (beforeAllsError == null) {
-            runSingleTestCase(testCase);
+            runSingleTestCase(example);
         } else {
             // If any of the 'beforeAll' methods failed,
             // mark the test as failed.
             // We might make it a config option later (what to do
             // in this case - ignore the tests, or fail them).
-            notifier.started(testCase);
-            notifier.failed(testCase, beforeAllsError);
+            notifier.started(example.testCase);
+            notifier.failed(example.testCase, beforeAllsError);
         }
     }
 
-    private void runSingleTestCase(SingleTestCase testCase) {
+    private void runSingleTestCase(Example example) {
+        SingleTestCase testCase = example.testCase;
+
+        if (runOnlyFocusedTests && !example.focused()) {
+            notifier.ignored(testCase);
+            return;
+        }
+
         notifier.started(testCase);
 
         Throwable e = invokeBefores();
@@ -73,18 +88,24 @@ public class TestsGroupNodeRunner {
             notifier.failed(testCase, e);
     }
 
-    private Throwable invokeBeforeAlls() {
+    private Throwable invokeBeforeAlls(boolean skipAllsFixtures) {
         if (testsGroupNode.value.beforeAllsCount() == 0)
             return null;
 
         notifier.setupStarted();
-        Throwable beforeAllsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
-        if (beforeAllsError == null) {
+
+        if (skipAllsFixtures) {
             notifier.setupSucceeded();
+            return null;
         } else {
-            notifier.setupFailed(beforeAllsError);
+            Throwable beforeAllsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
+            if (beforeAllsError == null) {
+                notifier.setupSucceeded();
+            } else {
+                notifier.setupFailed(beforeAllsError);
+            }
+            return beforeAllsError;
         }
-        return beforeAllsError;
     }
 
     private Throwable invokeBefores() {
@@ -103,16 +124,21 @@ public class TestsGroupNodeRunner {
         return previousError == null ? aftersError : previousError;
     }
 
-    private void invokeAfterAlls() {
+    private void invokeAfterAlls(boolean skipAllsFixtures) {
         if (testsGroupNode.value.afterAllsCount() == 0)
             return;
 
         notifier.teardownStarted();
-        Throwable afterAllsError = recursivelyInvokeFixturesAncestorsLast(testsGroupNode, g -> g.afterAlls);
-        if (afterAllsError == null)
+
+        if (skipAllsFixtures) {
             notifier.teardownSucceeded();
-        else
-            notifier.teardownFailed(afterAllsError);
+        } else {
+            Throwable afterAllsError = recursivelyInvokeFixturesAncestorsLast(testsGroupNode, g -> g.afterAlls);
+            if (afterAllsError == null)
+                notifier.teardownSucceeded();
+            else
+                notifier.teardownFailed(afterAllsError);
+        }
     }
 
     private Throwable recursivelyInvokeFixturesAncestorsFirst(
