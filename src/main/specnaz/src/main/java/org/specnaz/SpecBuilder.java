@@ -17,6 +17,9 @@ import org.specnaz.utils.TestClosure;
  * @see #describes
  * @see #fshould
  * @see #fshouldThrow
+ * @see #xshould
+ * @see #xshouldThrow
+ * @see #xdescribes
  */
 public interface SpecBuilder {
     /**
@@ -41,6 +44,9 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     void beginsAll(TestClosure closure);
 
@@ -66,6 +72,9 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     void beginsEach(TestClosure closure);
 
@@ -90,6 +99,9 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     void should(String description, TestClosure testBody);
 
@@ -122,6 +134,9 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     void shouldThrow(Class<? extends Throwable> expectedException,
                      String description, TestClosure testBody);
@@ -149,6 +164,9 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     void endsEach(TestClosure closure);
 
@@ -175,6 +193,9 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     void endsAll(TestClosure closure);
 
@@ -202,6 +223,9 @@ public interface SpecBuilder {
      * @see #endsAll
      * @see #fshould
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     void describes(String description, Runnable specClosure);
 
@@ -249,6 +273,9 @@ public interface SpecBuilder {
      * @see #endsAll
      * @see #describes
      * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     @Deprecated
     void fshould(String description, TestClosure testBody);
@@ -283,8 +310,106 @@ public interface SpecBuilder {
      * @see #endsAll
      * @see #describes
      * @see #fshould
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
      */
     @Deprecated
     void fshouldThrow(Class<? extends Throwable> expectedException,
                       String description, TestClosure testBody);
+
+    /**
+     * Allows you to ignore a test.
+     * <p>
+     * This works like in RSpec or Jasmine.
+     * If you ever need to ignore a test for any reason,
+     * simply add an 'x' in front of the call to {@link #should},
+     * and it will be skipped (just like if you placed an
+     * {@code @Ignore} annotation on a JUnit test).
+     *
+     * @param description
+     *     the description of this test.
+     *     It will serve as the name for this test in the reports.
+     *     Note that the word 'should' will be prepended to this description
+     *     by the library
+     * @param testBody
+     *     the body of the test case (will not be executed)
+     *
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
+     * @see #fshould
+     * @see #fshouldThrow
+     * @see #xshouldThrow
+     * @see #xdescribes
+     */
+    void xshould(String description, TestClosure testBody);
+
+    /**
+     * Allows you to ignore a test.
+     * <p>
+     * This works like in RSpec or Jasmine.
+     * If you ever need to ignore a test for any reason,
+     * simply add an 'x' in front of the call to {@link #shouldThrow},
+     * and it will be skipped (just like if you placed an
+     * {@code @Ignore} annotation on a JUnit test).
+     *
+     * @param expectedException
+     *    the class of the expected Exception (will never be used in this case)
+     * @param description
+     *     the description of this test.
+     *     It will serve as the name for this test in the reports.
+     *     Note that the words 'should throw &lt;ExpectedExceptionClass&gt;'
+     *     will be prepended to it by the library
+     * @param testBody
+     *     the body of the test case (will not be executed)
+     *
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
+     * @see #fshould
+     * @see #fshouldThrow
+     * @see #xshould
+     * @see #xdescribes
+     */
+    void xshouldThrow(Class<? extends Throwable> expectedException,
+                      String description, TestClosure testBody);
+
+    /**
+     * Allows you to ignore an entire group of tests.
+     * <p>
+     * This works like in RSpec or Jasmine.
+     * If you ever need to ignore a whole subtree of tests for any reason,
+     * simply add an 'x' in front of the call to {@link #describes},
+     * and all of the tests in that group (including any child groups)
+     * will be skipped.
+     *
+     * @param description
+     *    the description of the skipped test group
+     * @param specClosure
+     *    the callback used to define the new (ignored) test group,
+     *    similarly to how {@link Specnaz#describes} defines the
+     *    top-level group
+     *
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
+     * @see #fshould
+     * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     */
+    void xdescribes(String description, Runnable specClosure);
 }

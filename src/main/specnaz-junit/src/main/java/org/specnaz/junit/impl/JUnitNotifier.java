@@ -59,7 +59,7 @@ public final class JUnitNotifier implements Notifier {
     private int testIndex = -1;
 
     private Description advanceToNextTestDescription(SingleTestCase test)  {
-        return advanceToNextTestDescription(test.description());
+        return advanceToNextTestDescription(test.description);
     }
 
     private Description advanceToNextTestDescription(String message) {

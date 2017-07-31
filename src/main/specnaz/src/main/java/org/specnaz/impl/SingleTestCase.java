@@ -12,15 +12,15 @@ public abstract class SingleTestCase {
         }
     }
 
-    private final String description;
+    public final TestCaseType type;
+    public final String description;
 
-    SingleTestCase(String description) {
+    SingleTestCase(TestCaseType type, String description) {
+        this.type = type;
         this.description = description;
     }
 
-    public abstract Throwable exercise();
+    public abstract SingleTestCase type(TestCaseType type);
 
-    public String description() {
-        return description;
-    }
+    public abstract Throwable exercise();
 }

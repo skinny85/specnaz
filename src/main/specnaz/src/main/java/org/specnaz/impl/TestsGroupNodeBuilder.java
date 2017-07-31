@@ -7,16 +7,19 @@ import java.util.List;
 
 public final class TestsGroupNodeBuilder {
     private final String description;
+    private final boolean ignoredTestGroup;
+
     private final List<TestClosure> beforeAlls = new LinkedList<>(),
                                     befores    = new LinkedList<>(),
                                     afters     = new LinkedList<>(),
                                     afterAlls  = new LinkedList<>();
-    private final List<Example> testCases  = new LinkedList<>();
+    private final List<SingleTestCase> testCases  = new LinkedList<>();
     private final List<TreeNode<TestsGroup>> subgroups = new LinkedList<>();
     private boolean containsFocusedTests = false;
 
-    public TestsGroupNodeBuilder(String description) {
+    public TestsGroupNodeBuilder(String description, boolean ignoredTestGroup) {
         this.description = description;
+        this.ignoredTestGroup = ignoredTestGroup;
     }
 
     public void addBeforeAll(TestClosure closure) {
@@ -28,12 +31,13 @@ public final class TestsGroupNodeBuilder {
     }
 
     public void addTestCase(SingleTestCase testCase) {
-        testCases.add(new UnfocusedExample(testCase));
-    }
-
-    public void addFocusedTestCase(SingleTestCase testCase) {
-        testCases.add(new FocusedExample(testCase));
-        containsFocusedTests = true;
+        if (ignoredTestGroup) {
+            testCases.add(testCase.type(TestCaseType.IGNORED));
+        } else {
+            testCases.add(testCase);
+            if (testCase.type == TestCaseType.FOCUSED)
+                containsFocusedTests = true;
+        }
     }
 
     public void addAfterEach(TestClosure closure) {
@@ -42,6 +46,10 @@ public final class TestsGroupNodeBuilder {
 
     public void addAfterAll(TestClosure closure) {
         afterAlls.add(closure);
+    }
+
+    public TestsGroupNodeBuilder subgroupBuilder(String description, boolean ignoredTestGroup) {
+        return new TestsGroupNodeBuilder(description, this.ignoredTestGroup || ignoredTestGroup);
     }
 
     public void addSubgroup(TreeNode<TestsGroup> subgroupNode) {

@@ -37,7 +37,7 @@ public interface SpecnazCoreDsl {
      */
     default void specification(String description, Consumer<CoreDslBuilder> specClosure) {
         try {
-            SpecsRegistry.register(this, description, specClosure);
+            SpecsRegistry.register(this, description, false, specClosure);
         } catch (SpecsRegistryViolation e) {
             throw new IllegalStateException("SpecnazCoreDsl.specification() was called multiple times in the " +
                     "no-argument constructor of " + this.getClass().getSimpleName());

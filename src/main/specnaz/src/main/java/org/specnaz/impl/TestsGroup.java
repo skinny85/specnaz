@@ -12,7 +12,7 @@ public final class TestsGroup {
                                    befores,
                                    afters,
                                    afterAlls;
-    public final List<Example> testCases;
+    public final List<SingleTestCase> testCases;
 
     private int beforeAllsCount, afterAllsCount;
     public final int testsInTree;
@@ -21,7 +21,7 @@ public final class TestsGroup {
     public TestsGroup(String description,
                       List<TestClosure> beforeAlls,
                       List<TestClosure> befores,
-                      List<Example> testCases,
+                      List<SingleTestCase> testCases,
                       List<TestClosure> afters,
                       List<TestClosure> afterAlls,
                       int testsInSubgroups,

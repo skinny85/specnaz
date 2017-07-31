@@ -42,34 +42,33 @@ public class TestsGroupNodeRunner {
         // we should not run the beforeAll/afterAll fixtures for this group
         // (there's no point).
         boolean skipAllsFixtures = runOnlyFocusedTests &&
-                testsGroup.testCases.stream().noneMatch(Example::focused);
+                testsGroup.testCases.stream().noneMatch(tc -> tc.type == TestCaseType.FOCUSED);
 
         Throwable beforeAllsError = invokeBeforeAlls(skipAllsFixtures);
 
-        for (Example testCase : testsGroup.testCases) {
+        for (SingleTestCase testCase : testsGroup.testCases) {
             runSingleTestCase(testCase, beforeAllsError);
         }
 
         invokeAfterAlls(skipAllsFixtures);
     }
 
-    private void runSingleTestCase(Example example, Throwable beforeAllsError) {
+    private void runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
         if (beforeAllsError == null) {
-            runSingleTestCase(example);
+            runSingleTestCase(testCase);
         } else {
             // If any of the 'beforeAll' methods failed,
             // mark the test as failed.
             // We might make it a config option later (what to do
             // in this case - ignore the tests, or fail them).
-            notifier.started(example.testCase);
-            notifier.failed(example.testCase, beforeAllsError);
+            notifier.started(testCase);
+            notifier.failed(testCase, beforeAllsError);
         }
     }
 
-    private void runSingleTestCase(Example example) {
-        SingleTestCase testCase = example.testCase;
-
-        if (runOnlyFocusedTests && !example.focused()) {
+    private void runSingleTestCase(SingleTestCase testCase) {
+        if (testCase.type == TestCaseType.IGNORED ||
+                (runOnlyFocusedTests && testCase.type == TestCaseType.REGULAR)) {
             notifier.ignored(testCase);
             return;
         }

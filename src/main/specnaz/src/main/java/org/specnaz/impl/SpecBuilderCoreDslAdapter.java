@@ -50,6 +50,18 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
+    public void xshould(String description, TestClosure testBody) {
+        coreDslBuilder.ignoredTest("should " + description, testBody);
+    }
+
+    @Override
+    public void xshouldThrow(Class<? extends Throwable> expectedException, String description, TestClosure testBody) {
+        coreDslBuilder.ignoredTestExpectingException(expectedException,
+                format("should throw %s %s", expectedException.getSimpleName(), description),
+                testBody);
+    }
+
+    @Override
     public void endsEach(TestClosure closure) {
         coreDslBuilder.afterEach(closure);
     }
@@ -62,5 +74,10 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     @Override
     public void describes(String description, Runnable specClosure) {
         coreDslBuilder.subSpecification(description, specClosure);
+    }
+
+    @Override
+    public void xdescribes(String description, Runnable specClosure) {
+        coreDslBuilder.ignoredSubSpecification(description, specClosure);
     }
 }

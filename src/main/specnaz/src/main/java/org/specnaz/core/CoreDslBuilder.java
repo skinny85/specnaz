@@ -23,9 +23,12 @@ import org.specnaz.utils.TestClosure;
  * @see #testExpectingException
  * @see #focusedTest
  * @see #focusedTestExpectingException
+ * @see #ignoredTest
+ * @see #ignoredTestExpectingException
  * @see #afterEach
  * @see #afterAll
  * @see #subSpecification
+ * @see #ignoredSubSpecification
  */
 public interface CoreDslBuilder {
     /**
@@ -101,6 +104,34 @@ public interface CoreDslBuilder {
                                 String description, TestClosure testBody);
 
     /**
+     * The core equivalent of {@link SpecBuilder#xshould}.
+     * The only difference is that it doesn't prepend the {@code 'should'}
+     * to the {@code description}.
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     */
+    void ignoredTest(String description, TestClosure testBody);
+
+    /**
+     * The core equivalent of {@link SpecBuilder#xshouldThrow}.
+     * The only difference is that it doesn't prepend the text
+     * 'should throw &lt;simple name of {@code exceptionClass}&gt;'
+     * to the {@code description}.
+     *
+     * @param exceptionClass
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     */
+    void ignoredTestExpectingException(Class<? extends Throwable> exceptionClass,
+                                       String description, TestClosure testBody);
+
+    /**
      * The core equivalent of {@link SpecBuilder#endsEach}.
      *
      * @param closure
@@ -125,4 +156,14 @@ public interface CoreDslBuilder {
      *     the definition of the sub-specification
      */
     void subSpecification(String description, Runnable specClosure);
+
+    /**
+     * The core equivalent of {@link SpecBuilder#xdescribes}.
+     *
+     * @param description
+     *     the description of the sub-specification
+     * @param specClosure
+     *     the definition of the sub-specification
+     */
+    void ignoredSubSpecification(String description, Runnable specClosure);
 }

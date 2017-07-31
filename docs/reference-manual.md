@@ -30,6 +30,9 @@ Table of Contents
           * [Difference between RSpec and Jasmine](#difference-between-rspec-and-jasmine)
       * [fshould](#fshould)
       * [fshouldThrow](#fshouldthrow)
+      * [xshould](#xshould)
+      * [xshouldThrow](#xshouldthrow)
+      * [xdescribes](#xdescribes)
     * [Using Boxes](#using-boxes)
     * [Using Specnaz in other JVM languages](#using-specnaz-in-other-jvm-languages)
       * [Kotlin](#kotlin)
@@ -679,6 +682,28 @@ and remember to remove the 'f' at the beginning before committing the change to 
 This is the focused equivalent of `shouldThrow`.
 The thinking behind this method is the same as behind `fshould`,
 and it's deprecated for exactly the same reason.
+
+### xshould
+
+`xshould` is a way to ignore the given test.
+This works exactly like in [RSpec](http://rspec.info/) and [Jasmine](http://jasmine.github.io/).
+If you ever need to ignore a test for any reason, instead of fiddling with commenting out code,
+simply add an 'x' in front of the call to [should](#should),
+and this specific test will not be executed.
+
+### xshouldThrow
+
+This is the [shouldThrow](#shouldthrow) equivalent of `xshould` -
+ignores a test expecting an Exception.
+
+### xdescribes
+
+`xdescribes` allows you to ignore an entire subtree of tests
+(including sub-specifications defined with `describes`).
+
+**Note**: there is also an `xdescribes` at the top level
+(the one that you call in the constructor) - in that case,
+all of the specifications in the class will be skipped.
 
 ## Using `Box`es
 

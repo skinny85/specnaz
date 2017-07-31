@@ -24,7 +24,7 @@ public class SpecRunner {
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {
-        TestsTreeCoreDslBuilder testsTreeCoreDslBuilder = new TestsTreeCoreDslBuilder(name());
+        TestsTreeCoreDslBuilder testsTreeCoreDslBuilder = new TestsTreeCoreDslBuilder(name(), specDescriptor.ignoredTestGroup);
         specDescriptor.specClosure.accept(testsTreeCoreDslBuilder);
         return testsTreeCoreDslBuilder.spec();
     }

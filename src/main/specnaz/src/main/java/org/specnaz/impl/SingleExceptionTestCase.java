@@ -8,11 +8,16 @@ public final class SingleExceptionTestCase extends SingleTestCase {
     private final Class<? extends Throwable> expectedException;
     private final TestClosure testBody;
 
-    public SingleExceptionTestCase(Class<? extends Throwable> expectedException,
+    public SingleExceptionTestCase(TestCaseType type, Class<? extends Throwable> expectedException,
                                    String description, TestClosure testBody) {
-        super(description);
+        super(type, description);
         this.expectedException = expectedException;
         this.testBody = testBody;
+    }
+
+    @Override
+    public SingleTestCase type(TestCaseType type) {
+        return new SingleExceptionTestCase(type, expectedException, description, testBody);
     }
 
     @Override

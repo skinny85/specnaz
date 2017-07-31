@@ -5,7 +5,7 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.specnaz.Specnaz;
 import org.specnaz.core.SpecnazCoreDsl;
-import org.specnaz.impl.Example;
+import org.specnaz.impl.SingleTestCase;
 import org.specnaz.impl.SpecRunner;
 import org.specnaz.impl.SpecsRegistryViolation;
 import org.specnaz.impl.TestsGroup;
@@ -99,10 +99,10 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
     }
 
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription) {
-        List<Example> examples = testsGroupNode.value.testCases;
-        for (Example example : examples)
-            addChildDescription(example.testCase.description(), parentDescription);
-        if (!examples.isEmpty() && testsGroupNode.value.afterAllsCount() > 0)
+        List<SingleTestCase> testCases = testsGroupNode.value.testCases;
+        for (SingleTestCase testCase : testCases)
+            addChildDescription(testCase.description, parentDescription);
+        if (!testCases.isEmpty() && testsGroupNode.value.afterAllsCount() > 0)
             addChildDescription("teardown", parentDescription);
 
         for (TreeNode<TestsGroup> child : testsGroupNode.children()) {

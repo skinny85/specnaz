@@ -12,9 +12,10 @@ public final class SpecsRegistry {
             new IdentityHashMap<>();
 
     public static void register(Object specInstance, String description,
+                                boolean ignoredTestGroup,
                                 Consumer<CoreDslBuilder> specClosure) throws SpecsRegistryViolation {
         SpecDescriptor prev = REGISTRY.putIfAbsent(specInstance,
-                new SpecDescriptor(description, specClosure));
+                new SpecDescriptor(description, ignoredTestGroup, specClosure));
         if (prev != null)
             throw new SpecsRegistryViolation(
                     "Test object '%s' already registered", specInstance);
