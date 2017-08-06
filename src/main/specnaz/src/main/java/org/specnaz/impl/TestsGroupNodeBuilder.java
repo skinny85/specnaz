@@ -7,8 +7,7 @@ import java.util.List;
 
 public final class TestsGroupNodeBuilder {
     private final String description;
-    private final boolean ignoredTestGroup;
-
+    private final TestCaseType testCaseType;
     private final List<TestClosure> beforeAlls = new LinkedList<>(),
                                     befores    = new LinkedList<>(),
                                     afters     = new LinkedList<>(),
@@ -17,9 +16,11 @@ public final class TestsGroupNodeBuilder {
     private final List<TreeNode<TestsGroup>> subgroups = new LinkedList<>();
     private boolean containsFocusedTests = false;
 
-    public TestsGroupNodeBuilder(String description, boolean ignoredTestGroup) {
+    public TestsGroupNodeBuilder(String description, TestCaseType testCaseType) {
         this.description = description;
-        this.ignoredTestGroup = ignoredTestGroup;
+        this.testCaseType = testCaseType;
+        if (testCaseType == TestCaseType.FOCUSED)
+            containsFocusedTests = true;
     }
 
     public void addBeforeAll(TestClosure closure) {
@@ -31,12 +32,20 @@ public final class TestsGroupNodeBuilder {
     }
 
     public void addTestCase(SingleTestCase testCase) {
-        if (ignoredTestGroup) {
-            testCases.add(testCase.type(TestCaseType.IGNORED));
-        } else {
-            testCases.add(testCase);
-            if (testCase.type == TestCaseType.FOCUSED)
-                containsFocusedTests = true;
+        switch (testCaseType) {
+            case REGULAR:
+                testCases.add(testCase);
+                if (testCase.type == TestCaseType.FOCUSED)
+                    containsFocusedTests = true;
+                break;
+            case FOCUSED:
+                testCases.add(testCase.type == TestCaseType.REGULAR
+                        ? testCase.type(TestCaseType.FOCUSED)
+                        : testCase);
+                break;
+            case IGNORED:
+                testCases.add(testCase.type(TestCaseType.IGNORED));
+                break;
         }
     }
 
@@ -48,8 +57,8 @@ public final class TestsGroupNodeBuilder {
         afterAlls.add(closure);
     }
 
-    public TestsGroupNodeBuilder subgroupBuilder(String description, boolean ignoredTestGroup) {
-        return new TestsGroupNodeBuilder(description, this.ignoredTestGroup || ignoredTestGroup);
+    public TestsGroupNodeBuilder subgroupBuilder(String description, TestCaseType testCaseType) {
+        return new TestsGroupNodeBuilder(description, subgroupTestType(testCaseType));
     }
 
     public void addSubgroup(TreeNode<TestsGroup> subgroupNode) {
@@ -81,6 +90,20 @@ public final class TestsGroupNodeBuilder {
 
         for (TreeNode<TestsGroup> child : testsGroupNode.children()) {
             incrementFixturesCount(child);
+        }
+    }
+
+    private TestCaseType subgroupTestType(TestCaseType testCaseType) {
+        switch (this.testCaseType) {
+            case REGULAR:
+                return testCaseType;
+            case FOCUSED:
+                return testCaseType == TestCaseType.IGNORED
+                        ? TestCaseType.IGNORED
+                        : TestCaseType.FOCUSED;
+            case IGNORED:
+            default:
+                return TestCaseType.IGNORED;
         }
     }
 }

@@ -6,8 +6,8 @@ import org.specnaz.utils.TestClosure;
 public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     private TestsGroupNodeBuilder testsGroupNodeBuilder;
 
-    public TestsTreeCoreDslBuilder(String description, boolean ignoredTestGroup) {
-        testsGroupNodeBuilder = new TestsGroupNodeBuilder(description, ignoredTestGroup);
+    public TestsTreeCoreDslBuilder(String description, TestCaseType testCaseType) {
+        testsGroupNodeBuilder = new TestsGroupNodeBuilder(description, testCaseType);
     }
 
     @Override
@@ -63,17 +63,22 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
 
     @Override
     public void subSpecification(String description, Runnable specClosure) {
-        handleSubSpecification(description, specClosure, false);
+        handleSubSpecification(description, specClosure, TestCaseType.REGULAR);
+    }
+
+    @Override
+    public void focusedSubSpecification(String description, Runnable specClosure) {
+        handleSubSpecification(description, specClosure, TestCaseType.FOCUSED);
     }
 
     @Override
     public void ignoredSubSpecification(String description, Runnable specClosure) {
-        handleSubSpecification(description, specClosure, true);
+        handleSubSpecification(description, specClosure, TestCaseType.IGNORED);
     }
 
-    private void handleSubSpecification(String description, Runnable specClosure, boolean ignoredTestGroup) {
+    private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {
         TestsGroupNodeBuilder previous = this.testsGroupNodeBuilder;
-        TestsGroupNodeBuilder subgroupBuilder = previous.subgroupBuilder(description, ignoredTestGroup);
+        TestsGroupNodeBuilder subgroupBuilder = previous.subgroupBuilder(description, testCaseType);
         this.testsGroupNodeBuilder = subgroupBuilder;
         specClosure.run();
         previous.addSubgroup(subgroupBuilder.build());

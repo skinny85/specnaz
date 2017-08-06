@@ -158,6 +158,16 @@ public interface CoreDslBuilder {
     void subSpecification(String description, Runnable specClosure);
 
     /**
+     * The core equivalent of {@link SpecBuilder#fdescribes}.
+     *
+     * @param description
+     *     the description of the sub-specification
+     * @param specClosure
+     *     the definition of the sub-specification
+     */
+    void focusedSubSpecification(String description, Runnable specClosure);
+
+    /**
      * The core equivalent of {@link SpecBuilder#xdescribes}.
      *
      * @param description

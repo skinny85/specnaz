@@ -17,6 +17,7 @@ import org.specnaz.utils.TestClosure;
  * @see #describes
  * @see #fshould
  * @see #fshouldThrow
+ * @see #fdescribes
  * @see #xshould
  * @see #xshouldThrow
  * @see #xdescribes
@@ -44,6 +45,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -72,6 +74,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -99,6 +102,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -134,6 +138,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -164,6 +169,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -193,6 +199,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -223,6 +230,7 @@ public interface SpecBuilder {
      * @see #endsAll
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -273,6 +281,7 @@ public interface SpecBuilder {
      * @see #endsAll
      * @see #describes
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -310,6 +319,7 @@ public interface SpecBuilder {
      * @see #endsAll
      * @see #describes
      * @see #fshould
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      * @see #xdescribes
@@ -317,6 +327,40 @@ public interface SpecBuilder {
     @Deprecated
     void fshouldThrow(Class<? extends Throwable> expectedException,
                       String description, TestClosure testBody);
+
+    /**
+     * The 'focused' equivalent of {@link #describes}.
+     * See the {@link #fshould} documentation for a description of
+     * what it means to be 'focused'.
+     * Using this method, all of the tests present in this group will be focused,
+     * even if they were defined with regular {@link #should} calls instead of
+     * {@link #fshould}.
+     *
+     * @param description
+     *    the description of the test group
+     * @param specClosure
+     *    the callback used to define the new test group,
+     *    similarly to how {@link Specnaz#describes} defines the
+     *    top-level group
+     *
+     * @deprecated
+     *     This method is deprecated for exactly the same reasons {@link #fshould} is.
+     *
+     * @see #should
+     * @see #shouldThrow
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
+     * @see #fshould
+     * @see #fshouldThrow
+     * @see #xshould
+     * @see #xshouldThrow
+     * @see #xdescribes
+     */
+    @Deprecated
+    void fdescribes(String description, Runnable specClosure);
 
     /**
      * Allows you to ignore a test.
@@ -344,6 +388,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshouldThrow
      * @see #xdescribes
      */
@@ -377,6 +422,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xdescribes
      */
@@ -408,6 +454,7 @@ public interface SpecBuilder {
      * @see #describes
      * @see #fshould
      * @see #fshouldThrow
+     * @see #fdescribes
      * @see #xshould
      * @see #xshouldThrow
      */

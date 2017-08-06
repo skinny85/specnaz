@@ -30,6 +30,7 @@ Table of Contents
           * [Difference between RSpec and Jasmine](#difference-between-rspec-and-jasmine)
       * [fshould](#fshould)
       * [fshouldThrow](#fshouldthrow)
+      * [fdescribes](#fdescribes)
       * [xshould](#xshould)
       * [xshouldThrow](#xshouldthrow)
       * [xdescribes](#xdescribes)
@@ -682,6 +683,14 @@ and remember to remove the 'f' at the beginning before committing the change to 
 This is the focused equivalent of `shouldThrow`.
 The thinking behind this method is the same as behind `fshould`,
 and it's deprecated for exactly the same reason.
+
+### fdescribes
+
+This is the focused equivalent of `describes`.
+All tests present in this focused group
+(including subgroups of this group) will be focused,
+even if defined with regular `should` and `describes` calls
+instead of `fshould` and `fdescribes`.
 
 ### xshould
 

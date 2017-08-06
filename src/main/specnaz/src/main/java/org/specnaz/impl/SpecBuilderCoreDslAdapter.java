@@ -77,6 +77,11 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
+    public void fdescribes(String description, Runnable specClosure) {
+        coreDslBuilder.focusedSubSpecification(description, specClosure);
+    }
+
+    @Override
     public void xdescribes(String description, Runnable specClosure) {
         coreDslBuilder.ignoredSubSpecification(description, specClosure);
     }
