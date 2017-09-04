@@ -3,6 +3,7 @@ package org.specnaz.core;
 import org.specnaz.Specnaz;
 import org.specnaz.impl.SpecsRegistry;
 import org.specnaz.impl.SpecsRegistryViolation;
+import org.specnaz.impl.TestCaseType;
 
 import java.util.function.Consumer;
 
@@ -37,7 +38,7 @@ public interface SpecnazCoreDsl {
      */
     default void specification(String description, Consumer<CoreDslBuilder> specClosure) {
         try {
-            SpecsRegistry.register(this, description, false, specClosure);
+            SpecsRegistry.register(this, description, TestCaseType.REGULAR, specClosure);
         } catch (SpecsRegistryViolation e) {
             throw new IllegalStateException("SpecnazCoreDsl.specification() was called multiple times in the " +
                     "no-argument constructor of " + this.getClass().getSimpleName());

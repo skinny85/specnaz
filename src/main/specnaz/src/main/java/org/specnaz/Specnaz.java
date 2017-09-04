@@ -3,6 +3,7 @@ package org.specnaz;
 import org.specnaz.impl.SpecBuilderCoreDslAdapter;
 import org.specnaz.impl.SpecsRegistry;
 import org.specnaz.impl.SpecsRegistryViolation;
+import org.specnaz.impl.TestCaseType;
 
 import java.util.function.Consumer;
 
@@ -51,7 +52,18 @@ public interface Specnaz {
      */
     default void describes(String description, Consumer<SpecBuilder> specClosure) {
         try {
-            SpecsRegistry.register(this, description, false, coreDslBuilder -> {
+            SpecsRegistry.register(this, description, TestCaseType.REGULAR, coreDslBuilder -> {
+                specClosure.accept(new SpecBuilderCoreDslAdapter(coreDslBuilder));
+            });
+        } catch (SpecsRegistryViolation e) {
+            throw new IllegalStateException("Specnaz.describes() was called multiple times in the " +
+                    "no-argument constructor of " + this.getClass().getSimpleName());
+        }
+    }
+
+    default void fdescribes(String description, Consumer<SpecBuilder> specClosure) {
+        try {
+            SpecsRegistry.register(this, description, TestCaseType.FOCUSED, coreDslBuilder -> {
                 specClosure.accept(new SpecBuilderCoreDslAdapter(coreDslBuilder));
             });
         } catch (SpecsRegistryViolation e) {
@@ -82,7 +94,7 @@ public interface Specnaz {
      */
     default void xdescribes(String description, Consumer<SpecBuilder> specClosure) {
         try {
-            SpecsRegistry.register(this, description, true, coreDslBuilder -> {
+            SpecsRegistry.register(this, description, TestCaseType.IGNORED, coreDslBuilder -> {
                 specClosure.accept(new SpecBuilderCoreDslAdapter(coreDslBuilder));
             });
         } catch (SpecsRegistryViolation e) {

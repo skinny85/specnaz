@@ -6,12 +6,12 @@ import java.util.function.Consumer;
 
 public final class SpecDescriptor {
     public final String description;
-    public final boolean ignoredTestGroup;
+    public final TestCaseType testCaseType;
     public final Consumer<CoreDslBuilder> specClosure;
 
-    public SpecDescriptor(String description, boolean ignoredTestGroup, Consumer<CoreDslBuilder> specClosure) {
+    public SpecDescriptor(String description, TestCaseType testCaseType, Consumer<CoreDslBuilder> specClosure) {
         this.description = description;
-        this.ignoredTestGroup = ignoredTestGroup;
+        this.testCaseType = testCaseType;
         this.specClosure = specClosure;
     }
 }

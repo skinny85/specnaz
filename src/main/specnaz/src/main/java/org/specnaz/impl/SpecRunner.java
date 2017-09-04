@@ -24,9 +24,7 @@ public class SpecRunner {
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {
-        TestsTreeCoreDslBuilder testsTreeCoreDslBuilder = new TestsTreeCoreDslBuilder(name(), specDescriptor.ignoredTestGroup
-                ? TestCaseType.IGNORED
-                : TestCaseType.REGULAR);
+        TestsTreeCoreDslBuilder testsTreeCoreDslBuilder = new TestsTreeCoreDslBuilder(name(), specDescriptor.testCaseType);
         specDescriptor.specClosure.accept(testsTreeCoreDslBuilder);
         return testsTreeCoreDslBuilder.spec();
     }
