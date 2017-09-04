@@ -36,13 +36,36 @@ interface SpecnazKotlin {
      */
     fun describes(description: String, specClosure: (KotlinSpecBuilder) -> Unit) {
         try {
-            SpecsRegistry.register(this, description, {
+            SpecsRegistry.register(this, description, false, {
                 coreDslBuilder -> specClosure(KotlinSpecBuilder(
                     SpecBuilderCoreDslAdapter(coreDslBuilder)))
             })
         } catch (e: SpecsRegistryViolation) {
             throw IllegalStateException("SpecnazKotlin.describes() was called multiple times in the " +
                 "no-argument constructor of ${this.javaClass.simpleName}")
+        }
+    }
+
+    /**
+     * The analog of the [Specnaz.xdescribes] method for Kotlin.
+     *
+     * Allows you to ignore the entire spec defined in this class.
+     *
+     * @param description
+     *     the top-level description of the spec
+     * @param specClosure
+     *     a function, returning [Unit] and taking a [KotlinSpecBuilder] as the argument,
+     *     that defines the specification
+     */
+    fun xdescribes(description: String, specClosure: (KotlinSpecBuilder) -> Unit) {
+        try {
+            SpecsRegistry.register(this, description, true, {
+                coreDslBuilder -> specClosure(KotlinSpecBuilder(
+                    SpecBuilderCoreDslAdapter(coreDslBuilder)))
+            })
+        } catch (e: SpecsRegistryViolation) {
+            throw IllegalStateException("SpecnazKotlin.describes() was called multiple times in the " +
+                    "no-argument constructor of ${this.javaClass.simpleName}")
         }
     }
 }

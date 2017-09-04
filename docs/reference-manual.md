@@ -39,6 +39,7 @@ Table of Contents
       * [Kotlin](#kotlin)
         * [Using native Java classes](#using-native-java-classes)
         * [Using the Kotlin bindings](#using-the-kotlin-bindings)
+          * [Ignoring specs inheriting from SpecnazKotlinJUnit](#ignoring-specs-inheriting-from-specnazkotlinjunit)
         * [The Deferred helper](#the-deferred-helper)
       * [Groovy](#groovy)
   * [Extending Specnaz](#extending-specnaz)
@@ -896,6 +897,15 @@ class StackKotlinSpec : SpecCommon(), SpecnazKotlin { init {
     }
 }}
 ```
+
+##### Ignoring specs inheriting from `SpecnazKotlinJUnit`
+
+If you want to ignore an entire class of specs, and that class inherits from `SpecnazKotlinJUnit`,
+you can't simply use the `xdescribes` method call, as that code is buried in the `SpecnazKotlinJUnit` constructor.
+To help with that case, there is a class called `xSpecnazKotlinJUnit` in the same,
+`org.specnaz.kotlin.junit` package.
+With that, you can simply add an 'x' in front of `SpecnazKotlinJUnit`,
+and with that one change ignore all of the specs defined in that class.
 
 #### The `Deferred` helper
 
