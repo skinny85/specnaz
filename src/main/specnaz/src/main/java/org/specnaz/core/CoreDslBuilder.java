@@ -71,6 +71,26 @@ public interface CoreDslBuilder {
                                 String description, TestClosure closure);
 
     /**
+     * The core equivalent of {@link SpecBuilder#shouldThrowWithMessage}.
+     * The only difference is that it doesn't prepend the text
+     * 'should throw &lt;simple name of {@code exceptionClass}&gt;'
+     * to the {@code description}.
+     *
+     * @param exceptionClass
+     *     the class of the Exception we expect in this test
+     * @param exceptionMessage
+     *     the message that we expect as part of the exception
+     * @param description
+     *     the description of the test case
+     * @param closure
+     *     the body of the test case
+     */
+    void testExpectingExceptionWithMessage(Class<? extends Throwable> exceptionClass,
+                                           String exceptionMessage,
+                                           String description,
+                                           TestClosure closure);
+
+    /**
      * The core equivalent of {@link SpecBuilder#endsEach}.
      *
      * @param closure

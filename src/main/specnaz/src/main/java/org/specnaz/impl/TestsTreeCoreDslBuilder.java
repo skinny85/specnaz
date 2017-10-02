@@ -51,6 +51,11 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
         this.testsGroupNodeBuilder = previous;
     }
 
+    @Override
+    public void testExpectingExceptionWithMessage(Class<? extends Throwable> exceptionClass,String expectedMessage, String description, TestClosure closure) {
+        testsGroupNodeBuilder.addTestCase(new SingleExceptionWithMessageTestCase(exceptionClass, expectedMessage, description, closure));
+    }
+
     public TreeNode<TestsGroup> spec() {
         return testsGroupNodeBuilder.build();
     }
