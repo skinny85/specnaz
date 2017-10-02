@@ -45,6 +45,10 @@ public class ArithmeticSpec implements Specnaz {{
             int unused = 1 / 0;
         });
 
+        it.shouldThrowWithMessage(NumberFormatException.class, "For input string: \"long\"", "when", () -> {
+            new Long("long");
+        });
+
         it.describes("with a subgroup", () -> {
             it.beginsAll(() -> {
                 two.$ += 3;

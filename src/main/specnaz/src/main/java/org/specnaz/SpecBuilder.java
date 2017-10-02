@@ -116,6 +116,43 @@ public interface SpecBuilder {
     void shouldThrow(Class<? extends Throwable> expectedException,
                      String description, TestClosure testBody);
 
+
+    /**
+     * Define a test expecting an Exception to be thrown with a specific message.
+     * <p>
+     * This is very similar to the {@link #should} method, except the test passes
+     * only if it results in an Exception (of type {@code expectedException})
+     * being thrown with a specific message in it, similarly to JUnit's {@code @Test.expected}.
+     *
+     * @param expectedException
+     *     the type of Exception expected from the test.
+     *     The Exception resulting from executing the test must be of this type
+     *     (so, be an instance of either the {@code expectedException} class,
+     *     or a subclass of {@code expectedException})
+     *     for the test to have been deemed passing
+     * @param expectedMessage
+     *     the message that should be part of the exception.
+     *     Important when we have different parts of the code when we are throwing the
+     *     same exception and we want to discriminate by message.
+     * @param description
+     *     the description of this test.
+     *     It will serve as the name for this test in the reports.
+     *     Note that the words 'should throw &lt;ExpectedExceptionClass&gt;'
+     *     will be prepended to it by the library
+     * @param testBody
+     *     the body of the test case
+     *
+     * @see #should
+     * @see #beginsEach
+     * @see #beginsAll
+     * @see #endsEach
+     * @see #endsAll
+     * @see #describes
+     */
+    void shouldThrowWithMessage(Class<? extends Throwable> expectedException,
+                                String expectedMessage,
+                                String description, TestClosure testBody);
+
     /**
      * A lifecycle callback executed after each test case.
      * The equivalent of RSpec's or Jasmine's {@code afterEach}.

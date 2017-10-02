@@ -36,6 +36,16 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
+    public void shouldThrowWithMessage(Class<? extends Throwable> expectedException, String expectedMessage, String description, TestClosure testBody) {
+        coreDslBuilder.testExpectingExceptionWithMessage(
+                expectedException,
+                expectedMessage,
+                format("should throw %s with message %s %s", expectedException.getSimpleName(), expectedMessage, description),
+                testBody
+        );
+    }
+
+    @Override
     public void endsEach(TestClosure closure) {
         coreDslBuilder.afterEach(closure);
     }
