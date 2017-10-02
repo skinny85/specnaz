@@ -1,6 +1,7 @@
 package org.specnaz.kotlin
 
 import org.specnaz.SpecBuilder
+import org.specnaz.utils.ThrowableExpectations
 
 /**
  * The equivalent of [SpecBuilder] for Kotlin.
@@ -63,9 +64,10 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * }
      * ```
      */
-    inline fun <reified E : Throwable> shouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit) {
+    inline fun <reified E : Throwable> shouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
+            ThrowableExpectations {
         @Suppress("DEPRECATION")
-        specBuilder.shouldThrow(E::class.java, description, { testBody.invoke(null) })
+        return specBuilder.shouldThrow(E::class.java, description, { testBody.invoke(null) })
     }
 
     /**
@@ -105,9 +107,10 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.fshouldThrow] for Kotlin.
      */
     @Deprecated("Deprecated for the same reason SpecBuilder#fshouldThrow is")
-    inline fun <reified E : Throwable> fshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit) {
+    inline fun <reified E : Throwable> fshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
+            ThrowableExpectations {
         @Suppress("DEPRECATION")
-        specBuilder.fshouldThrow(E::class.java, description, { testBody.invoke(null) })
+        return specBuilder.fshouldThrow(E::class.java, description, { testBody.invoke(null) })
     }
 
     /**
@@ -130,9 +133,10 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
     /**
      * The equivalent of [SpecBuilder.xshouldThrow] for Kotlin.
      */
-    inline fun <reified E : Throwable> xshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit) {
+    inline fun <reified E : Throwable> xshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
+            ThrowableExpectations {
         @Suppress("DEPRECATION")
-        specBuilder.xshouldThrow(E::class.java, description, { testBody.invoke(null) })
+        return specBuilder.xshouldThrow(E::class.java, description, { testBody.invoke(null) })
     }
 
     /**

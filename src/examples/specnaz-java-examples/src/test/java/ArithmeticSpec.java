@@ -43,7 +43,7 @@ public class ArithmeticSpec implements Specnaz {{
 
         it.shouldThrow(ArithmeticException.class, "when dividing by zero", () -> {
             int unused = 1 / 0;
-        });
+        }).withMessage("/ by zero").withoutCause();
 
         it.describes("with a subgroup", () -> {
             it.beginsAll(() -> {
