@@ -25,5 +25,49 @@ public class IgnoredSpec extends SpecnazJUnit {{
                 });
             });
         });
+
+        it.xdescribes("and an ignored sub-spec with xdescribes", () -> {
+            it.beginsAll(() -> {
+                fail("beginsAll");
+            });
+
+            it.beginsEach(() -> {
+                fail("beginsEach");
+            });
+
+            it.endsEach(() -> {
+                fail("endsEach");
+            });
+
+            it.endsAll(() -> {
+                fail("endsAll");
+            });
+
+            it.should("not run the begins/ends fixtures", () -> {
+                fail("xdescribes fixtures test");
+            });
+        });
+
+        it.describes("and a sub-spec with only ignored tests", () -> {
+            it.beginsAll(() -> {
+                fail("beginsAll");
+            });
+
+            it.beginsEach(() -> {
+                fail("beginsEach");
+            });
+
+            it.endsEach(() -> {
+                fail("endsEach");
+            });
+
+            it.endsAll(() -> {
+                fail("endsAll");
+            });
+
+            it.xshould("not run the begins/ends fixtures", () -> {
+                fail("describes->xshould fixtures test");
+            });
+        });
     });
 }}

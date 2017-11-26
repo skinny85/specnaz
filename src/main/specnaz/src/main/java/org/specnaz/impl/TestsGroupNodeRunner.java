@@ -38,11 +38,7 @@ public class TestsGroupNodeRunner {
             return;
         }
 
-        // If we're supposed to run only focused tests, but this group doesn't contain any,
-        // we should not run the beforeAll/afterAll fixtures for this group
-        // (there's no point).
-        boolean skipAllsFixtures = runOnlyFocusedTests &&
-                testsGroup.testCases.stream().noneMatch(tc -> tc.type == TestCaseType.FOCUSED);
+        boolean skipAllsFixtures = shouldSkipAllsFixtures(testsGroup);
 
         Throwable beforeAllsError = invokeBeforeAlls(skipAllsFixtures);
 
@@ -51,6 +47,16 @@ public class TestsGroupNodeRunner {
         }
 
         invokeAfterAlls(skipAllsFixtures);
+    }
+
+    private boolean shouldSkipAllsFixtures(TestsGroup testsGroup) {
+        // There are 2 situations when it doesn't make sense to run the beforeAll/afterAll
+        // fixtures for a given group:
+        // 1. If we're supposed to run only focused tests, but this group doesn't contain any.
+        // 2. If this group contains only ignored tests.
+        return (runOnlyFocusedTests &&
+                testsGroup.testCases.stream().noneMatch(tc -> tc.type == TestCaseType.FOCUSED)) ||
+                (testsGroup.testCases.stream().allMatch(tc -> tc.type == TestCaseType.IGNORED));
     }
 
     private void runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
