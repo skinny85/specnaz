@@ -941,12 +941,17 @@ class KotlinSpec : SpecnazKotlinJUnit("A spec", {
 
 The above snippet will not work - the compiler will complain that
 `someDomainClass` must be initialized before being used.
-We could use Kotlin's `lazyinit`, or the non-`null` `Delegate`,
-but the problem is those only work for class attributes, not local variables.
 
-Because of that, Specnaz ships with a simple helper class,
+The easiest way to solve this problem is to use the `lazyinit` modifier -
+so, simply replace `var someDomainClass: MyDomainClass` above with
+`lateinit var someDomainClass: MyDomainClass`.
+However, that's allowed on local variables only with Kotlin version 1.2 or later -
+before that `lateinit` was limited to class attributes.
+If you're on a version of Kotlin before 1.2,
+you can still use local variables instead of class attributes in this case
+by leveraging a simple helper class that ships with Specnaz,
 `org.specnaz.kotlin.utils.Deferred`.
-You use it like this:
+You use it like so:
 
 ```kotlin
 class KotlinSpec : SpecnazKotlinJUnit("A spec", {
