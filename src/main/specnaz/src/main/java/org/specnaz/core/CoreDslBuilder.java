@@ -2,6 +2,7 @@ package org.specnaz.core;
 
 import org.specnaz.SpecBuilder;
 import org.specnaz.utils.TestClosure;
+import org.specnaz.utils.ThrowableExpectations;
 
 /**
  * The core specification Builder.
@@ -71,9 +72,11 @@ public interface CoreDslBuilder {
      *     the description of the test case
      * @param testBody
      *     the body of the test case
+     * @return
+     *     a new instance of the {@link ThrowableExpectations} class
      */
-    void testExpectingException(Class<? extends Throwable> exceptionClass,
-                                String description, TestClosure testBody);
+    ThrowableExpectations testExpectingException(Class<? extends Throwable> exceptionClass,
+                                                 String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#fshould}.
@@ -99,9 +102,11 @@ public interface CoreDslBuilder {
      *     the description of the test case
      * @param testBody
      *     the body of the test case
+     * @return
+     *     a new instance of the {@link ThrowableExpectations} class
      */
-    void focusedTestExpectingException(Class<? extends Throwable> exceptionClass,
-                                String description, TestClosure testBody);
+    ThrowableExpectations focusedTestExpectingException(Class<? extends Throwable> exceptionClass,
+                                                        String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#xshould}.
@@ -127,9 +132,11 @@ public interface CoreDslBuilder {
      *     the description of the test case
      * @param testBody
      *     the body of the test case
+     * @return
+     *     a new instance of the {@link ThrowableExpectations} class
      */
-    void ignoredTestExpectingException(Class<? extends Throwable> exceptionClass,
-                                       String description, TestClosure testBody);
+    ThrowableExpectations ignoredTestExpectingException(Class<? extends Throwable> exceptionClass,
+                                                        String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#endsEach}.

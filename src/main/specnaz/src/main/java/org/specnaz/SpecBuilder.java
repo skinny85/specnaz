@@ -1,6 +1,7 @@
 package org.specnaz;
 
 import org.specnaz.utils.TestClosure;
+import org.specnaz.utils.ThrowableExpectations;
 
 /**
  * The class used to create the specification.
@@ -115,6 +116,9 @@ public interface SpecBuilder {
      * This is very similar to the {@link #should} method, except the test passes
      * only if it results in an Exception (of type {@code expectedException})
      * being thrown, similarly to JUnit's {@code @Test.expected}.
+     * It returns an instance of the {@link ThrowableExpectations} class,
+     * which allows you to refine the conditions that the thrown exception
+     * has to satisfy in order for the test to pass even further.
      *
      * @param expectedException
      *     the type of Exception expected from the test.
@@ -129,6 +133,8 @@ public interface SpecBuilder {
      *     will be prepended to it by the library
      * @param testBody
      *     the body of the test case
+     * @return
+     *     a new instance of the {@link ThrowableExpectations} class
      *
      * @see #should
      * @see #beginsEach
@@ -143,8 +149,8 @@ public interface SpecBuilder {
      * @see #xshouldThrow
      * @see #xdescribes
      */
-    void shouldThrow(Class<? extends Throwable> expectedException,
-                     String description, TestClosure testBody);
+    ThrowableExpectations shouldThrow(Class<? extends Throwable> expectedException,
+                                      String description, TestClosure testBody);
 
     /**
      * A lifecycle callback executed after each test case.
@@ -307,6 +313,8 @@ public interface SpecBuilder {
      *     will be prepended to it by the library
      * @param testBody
      *     the body of the test case
+     * @return
+     *     a new instance of the {@link ThrowableExpectations} class
      *
      * @deprecated
      *     This method is deprecated for exactly the same reasons {@link #fshould} is.
@@ -325,8 +333,8 @@ public interface SpecBuilder {
      * @see #xdescribes
      */
     @Deprecated
-    void fshouldThrow(Class<? extends Throwable> expectedException,
-                      String description, TestClosure testBody);
+    ThrowableExpectations fshouldThrow(Class<? extends Throwable> expectedException,
+                                       String description, TestClosure testBody);
 
     /**
      * The 'focused' equivalent of {@link #describes}.
@@ -412,6 +420,8 @@ public interface SpecBuilder {
      *     will be prepended to it by the library
      * @param testBody
      *     the body of the test case (will not be executed)
+     * @return
+     *     a new instance of the {@link ThrowableExpectations} class
      *
      * @see #should
      * @see #shouldThrow
@@ -426,8 +436,8 @@ public interface SpecBuilder {
      * @see #xshould
      * @see #xdescribes
      */
-    void xshouldThrow(Class<? extends Throwable> expectedException,
-                      String description, TestClosure testBody);
+    ThrowableExpectations xshouldThrow(Class<? extends Throwable> expectedException,
+                                       String description, TestClosure testBody);
 
     /**
      * Allows you to ignore an entire group of tests.

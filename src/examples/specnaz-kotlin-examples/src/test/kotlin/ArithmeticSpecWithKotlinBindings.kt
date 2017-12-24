@@ -48,7 +48,7 @@ class ArithmeticSpecWithKotlinBindings : SpecnazKotlin { init {
 
         it.shouldThrow<ArithmeticException>("when dividing by zero") {
             1 / (two - 2)
-        }
+        }.withMessage("/ by zero").withoutCause()
 
         it.describes("with a subgroup") {
             it.beginsAll {

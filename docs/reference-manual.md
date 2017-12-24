@@ -225,6 +225,17 @@ The description you give as the second argument will become the test name in the
 except it will have the words "should throw ExpectedExceptionClass" prepended to them,
 so formulate your descriptions with that in mind.
 
+`shouldThrow` returns an instance of the `org.specnaz.utils.ThrowableExpectations` class,
+which allows you to formulate further assertions on the thrown Exception.
+Each method of that class returns either `this`, or another instance of the same class,
+which makes chaining assertions easy. Example:
+
+```java
+it.shouldThrow(ArithmeticException.class, "when dividing by zero", () -> {
+    int unused = 1 / 0;
+}).withMessage("/ by zero").withoutCause();
+```
+
 ### beginsEach
 
 The `beginsEach` method introduces a test fixture that will be ran before
