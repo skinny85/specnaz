@@ -27,12 +27,9 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public ThrowableExpectations testExpectingException(Class<? extends Throwable> exceptionClass,
-                                                        String description, TestClosure testBody) {
-        SingleExceptionTestCase singleExceptionTestCase = new SingleExceptionTestCase(
-                TestCaseType.REGULAR, exceptionClass, description, testBody);
-        testsGroupNodeBuilder.addTestCase(singleExceptionTestCase);
-        return singleExceptionTestCase.throwableExpectations();
+    public <T extends Throwable> ThrowableExpectations<T> testExpectingException(
+            Class<T> exceptionClass, String description, TestClosure testBody) {
+        return addExceptionTestCase(exceptionClass, description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
@@ -41,12 +38,9 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public ThrowableExpectations focusedTestExpectingException(Class<? extends Throwable> exceptionClass,
-                                                               String description, TestClosure testBody) {
-        SingleExceptionTestCase singleExceptionTestCase = new SingleExceptionTestCase(
-                TestCaseType.FOCUSED, exceptionClass, description, testBody);
-        testsGroupNodeBuilder.addTestCase(singleExceptionTestCase);
-        return singleExceptionTestCase.throwableExpectations();
+    public <T extends Throwable> ThrowableExpectations<T> focusedTestExpectingException(
+            Class<T> exceptionClass, String description, TestClosure testBody) {
+        return addExceptionTestCase(exceptionClass, description, testBody, TestCaseType.FOCUSED);
     }
 
     @Override
@@ -55,12 +49,9 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public ThrowableExpectations ignoredTestExpectingException(Class<? extends Throwable> expectedException,
-                                                               String description, TestClosure testBody) {
-        SingleExceptionTestCase singleExceptionTestCase = new SingleExceptionTestCase(
-                TestCaseType.IGNORED, expectedException, description, testBody);
-        testsGroupNodeBuilder.addTestCase(singleExceptionTestCase);
-        return singleExceptionTestCase.throwableExpectations();
+    public <T extends Throwable> ThrowableExpectations<T> ignoredTestExpectingException(
+            Class<T> exceptionClass, String description, TestClosure testBody) {
+        return addExceptionTestCase(exceptionClass, description, testBody, TestCaseType.IGNORED);
     }
 
     @Override
@@ -95,6 +86,14 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
         specClosure.run();
         previous.addSubgroup(subgroupBuilder.build());
         this.testsGroupNodeBuilder = previous;
+    }
+
+    private <T extends Throwable> ThrowableExpectations<T> addExceptionTestCase(
+            Class<T> exceptionClass, String description, TestClosure testBody, TestCaseType testCaseType) {
+        SingleExceptionTestCase<T> singleExceptionTestCase = new SingleExceptionTestCase<>(
+                testCaseType, exceptionClass, description, testBody);
+        testsGroupNodeBuilder.addTestCase(singleExceptionTestCase);
+        return singleExceptionTestCase.throwableExpectations();
     }
 
     public TreeNode<TestsGroup> spec() {

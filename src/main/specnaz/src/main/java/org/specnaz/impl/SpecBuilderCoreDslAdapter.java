@@ -30,8 +30,8 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
-    public ThrowableExpectations shouldThrow(Class<? extends Throwable> expectedException,
-                                             String description, TestClosure testBody) {
+    public <T extends Throwable> ThrowableExpectations<T> shouldThrow(Class<T> expectedException,
+            String description, TestClosure testBody) {
         return coreDslBuilder.testExpectingException(expectedException,
                 format("should throw %s %s", expectedException.getSimpleName(), description),
                 testBody);
@@ -45,8 +45,8 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
 
     @Override
     @SuppressWarnings("deprecation")
-    public ThrowableExpectations fshouldThrow(Class<? extends Throwable> expectedException, String description,
-                                              TestClosure testBody) {
+    public <T extends Throwable> ThrowableExpectations<T> fshouldThrow(Class<T> expectedException,
+            String description, TestClosure testBody) {
         return coreDslBuilder.focusedTestExpectingException(expectedException,
                 format("should throw %s %s", expectedException.getSimpleName(), description),
                 testBody);
@@ -58,8 +58,8 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
-    public ThrowableExpectations xshouldThrow(Class<? extends Throwable> expectedException, String description,
-                                              TestClosure testBody) {
+    public <T extends Throwable> ThrowableExpectations<T> xshouldThrow(Class<T> expectedException,
+            String description, TestClosure testBody) {
         return coreDslBuilder.ignoredTestExpectingException(expectedException,
                 format("should throw %s %s", expectedException.getSimpleName(), description),
                 testBody);

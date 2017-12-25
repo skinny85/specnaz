@@ -75,8 +75,8 @@ public interface CoreDslBuilder {
      * @return
      *     a new instance of the {@link ThrowableExpectations} class
      */
-    ThrowableExpectations testExpectingException(Class<? extends Throwable> exceptionClass,
-                                                 String description, TestClosure testBody);
+    <T extends Throwable> ThrowableExpectations<T> testExpectingException(
+            Class<T> exceptionClass, String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#fshould}.
@@ -105,8 +105,8 @@ public interface CoreDslBuilder {
      * @return
      *     a new instance of the {@link ThrowableExpectations} class
      */
-    ThrowableExpectations focusedTestExpectingException(Class<? extends Throwable> exceptionClass,
-                                                        String description, TestClosure testBody);
+    <T extends Throwable> ThrowableExpectations<T> focusedTestExpectingException(Class<T> exceptionClass,
+            String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#xshould}.
@@ -135,8 +135,8 @@ public interface CoreDslBuilder {
      * @return
      *     a new instance of the {@link ThrowableExpectations} class
      */
-    ThrowableExpectations ignoredTestExpectingException(Class<? extends Throwable> exceptionClass,
-                                                        String description, TestClosure testBody);
+    <T extends Throwable> ThrowableExpectations<T> ignoredTestExpectingException(
+            Class<T> exceptionClass, String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#endsEach}.

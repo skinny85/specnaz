@@ -65,7 +65,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * ```
      */
     inline fun <reified E : Throwable> shouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
-            ThrowableExpectations {
+            ThrowableExpectations<E> {
         @Suppress("DEPRECATION")
         return specBuilder.shouldThrow(E::class.java, description, { testBody.invoke(null) })
     }
@@ -108,7 +108,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      */
     @Deprecated("Deprecated for the same reason SpecBuilder#fshouldThrow is")
     inline fun <reified E : Throwable> fshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
-            ThrowableExpectations {
+            ThrowableExpectations<E> {
         @Suppress("DEPRECATION")
         return specBuilder.fshouldThrow(E::class.java, description, { testBody.invoke(null) })
     }
@@ -134,7 +134,7 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.xshouldThrow] for Kotlin.
      */
     inline fun <reified E : Throwable> xshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
-            ThrowableExpectations {
+            ThrowableExpectations<E> {
         @Suppress("DEPRECATION")
         return specBuilder.xshouldThrow(E::class.java, description, { testBody.invoke(null) })
     }

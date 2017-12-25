@@ -47,9 +47,10 @@ import static java.lang.String.format;
  * @see #withoutCause
  * @see #satisfying
  */
-public final class ThrowableExpectations {
-    private final List<Consumer<Throwable>> assertions;
-    private ThrowableExpectations causeExpectations;
+public final class ThrowableExpectations<T extends Throwable> {
+    private final List<Consumer<T>> assertions;
+    private final Class<T> expectedException;
+    private ThrowableExpectations<?> causeExpectations;
 
     /**
      * The constructor used by {@link SpecBuilder#shouldThrow}.
@@ -59,19 +60,9 @@ public final class ThrowableExpectations {
      *     the type of Exception expected from the test,
      *     passed through the first argument of {@link SpecBuilder#shouldThrow}
      */
-    public ThrowableExpectations(Class<? extends Throwable> expectedException) {
-        this();
-        satisfying(resultingException -> {
-            if (resultingException == null)
-                throw new AssertionError("Expected exception: " + expectedException.getName());
-            if (!expectedException.isAssignableFrom(resultingException.getClass()))
-                throw new AssertionError(format("Unexpected exception, expected: %s but was: %s",
-                        expectedException.getName(), resultingException.getClass().getName()));
-        });
-    }
-
-    private ThrowableExpectations() {
+    public ThrowableExpectations(Class<T> expectedException) {
         assertions = new ArrayList<>();
+        this.expectedException = expectedException;
     }
 
     /**
@@ -79,7 +70,7 @@ public final class ThrowableExpectations {
      *
      * @return {@code this}
      */
-    public ThrowableExpectations withAnyMessage() {
+    public ThrowableExpectations<T> withAnyMessage() {
         return satisfying(throwable -> {
             String throwableMessage = throwable.getMessage();
             if (throwableMessage == null)
@@ -95,7 +86,7 @@ public final class ThrowableExpectations {
      *     the message that the expected Exception should have
      * @return {@code this}
      */
-    public ThrowableExpectations withMessage(String message) {
+    public ThrowableExpectations<T> withMessage(String message) {
         return satisfying(throwable -> {
             String throwableMessage = throwable.getMessage();
             if (!Objects.equals(message, throwableMessage))
@@ -111,7 +102,7 @@ public final class ThrowableExpectations {
      *     the prefix that the expected Exception message should begin with
      * @return {@code this}
      */
-    public ThrowableExpectations withMessageStartingWith(String messageStart) {
+    public ThrowableExpectations<T> withMessageStartingWith(String messageStart) {
         withAnyMessage();
         return satisfying(throwable -> {
             String throwableMessage = throwable.getMessage();
@@ -128,7 +119,7 @@ public final class ThrowableExpectations {
      *     the part that the expected Exception message should contain
      * @return {@code this}
      */
-    public ThrowableExpectations withMessageContaining(String messagePart) {
+    public ThrowableExpectations<T> withMessageContaining(String messagePart) {
         withAnyMessage();
         return satisfying(throwable -> {
             String throwableMessage = throwable.getMessage();
@@ -144,7 +135,7 @@ public final class ThrowableExpectations {
      *
      * @return {@code this}
      */
-    public ThrowableExpectations withoutMessage() {
+    public ThrowableExpectations<T> withoutMessage() {
         return satisfying(throwable -> {
             String throwableMessage = throwable.getMessage();
             if (throwableMessage != null)
@@ -162,12 +153,13 @@ public final class ThrowableExpectations {
      *     a new instance of {@link ThrowableExpectations} that can be used to
      *     further refine assertions on the cause
      */
-    public ThrowableExpectations withCause() {
+    public ThrowableExpectations<Throwable> withCause() {
         satisfying(throwable -> {
             if (throwable.getCause() == null)
                 throw new AssertionError(format("Expected '%s' to have a cause", throwable));
         });
-        causeExpectations = new ThrowableExpectations();
+        ThrowableExpectations<Throwable> causeExpectations = new ThrowableExpectations<>(Throwable.class);
+        this.causeExpectations = causeExpectations;
         return causeExpectations;
     }
 
@@ -182,9 +174,10 @@ public final class ThrowableExpectations {
      *     a new instance of {@link ThrowableExpectations} that can be used to
      *     further refine assertions on the cause
      */
-    public ThrowableExpectations withCauseOfType(Class<? extends Throwable> expectedException) {
+    public <E extends Throwable> ThrowableExpectations<E> withCauseOfType(Class<E> expectedException) {
         withCause();
-        causeExpectations = new ThrowableExpectations(expectedException);
+        ThrowableExpectations<E> causeExpectations = new ThrowableExpectations<>(expectedException);
+        this.causeExpectations = causeExpectations;
         return causeExpectations;
     }
 
@@ -193,7 +186,7 @@ public final class ThrowableExpectations {
      *
      * @return {@code this}
      */
-    public ThrowableExpectations withoutCause() {
+    public ThrowableExpectations<T> withoutCause() {
         return satisfying(throwable -> {
             if (throwable.getCause() != null)
                 throw new AssertionError(format("Expected '%s' to not have a cause", throwable));
@@ -229,14 +222,21 @@ public final class ThrowableExpectations {
      *     {@link Consumer#accept}
      * @return {@code this}
      */
-    public ThrowableExpectations satisfying(Consumer<Throwable> assertion) {
+    public ThrowableExpectations<T> satisfying(Consumer<T> assertion) {
         assertions.add(assertion);
         return this;
     }
 
     private void verify(Throwable throwable) {
-        for (Consumer<Throwable> assertion : assertions)
-            assertion.accept(throwable);
+        if (throwable == null)
+            throw new AssertionError("Expected exception: " + expectedException.getName());
+        if (!expectedException.isAssignableFrom(throwable.getClass()))
+                throw new AssertionError(format("Unexpected exception, expected: %s but was: %s",
+                        expectedException.getName(), throwable.getClass().getName()));
+        T cast = expectedException.cast(throwable);
+
+        for (Consumer<T> assertion : assertions)
+            assertion.accept(cast);
 
         if (causeExpectations != null)
             causeExpectations.verify(throwable.getCause());
@@ -254,7 +254,7 @@ public final class ThrowableExpectations {
             ThrowableExpectations.this.verify(throwable);
         }
 
-        public ThrowableExpectations inner() {
+        public ThrowableExpectations<T> inner() {
             return ThrowableExpectations.this;
         }
     }

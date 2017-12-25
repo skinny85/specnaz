@@ -149,8 +149,8 @@ public interface SpecBuilder {
      * @see #xshouldThrow
      * @see #xdescribes
      */
-    ThrowableExpectations shouldThrow(Class<? extends Throwable> expectedException,
-                                      String description, TestClosure testBody);
+    <T extends Throwable> ThrowableExpectations<T> shouldThrow(Class<T> expectedException,
+            String description, TestClosure testBody);
 
     /**
      * A lifecycle callback executed after each test case.
@@ -333,8 +333,8 @@ public interface SpecBuilder {
      * @see #xdescribes
      */
     @Deprecated
-    ThrowableExpectations fshouldThrow(Class<? extends Throwable> expectedException,
-                                       String description, TestClosure testBody);
+    <T extends Throwable> ThrowableExpectations<T> fshouldThrow(Class<T> expectedException,
+            String description, TestClosure testBody);
 
     /**
      * The 'focused' equivalent of {@link #describes}.
@@ -436,8 +436,8 @@ public interface SpecBuilder {
      * @see #xshould
      * @see #xdescribes
      */
-    ThrowableExpectations xshouldThrow(Class<? extends Throwable> expectedException,
-                                       String description, TestClosure testBody);
+    <T extends Throwable> ThrowableExpectations<T> xshouldThrow(Class<T> expectedException,
+            String description, TestClosure testBody);
 
     /**
      * Allows you to ignore an entire group of tests.
