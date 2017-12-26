@@ -59,14 +59,14 @@ build tools that also do dependency management
 If you're not using a dependency manager, you need to manually download
 the needed JARs and put them on your classpath:
 
-* [specnaz](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz%2F1.1%2Fspecnaz-1.1.jar)
-* [specnaz-junit](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz-junit%2F1.1%2Fspecnaz-junit-1.1.jar)
+* [specnaz](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz%2F1.2%2Fspecnaz-1.2.jar)
+* [specnaz-junit](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz-junit%2F1.2%2Fspecnaz-junit-1.2.jar)
 
 If you want to use the Kotlin integration,
 in addition to the ones above, you also need:
 
-* [specnaz-kotlin](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz-kotlin%2F1.1%2Fspecnaz-kotlin-1.1.jar)
-* [specnaz-kotlin-junit](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz-kotlin-junit%2F1.1%2Fspecnaz-kotlin-junit-1.1.jar)
+* [specnaz-kotlin](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz-kotlin%2F1.2%2Fspecnaz-kotlin-1.2.jar)
+* [specnaz-kotlin-junit](https://bintray.com/skinny85/maven-repo/download_file?file_path=org%2Fspecnaz%2Fspecnaz-kotlin-junit%2F1.2%2Fspecnaz-kotlin-junit-1.2.jar)
 
 # Writing tests
 
