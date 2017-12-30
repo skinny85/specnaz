@@ -6,9 +6,11 @@ import java.util.List;
 
 public final class ExecutableTestGroup {
     private final TestsGroupNodeRunner2_Rules testsGroupNodeRunner;
+    private final Notifier notifier;
 
-    public ExecutableTestGroup(TestsGroupNodeRunner2_Rules testsGroupNodeRunner) {
+    public ExecutableTestGroup(TestsGroupNodeRunner2_Rules testsGroupNodeRunner, Notifier notifier) {
         this.testsGroupNodeRunner = testsGroupNodeRunner;
+        this.notifier = notifier;
     }
 
     public ExecutionClosure beforeAllsClosure() {
@@ -25,11 +27,18 @@ public final class ExecutableTestGroup {
         List<ExecutionClosure> ret = new ArrayList<>(testsGroupNodeRunner.testCases().size());
         for (SingleTestCase testCase : testsGroupNodeRunner.testCases()) {
             ret.add(testsGroupNodeRunner.shouldIgnoreTest(testCase)
-                    ? null
+                    ? () -> {
+                notifier.ignored(testCase);
+            }
                     : () -> {
+                notifier.started(testCase);
                 Throwable throwable = testsGroupNodeRunner.runSingleTestCase2(testCase, beforeAllsError);
-                if (throwable != null)
+                if (throwable != null) {
+                    notifier.failed(testCase, throwable);
                     throw throwable;
+                } else {
+                    notifier.passed(testCase);
+                }
             });
         }
 

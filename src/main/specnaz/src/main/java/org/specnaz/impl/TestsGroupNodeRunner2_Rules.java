@@ -38,8 +38,74 @@ public class TestsGroupNodeRunner2_Rules {
     private ExecutableTestGroup thisNodesExecutableTestGroup() {
         return testsGroupNode.value.testCases.isEmpty()
                 ? null
-                : new ExecutableTestGroup(this);
+                : new ExecutableTestGroup(this, notifier);
     }
+
+    boolean shouldSkipAllsFixtures() {
+        // There are 2 situations when it doesn't make sense to run the beforeAll/afterAll
+        // fixtures for a given group:
+        // 1. If we're supposed to run only focused tests, but this group doesn't contain any.
+        // 2. If this group contains only ignored tests.
+        return (runOnlyFocusedTests &&
+                testsGroupNode.value.testCases.stream().noneMatch(tc -> tc.type == TestCaseType.FOCUSED)) ||
+                (testsGroupNode.value.testCases.stream().allMatch(tc -> tc.type == TestCaseType.IGNORED));
+    }
+
+    Collection<SingleTestCase> testCases() {
+        return testsGroupNode.value.testCases;
+    }
+
+    Throwable runSingleTestCase2(SingleTestCase testCase, Throwable beforeAllsError) {
+        if (beforeAllsError == null) {
+            return runSingleTestCase2(testCase);
+        } else {
+//            notifier.started(testCase);
+//            notifier.failed(testCase, beforeAllsError);
+            return beforeAllsError;
+        }
+    }
+
+    private Throwable runSingleTestCase2(SingleTestCase testCase) {
+//        notifier.started(testCase);
+
+        Throwable e = invokeBefores();
+
+        e = invokeTestBody(testCase, e);
+
+        e = invokeAfters(e);
+
+//        if (e == null)
+//            notifier.passed(testCase);
+//        else
+//            notifier.failed(testCase, e);
+
+        return e;
+    }
+
+    boolean shouldIgnoreTest(SingleTestCase testCase) {
+        boolean ret = testCase.type == TestCaseType.IGNORED ||
+                (runOnlyFocusedTests && testCase.type != TestCaseType.FOCUSED);
+//        if (ret)
+//            notifier.ignored(testCase);
+        return ret;
+    }
+
+    Throwable invokeBeforeAlls() {
+        if (testsGroupNode.value.beforeAllsCount() == 0)
+            return null;
+
+        notifier.setupStarted();
+
+        Throwable beforeAllsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
+        if (beforeAllsError == null) {
+            notifier.setupSucceeded();
+        } else {
+            notifier.setupFailed(beforeAllsError);
+        }
+        return beforeAllsError;
+    }
+
+    /* ************************************* 'old' Runner ************************************************* */
 
     private void runCurrentNodeTestsGroup() {
         TestsGroup testsGroup = testsGroupNode.value;
@@ -59,16 +125,6 @@ public class TestsGroupNodeRunner2_Rules {
         }
 
         invokeAfterAlls(skipAllsFixtures);
-    }
-
-    boolean shouldSkipAllsFixtures() {
-        // There are 2 situations when it doesn't make sense to run the beforeAll/afterAll
-        // fixtures for a given group:
-        // 1. If we're supposed to run only focused tests, but this group doesn't contain any.
-        // 2. If this group contains only ignored tests.
-        return (runOnlyFocusedTests &&
-                testsGroupNode.value.testCases.stream().noneMatch(tc -> tc.type == TestCaseType.FOCUSED)) ||
-                (testsGroupNode.value.testCases.stream().allMatch(tc -> tc.type == TestCaseType.IGNORED));
     }
 
     private void runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
@@ -103,60 +159,6 @@ public class TestsGroupNodeRunner2_Rules {
             notifier.passed(testCase);
         else
             notifier.failed(testCase, e);
-    }
-
-    Collection<SingleTestCase> testCases() {
-        return testsGroupNode.value.testCases;
-    }
-
-    Throwable runSingleTestCase2(SingleTestCase testCase, Throwable beforeAllsError) {
-        if (beforeAllsError == null) {
-            return runSingleTestCase2(testCase);
-        } else {
-            notifier.started(testCase);
-            notifier.failed(testCase, beforeAllsError);
-            return null;
-        }
-    }
-
-    private Throwable runSingleTestCase2(SingleTestCase testCase) {
-        notifier.started(testCase);
-
-        Throwable e = invokeBefores();
-
-        e = invokeTestBody(testCase, e);
-
-        e = invokeAfters(e);
-
-        if (e == null)
-            notifier.passed(testCase);
-        else
-            notifier.failed(testCase, e);
-
-        return e;
-    }
-
-    boolean shouldIgnoreTest(SingleTestCase testCase) {
-        boolean ret = testCase.type == TestCaseType.IGNORED ||
-                (runOnlyFocusedTests && testCase.type != TestCaseType.FOCUSED);
-        if (ret)
-            notifier.ignored(testCase);
-        return ret;
-    }
-
-    Throwable invokeBeforeAlls() {
-        if (testsGroupNode.value.beforeAllsCount() == 0)
-            return null;
-
-        notifier.setupStarted();
-
-        Throwable beforeAllsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
-        if (beforeAllsError == null) {
-            notifier.setupSucceeded();
-        } else {
-            notifier.setupFailed(beforeAllsError);
-        }
-        return beforeAllsError;
     }
 
     private Throwable invokeBeforeAlls(boolean skipAllsFixtures) {
