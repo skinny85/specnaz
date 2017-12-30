@@ -74,12 +74,10 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
             if (executableTestGroup != null) {
                 for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(null)) {
-                    if (individualTestClosure != null) {
-                        try {
-                            individualTestClosure.execute();
-                        } catch (Throwable e) {
-                            // ignore
-                        }
+                    try {
+                        individualTestClosure.execute();
+                    } catch (Throwable e) {
+                        // ignore
                     }
                 }
             }

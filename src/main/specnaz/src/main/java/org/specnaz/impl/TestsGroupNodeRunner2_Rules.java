@@ -48,7 +48,7 @@ public class TestsGroupNodeRunner2_Rules {
         // 2. If this group contains only ignored tests.
         return (runOnlyFocusedTests &&
                 testsGroupNode.value.testCases.stream().noneMatch(tc -> tc.type == TestCaseType.FOCUSED)) ||
-                (testsGroupNode.value.testCases.stream().allMatch(tc -> tc.type == TestCaseType.IGNORED));
+                testsGroupNode.value.testCases.stream().allMatch(tc -> tc.type == TestCaseType.IGNORED);
     }
 
     Collection<SingleTestCase> testCases() {
@@ -59,35 +59,23 @@ public class TestsGroupNodeRunner2_Rules {
         if (beforeAllsError == null) {
             return runSingleTestCase2(testCase);
         } else {
-//            notifier.started(testCase);
-//            notifier.failed(testCase, beforeAllsError);
             return beforeAllsError;
         }
     }
 
     private Throwable runSingleTestCase2(SingleTestCase testCase) {
-//        notifier.started(testCase);
-
         Throwable e = invokeBefores();
 
         e = invokeTestBody(testCase, e);
 
         e = invokeAfters(e);
 
-//        if (e == null)
-//            notifier.passed(testCase);
-//        else
-//            notifier.failed(testCase, e);
-
         return e;
     }
 
     boolean shouldIgnoreTest(SingleTestCase testCase) {
-        boolean ret = testCase.type == TestCaseType.IGNORED ||
+        return testCase.type == TestCaseType.IGNORED ||
                 (runOnlyFocusedTests && testCase.type != TestCaseType.FOCUSED);
-//        if (ret)
-//            notifier.ignored(testCase);
-        return ret;
     }
 
     Throwable invokeBeforeAlls() {
