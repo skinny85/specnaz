@@ -24,6 +24,14 @@ public class TestsGroupNodeRunner2_Rules {
         ret.add(thisNodesExecutableTestGroup());
 
         for (TreeNode<TestsGroup> subGroupTestsNode : testsGroupNode.children()) {
+            /*
+             * In theory, this condition is superfluous - if there are 0 tests in this tree,
+             * then `testsGroupNode.value.testCases.isEmpty()` will be `true` for all
+             * of the subgroups of this group, and we would always return `null`
+             * from `thisNodesExecutableTestGroup`. However, JUnit doesn't do well
+             * when it's called for a suite Description without any children,
+             * so we add this condition here because of that.
+             */
             if (subGroupTestsNode.value.testsInTree > 0) {
                 ret.addAll(new TestsGroupNodeRunner2_Rules(
                         subGroupTestsNode,
@@ -41,7 +49,7 @@ public class TestsGroupNodeRunner2_Rules {
                 : new ExecutableTestGroup(this, notifier);
     }
 
-    boolean shouldSkipAllsFixtures() {
+    boolean allTestsInGroupAreIgnored() {
         // There are 2 situations when it doesn't make sense to run the beforeAll/afterAll
         // fixtures for a given group:
         // 1. If we're supposed to run only focused tests, but this group doesn't contain any.
@@ -104,7 +112,7 @@ public class TestsGroupNodeRunner2_Rules {
             return;
         }
 
-        boolean skipAllsFixtures = shouldSkipAllsFixtures();
+        boolean skipAllsFixtures = allTestsInGroupAreIgnored();
 
         Throwable beforeAllsError = invokeBeforeAlls(skipAllsFixtures);
 

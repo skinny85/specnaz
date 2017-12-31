@@ -14,7 +14,7 @@ public final class ExecutableTestGroup {
     }
 
     public ExecutionClosure beforeAllsClosure() {
-        return testsGroupNodeRunner.shouldSkipAllsFixtures()
+        return testsGroupNodeRunner.allTestsInGroupAreIgnored()
                 ? null
                 : () -> {
             Throwable throwable = testsGroupNodeRunner.invokeBeforeAlls();
