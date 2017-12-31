@@ -15,22 +15,22 @@ public final class ExecutableTestGroup {
 
     public ExecutionClosure beforeAllsClosure() {
         return testsGroupNodeRunner.allTestsInGroupAreIgnored()
-                ? null
-                : () -> {
+                ? new ExecutionClosure()
+                : new ExecutionClosure(() -> {
             Throwable throwable = testsGroupNodeRunner.invokeBeforeAlls();
             if (throwable != null)
                 throw throwable;
-        };
+        });
     }
 
     public Collection<ExecutionClosure> individualTestsClosures(Throwable beforeAllsError) {
         List<ExecutionClosure> ret = new ArrayList<>(testsGroupNodeRunner.testCases().size());
         for (SingleTestCase testCase : testsGroupNodeRunner.testCases()) {
             ret.add(testsGroupNodeRunner.shouldIgnoreTest(testCase)
-                    ? () -> {
+                    ? new ExecutionClosure(true, () -> {
                 notifier.ignored(testCase);
-            }
-                    : () -> {
+            })
+                    : new ExecutionClosure(() -> {
                 notifier.started(testCase);
                 Throwable throwable = testsGroupNodeRunner.runSingleTestCase2(testCase, beforeAllsError);
                 if (throwable != null) {
@@ -39,7 +39,7 @@ public final class ExecutableTestGroup {
                 } else {
                     notifier.passed(testCase);
                 }
-            });
+            }));
         }
 
         return ret;
