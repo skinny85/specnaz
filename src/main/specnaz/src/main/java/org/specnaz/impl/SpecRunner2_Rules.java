@@ -22,8 +22,8 @@ public class SpecRunner2_Rules {
 
     public Collection<ExecutableTestGroup> executableTestGroups(Notifier notifier) {
         TreeNode<TestsGroup> testsPlan = testsPlan();
-        return new TestsGroupNodeRunner2_Rules(testsPlan, notifier, testsPlan.value.containsFocusedTests)
-                .executableTestGroups();
+        return new TestsGroupNodeRunner2_Rules(testsPlan, testsPlan.value.containsFocusedTests)
+                .executableTestGroups(notifier);
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {

@@ -12,16 +12,16 @@ public class TestsGroupNodeRunner2_Rules {
     private final Notifier notifier;
     private final boolean runOnlyFocusedTests;
 
-    public TestsGroupNodeRunner2_Rules(TreeNode<TestsGroup> testsGroupNode, Notifier notifier, boolean runOnlyFocusedTests) {
+    public TestsGroupNodeRunner2_Rules(TreeNode<TestsGroup> testsGroupNode, boolean runOnlyFocusedTests) {
         this.testsGroupNode = testsGroupNode;
-        this.notifier = notifier;
+        this.notifier = null;
         this.runOnlyFocusedTests = runOnlyFocusedTests;
     }
 
-    public Collection<ExecutableTestGroup> executableTestGroups() {
+    public Collection<ExecutableTestGroup> executableTestGroups(Notifier notifier) {
         List<ExecutableTestGroup> ret = new LinkedList<>();
 
-        ret.add(thisNodesExecutableTestGroup());
+        ret.add(thisNodesExecutableTestGroup(notifier));
 
         for (TreeNode<TestsGroup> subGroupTestsNode : testsGroupNode.children()) {
             /*
@@ -35,15 +35,15 @@ public class TestsGroupNodeRunner2_Rules {
             if (subGroupTestsNode.value.testsInTree > 0) {
                 ret.addAll(new TestsGroupNodeRunner2_Rules(
                         subGroupTestsNode,
-                        notifier.subgroup(subGroupTestsNode.value.description), runOnlyFocusedTests)
-                        .executableTestGroups());
+                        runOnlyFocusedTests)
+                        .executableTestGroups(notifier.subgroup(subGroupTestsNode.value.description)));
             }
         }
 
         return ret;
     }
 
-    private ExecutableTestGroup thisNodesExecutableTestGroup() {
+    private ExecutableTestGroup thisNodesExecutableTestGroup(Notifier notifier) {
         return testsGroupNode.value.testCases.isEmpty()
                 ? null
                 : new ExecutableTestGroup(this, notifier);
