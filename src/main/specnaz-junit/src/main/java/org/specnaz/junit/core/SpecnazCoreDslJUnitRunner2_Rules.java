@@ -72,13 +72,11 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         Collection<ExecutableTestGroup> executableTestGroups = specRunner.executableTestGroups(
                 new JUnitNotifier(runNotifier, rootDescription));
         for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
-            if (executableTestGroup != null) {
-                for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(null)) {
-                    try {
-                        individualTestClosure.execute();
-                    } catch (Throwable e) {
-                        // ignore
-                    }
+            for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(null)) {
+                try {
+                    individualTestClosure.execute();
+                } catch (Throwable e) {
+                    // ignore
                 }
             }
         }

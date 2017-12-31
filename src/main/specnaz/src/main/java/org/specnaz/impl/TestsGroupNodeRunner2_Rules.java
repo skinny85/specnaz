@@ -21,7 +21,9 @@ public class TestsGroupNodeRunner2_Rules {
     public Collection<ExecutableTestGroup> executableTestGroups(Notifier notifier) {
         List<ExecutableTestGroup> ret = new LinkedList<>();
 
-        ret.add(thisNodesExecutableTestGroup(notifier));
+        ExecutableTestGroup thisNodesExecutableTestGroup = thisNodesExecutableTestGroup(notifier);
+        if (thisNodesExecutableTestGroup != null)
+            ret.add(thisNodesExecutableTestGroup);
 
         for (TreeNode<TestsGroup> subGroupTestsNode : testsGroupNode.children()) {
             /*
