@@ -27,12 +27,17 @@ public class TestsGroupNodeRunner2_Rules {
 
         for (TreeNode<TestsGroup> subGroupTestsNode : testsGroupNode.children()) {
             /*
-             * In theory, this condition is superfluous - if there are 0 tests in this tree,
-             * then `testsGroupNode.value.testCases.isEmpty()` will be `true` for all
-             * of the subgroups of this group, and we would always return `null`
-             * from `thisNodesExecutableTestGroup`. However, JUnit doesn't do well
-             * when it's called for a suite Description without any children,
-             * so we add this condition here because of that.
+             * In theory, this condition is superfluous -
+             * if there are 0 tests in this tree,
+             * then `testsGroupNode.value.testCases.isEmpty()`
+             * will be `true` for all of the subgroups of this group,
+             * and we would always return `null` from `thisNodesExecutableTestGroup`.
+             * However, the JUnit notifier doesn't do well when it's called for a suite
+             * Description without any non-suite Description children
+             * (the results tree gets completely messed up),
+             * and so we don't add them to the Description tree
+             * (see the SpecnazCoreDslJUnitRunner class, method parseSubGroupDescriptions).
+             * For that reason, we also need this condition here.
              */
             if (subGroupTestsNode.value.testsInTree > 0) {
                 ret.addAll(new TestsGroupNodeRunner2_Rules(
