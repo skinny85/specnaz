@@ -1,47 +1,27 @@
 package org.specnaz.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ExecutableTestGroup {
     private final TestsGroupNodeRunner2_Rules testsGroupNodeRunner;
-    private final Notifier notifier;
+    public final Notifier notifier;
 
     public ExecutableTestGroup(TestsGroupNodeRunner2_Rules testsGroupNodeRunner, Notifier notifier) {
         this.testsGroupNodeRunner = testsGroupNodeRunner;
         this.notifier = notifier;
     }
 
-    public ExecutionClosure beforeAllsClosure() {
+    public Executable beforeAllsClosure() {
         return testsGroupNodeRunner.allTestsInGroupAreIgnored()
-                ? new ExecutionClosure()
-                : new ExecutionClosure(() -> {
-            Throwable throwable = testsGroupNodeRunner.invokeBeforeAlls();
-            if (throwable != null)
-                throw throwable;
-        });
+                ? null
+                : testsGroupNodeRunner::invokeBeforeAlls;
     }
 
     public Collection<ExecutionClosure> individualTestsClosures(Throwable beforeAllsError) {
-        List<ExecutionClosure> ret = new ArrayList<>(testsGroupNodeRunner.testCases().size());
-        for (SingleTestCase testCase : testsGroupNodeRunner.testCases()) {
-            ret.add(testsGroupNodeRunner.shouldIgnoreTest(testCase)
-                    ? new ExecutionClosure(true, () -> {
-                notifier.ignored(testCase);
-            })
-                    : new ExecutionClosure(() -> {
-                notifier.started(testCase);
-                Throwable throwable = testsGroupNodeRunner.runSingleTestCase2(testCase, beforeAllsError);
-                if (throwable != null) {
-                    notifier.failed(testCase, throwable);
-                    throw throwable;
-                } else {
-                    notifier.passed(testCase);
-                }
-            }));
-        }
-
-        return ret;
+        return testsGroupNodeRunner.testCases().stream().map(testCase -> testsGroupNodeRunner.shouldIgnoreTest(testCase)
+                ? new ExecutionClosure(testCase)
+                : new ExecutionClosure(testCase, () -> testsGroupNodeRunner.runSingleTestCase2(testCase, beforeAllsError))
+        ).collect(Collectors.toList());
     }
 }

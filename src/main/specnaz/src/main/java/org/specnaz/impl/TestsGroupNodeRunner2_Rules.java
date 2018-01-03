@@ -97,13 +97,13 @@ public class TestsGroupNodeRunner2_Rules {
         if (testsGroupNode.value.beforeAllsCount() == 0)
             return null;
 
-        notifier.setupStarted();
+//        notifier.setupStarted();
 
         Throwable beforeAllsError = recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
         if (beforeAllsError == null) {
-            notifier.setupSucceeded();
+//            notifier.setupSucceeded();
         } else {
-            notifier.setupFailed(beforeAllsError);
+//            notifier.setupFailed(beforeAllsError);
         }
         return beforeAllsError;
     }

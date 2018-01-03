@@ -1,33 +1,21 @@
 package org.specnaz.impl;
 
 public final class ExecutionClosure {
-    @FunctionalInterface
-    interface Lambda {
-        void execute() throws Throwable;
+    public final SingleTestCase testCase;
+    public final boolean ignored;
+    public final Executable executable;
+
+    public ExecutionClosure(SingleTestCase testCase) {
+        this(testCase, true, null);
     }
 
-    private final boolean ignored;
-    private final Lambda closure;
-
-    public ExecutionClosure() {
-        this(true, null);
+    public ExecutionClosure(SingleTestCase testCase, Executable executable) {
+        this(testCase, false, executable);
     }
 
-    public ExecutionClosure(Lambda closure) {
-        this(false, closure);
-    }
-
-    public ExecutionClosure(boolean ignored, Lambda closure) {
+    private ExecutionClosure(SingleTestCase testCase, boolean ignored, Executable executable) {
+        this.testCase = testCase;
         this.ignored = ignored;
-        this.closure = closure;
-    }
-
-    public void execute() throws Throwable {
-        if (closure != null)
-            closure.execute();
-    }
-
-    public boolean ignored() {
-        return ignored;
+        this.executable = executable;
     }
 }

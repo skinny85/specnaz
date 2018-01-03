@@ -24,7 +24,7 @@ public class MockitoRuleSpec implements Specnaz {
 
     {
         describes("Using the JUnit Mockito Rule in Specnaz", it -> {
-            it.should("initialize fields annotated with @Mock", () -> {
+            it.xshould("initialize fields annotated with @Mock", () -> {
                 assertThat(listMock).isNotNull();
 
                 when(listMock.get(0)).thenReturn(400 + 56);
@@ -38,6 +38,14 @@ public class MockitoRuleSpec implements Specnaz {
 
             it.should("still add correctly", () -> {
                 assertThat(1 + 2).isEqualTo(3);
+            });
+
+            it.describes("with a subgroup without any tests in it", () -> {
+                it.describes("but with another subgroup, which does have tests", () -> {
+                    it.should("not explode", () -> {
+                        assertThat(4 + 5).isEqualTo(9);
+                    });
+                });
             });
         });
     }

@@ -6,6 +6,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.specnaz.core.SpecnazCoreDsl;
 import org.specnaz.impl.ExecutableTestGroup;
 import org.specnaz.impl.ExecutionClosure;
+import org.specnaz.impl.Notifier;
 import org.specnaz.impl.SingleTestCase;
 import org.specnaz.impl.SpecRunner2_Rules;
 import org.specnaz.impl.SpecsRegistryViolation;
@@ -72,11 +73,18 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         Collection<ExecutableTestGroup> executableTestGroups = specRunner.executableTestGroups(
                 new JUnitNotifier(runNotifier, rootDescription));
         for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
+            Notifier notifier = executableTestGroup.notifier;
+
             for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(null)) {
-                try {
-                    individualTestClosure.execute();
-                } catch (Throwable e) {
-                    // ignore
+                if (individualTestClosure.ignored) {
+                    notifier.ignored(individualTestClosure.testCase);
+                } else {
+                    notifier.started(individualTestClosure.testCase);
+                    Throwable throwable = individualTestClosure.executable.execute();
+                    if (throwable == null)
+                        notifier.passed(individualTestClosure.testCase);
+                    else
+                        notifier.failed(individualTestClosure.testCase, throwable);
                 }
             }
         }

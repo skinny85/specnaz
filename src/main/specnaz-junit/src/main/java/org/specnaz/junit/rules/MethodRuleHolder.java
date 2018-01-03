@@ -4,7 +4,7 @@ import org.junit.rules.MethodRule;
 
 import java.util.function.Supplier;
 
-public class MethodRuleHolder<T extends MethodRule> {
+public final class MethodRuleHolder<T extends MethodRule> {
     public MethodRuleHolder(Supplier<T> factory) {
     }
 
