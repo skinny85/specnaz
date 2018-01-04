@@ -1,8 +1,10 @@
 package org.specnaz.junit.core;
 
+import org.junit.Rule;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.model.Statement;
 import org.specnaz.core.SpecnazCoreDsl;
 import org.specnaz.impl.ExecutableTestGroup;
 import org.specnaz.impl.ExecutionClosure;
@@ -13,8 +15,12 @@ import org.specnaz.impl.SpecsRegistryViolation;
 import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitNotifier;
+import org.specnaz.junit.impl.StubMethod;
+import org.specnaz.junit.rules.MethodRuleHolder;
 import org.specnaz.junit.utils.Utils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,6 +30,7 @@ import static org.specnaz.junit.impl.JUnitDescUtils.addChildDescription;
 public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     private final SpecRunner2_Rules specRunner;
     private final Class<?> classs;
+    private final Object specInstance;
 
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs) throws IllegalStateException {
         this(classs, Utils.instantiateTestClass(classs, SpecnazCoreDsl.class));
@@ -32,6 +39,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs, Object specInstance)
             throws IllegalStateException {
         this.classs = classs;
+        this.specInstance = specInstance;
         try {
             this.specRunner = new SpecRunner2_Rules(specInstance);
         } catch (SpecsRegistryViolation e) {
@@ -76,18 +84,67 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
             Notifier notifier = executableTestGroup.notifier;
 
             for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(null)) {
-                if (individualTestClosure.ignored) {
+                Statement singleTestCaseStmt = stmt(individualTestClosure);
+
+                Statement stmt = getInstanceRuleStmt(singleTestCaseStmt);
+
+                if (stmt == null) {
                     notifier.ignored(individualTestClosure.testCase);
                 } else {
                     notifier.started(individualTestClosure.testCase);
-                    Throwable throwable = individualTestClosure.executable.execute();
-                    if (throwable == null)
+                    try {
+                        stmt.evaluate();
                         notifier.passed(individualTestClosure.testCase);
-                    else
+                    } catch (Throwable throwable) {
                         notifier.failed(individualTestClosure.testCase, throwable);
+                    }
                 }
             }
         }
+    }
+
+    private Statement stmt(ExecutionClosure individualTestClosure) {
+        return individualTestClosure.ignored
+                ? null
+                : new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                Throwable throwable = individualTestClosure.executable.execute();
+                if (throwable != null)
+                    throw throwable;
+            }
+        };
+    }
+
+    private Statement getInstanceRuleStmt(Statement singleTestCaseStmt) {
+        if (singleTestCaseStmt == null)
+            return null;
+
+        Field[] fields = classs.getFields();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Rule.class)) {
+                if ((field.getModifiers() & Modifier.STATIC) != 0) {
+                    // throw
+                }
+                if (!field.getType().equals(MethodRuleHolder.class)) {
+                    // throw
+                }
+
+                MethodRuleHolder methodRuleHolder;
+                try {
+                    methodRuleHolder = (MethodRuleHolder) field.get(specInstance);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+                MethodRuleHolder.Wrapper wrapper = methodRuleHolder.new Wrapper();
+                wrapper.reset();
+
+                return wrapper.apply(singleTestCaseStmt, StubMethod.frameworkMethod(), specInstance);
+            }
+        }
+
+        return singleTestCaseStmt;
     }
 
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription) {
