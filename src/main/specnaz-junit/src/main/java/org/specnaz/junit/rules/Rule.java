@@ -1,21 +1,22 @@
 package org.specnaz.junit.rules;
 
 import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import java.util.function.Supplier;
-
-public final class Rule<T extends MethodRule> {
-    public static <T extends MethodRule> Rule<T> of(Supplier<T> factory) {
-        return new Rule<T>(factory);
+public abstract class Rule<T> {
+    public static <T extends MethodRule> Rule<T> of(MethodRuleSupplier<T> factory) {
+        return new InstanceMethodRule<>(factory);
     }
 
-    private final Supplier<T> factory;
-    private T current;
+    public static <T extends TestRule> Rule<T> of(TestRuleSupplier<T> factory) {
+        return new InstanceTestRule<>(factory);
+    }
 
-    private Rule(Supplier<T> factory) {
-        this.factory = factory;
+    protected T current;
+
+    Rule() {
     }
 
     public T r() {
@@ -23,16 +24,56 @@ public final class Rule<T extends MethodRule> {
     }
 
     private void reset() {
-        current = factory.get();
+        current = create();
     }
+
+    abstract T create();
+
+    abstract Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target);
 
     public final class Wrapper {
         public void reset() {
             Rule.this.reset();
         }
 
-        public Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object instance) {
-            return Rule.this.current.apply(statement, frameworkMethod, instance);
+        public Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target) {
+            return Rule.this.apply(statement, frameworkMethod, target);
         }
+    }
+}
+
+final class InstanceMethodRule<T extends MethodRule> extends Rule<T> {
+    private final MethodRuleSupplier<T> factory;
+
+    InstanceMethodRule(MethodRuleSupplier<T> factory) {
+        this.factory = factory;
+    }
+
+    @Override
+    T create() {
+        return factory.get();
+    }
+
+    @Override
+    Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target) {
+        return current.apply(statement, frameworkMethod, target);
+    }
+}
+
+final class InstanceTestRule<T extends TestRule> extends Rule<T> {
+    private final TestRuleSupplier<T> factory;
+
+    InstanceTestRule(TestRuleSupplier<T> factory) {
+        this.factory = factory;
+    }
+
+    @Override
+    T create() {
+        return factory.get();
+    }
+
+    @Override
+    Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target) {
+        throw new UnsupportedOperationException();
     }
 }
