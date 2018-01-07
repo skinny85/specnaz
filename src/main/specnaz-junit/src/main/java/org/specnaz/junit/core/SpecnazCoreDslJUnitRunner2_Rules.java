@@ -1,6 +1,5 @@
 package org.specnaz.junit.core;
 
-import org.junit.Rule;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -122,11 +121,8 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
 
         Field[] fields = classs.getFields();
         for (Field field : fields) {
-            if (field.isAnnotationPresent(Rule.class)) {
+            if (MethodRuleHolder.class.isAssignableFrom(field.getType())) {
                 if ((field.getModifiers() & Modifier.STATIC) != 0) {
-                    // throw
-                }
-                if (!field.getType().equals(MethodRuleHolder.class)) {
                     // throw
                 }
 

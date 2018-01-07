@@ -1,6 +1,5 @@
 package junit.rules;
 
-import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -16,7 +15,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpecnazJUnitRunner2_Rules.class)
 public class MockitoRuleSpec implements Specnaz {
-    @Rule
     public MethodRuleHolder<MockitoRule> mockitoRule = new MethodRuleHolder<>(() -> MockitoJUnit.rule().silent());
 
     @Mock
