@@ -15,7 +15,7 @@ import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.impl.StubMethod;
-import org.specnaz.junit.rules.MethodRuleHolder;
+import org.specnaz.junit.rules.Rule;
 import org.specnaz.junit.utils.Utils;
 
 import java.lang.reflect.Field;
@@ -121,19 +121,19 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
 
         Field[] fields = classs.getFields();
         for (Field field : fields) {
-            if (MethodRuleHolder.class.isAssignableFrom(field.getType())) {
+            if (Rule.class.isAssignableFrom(field.getType())) {
                 if ((field.getModifiers() & Modifier.STATIC) != 0) {
                     // throw
                 }
 
-                MethodRuleHolder methodRuleHolder;
+                Rule methodRuleHolder;
                 try {
-                    methodRuleHolder = (MethodRuleHolder) field.get(specInstance);
+                    methodRuleHolder = (Rule) field.get(specInstance);
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
 
-                MethodRuleHolder.Wrapper wrapper = methodRuleHolder.new Wrapper();
+                Rule.Wrapper wrapper = methodRuleHolder.new Wrapper();
                 wrapper.reset();
 
                 return wrapper.apply(singleTestCaseStmt, StubMethod.frameworkMethod(), specInstance);

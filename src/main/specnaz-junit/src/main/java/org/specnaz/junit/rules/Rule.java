@@ -6,11 +6,15 @@ import org.junit.runners.model.Statement;
 
 import java.util.function.Supplier;
 
-public final class MethodRuleHolder<T extends MethodRule> {
+public final class Rule<T extends MethodRule> {
+    public static <T extends MethodRule> Rule<T> of(Supplier<T> factory) {
+        return new Rule<T>(factory);
+    }
+
     private final Supplier<T> factory;
     private T current;
 
-    public MethodRuleHolder(Supplier<T> factory) {
+    private Rule(Supplier<T> factory) {
         this.factory = factory;
     }
 
@@ -24,11 +28,11 @@ public final class MethodRuleHolder<T extends MethodRule> {
 
     public final class Wrapper {
         public void reset() {
-            MethodRuleHolder.this.reset();
+            Rule.this.reset();
         }
 
         public Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object instance) {
-            return MethodRuleHolder.this.current.apply(statement, frameworkMethod, instance);
+            return Rule.this.current.apply(statement, frameworkMethod, instance);
         }
     }
 }

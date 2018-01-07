@@ -5,7 +5,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.specnaz.Specnaz;
-import org.specnaz.junit.rules.MethodRuleHolder;
+import org.specnaz.junit.rules.Rule;
 import org.specnaz.junit.rules.SpecnazJUnitRunner2_Rules;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpecnazJUnitRunner2_Rules.class)
 public class MockitoRuleSpec implements Specnaz {
-    public MethodRuleHolder<MockitoRule> mockitoRule = new MethodRuleHolder<>(() -> MockitoJUnit.rule().silent());
+    public Rule<MockitoRule> mockitoRule = Rule.of(() -> MockitoJUnit.rule().silent());
 
     @Mock
     List<Integer> listMock;
