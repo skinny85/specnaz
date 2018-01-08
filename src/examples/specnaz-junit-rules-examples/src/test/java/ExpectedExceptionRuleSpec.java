@@ -1,5 +1,3 @@
-package junit.rules;
-
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.specnaz.Specnaz;
