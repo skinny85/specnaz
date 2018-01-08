@@ -1,4 +1,5 @@
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -17,6 +18,12 @@ public class MockitoRuleSpec implements Specnaz {
 
     @Mock
     List<Integer> listMock;
+
+    @Mock
+    DaoA daoA;
+
+    @InjectMocks
+    ServiceA serviceA;
 
     {
         describes("Using the JUnit Mockito Rule in Specnaz", it -> {
@@ -42,6 +49,24 @@ public class MockitoRuleSpec implements Specnaz {
                         assertThat(4 + 5).isEqualTo(9);
                     });
                 });
+            });
+
+            it.should("work correctly with @InjectMocks", () -> {
+                when(daoA.getA()).thenReturn("Mock");
+
+                assertThat(serviceA.findA()).isEqualTo("ServiceA:Mock");
+                // ToDo move this example into its own class
+            });
+
+            it.endsEach(() -> {
+                // Needed in order for the Mockito rule to work correctly -
+                // otherwise, the daoA mock will be re-set, however the serviceA
+                // real object will be not (as it's already non-null).
+                // The Rule works the way it does because in 'vanilla' JUnit,
+                // you get a different instance of the test class for each test,
+                // meaning serviceA will be null again.
+                // However, in Specnaz, the same instance is re-used for all tests.
+                serviceA = null;
             });
         });
     }

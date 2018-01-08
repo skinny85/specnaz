@@ -1,5 +1,6 @@
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -16,6 +17,12 @@ public class MockitoRuleTest {
     @Mock
     List<Integer> listMock;
 
+    @Mock
+    DaoA daoA;
+
+    @InjectMocks
+    ServiceA serviceA;
+
     @Test
     public void test_mockito() throws Exception {
         assertThat(listMock).isNotNull();
@@ -28,5 +35,12 @@ public class MockitoRuleTest {
     @Test
     public void every_test_gets_fresh_mocks() throws Exception {
         assertThat(listMock.get(0)).isNull();
+    }
+
+    @Test
+    public void should_work_with_inject_mocks() {
+        when(daoA.getA()).thenReturn("Mock");
+
+        assertThat(serviceA.findA()).isEqualTo("ServiceA:Mock");
     }
 }
