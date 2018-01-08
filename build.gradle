@@ -58,6 +58,6 @@ configure(subprojects.findAll { it.name.contains('kotlin') }) {
 }
 
 ext {
-    junit_version = '4.11'
+    junit_version = '4.12'
     assertj_version = '3.5.2'
 }
