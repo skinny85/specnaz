@@ -13,6 +13,7 @@ import org.specnaz.impl.SpecRunner2_Rules;
 import org.specnaz.impl.SpecsRegistryViolation;
 import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
+import org.specnaz.junit.impl.JUnitDescUtils;
 import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.impl.StubMethod;
 import org.specnaz.junit.rules.Rule;
@@ -21,6 +22,7 @@ import org.specnaz.junit.utils.Utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 import static org.junit.runner.Description.createSuiteDescription;
@@ -48,6 +50,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private Description extraDescription, rootDescription;
+    private IdentityHashMap<SingleTestCase, Description> testCases2Descriptions;
 
     @Override
     public Description getDescription() {
@@ -67,10 +70,12 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         extraDescription.addChild(rootDescription);
 
         TreeNode<TestsGroup> testsPlan = specRunner.testsPlan();
-        parseSubGroupDescriptions(testsPlan, rootDescription);
+        IdentityHashMap<SingleTestCase, Description> testCases2Descriptions = new IdentityHashMap<>();
+        parseSubGroupDescriptions(testsPlan, rootDescription, testCases2Descriptions);
 
         this.extraDescription = extraDescription;
         this.rootDescription = rootDescription;
+        this.testCases2Descriptions = testCases2Descriptions;
 
         return extraDescription;
     }
@@ -83,9 +88,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
             Notifier notifier = executableTestGroup.notifier;
 
             for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(null)) {
-                Statement singleTestCaseStmt = stmt(individualTestClosure);
-
-                Statement stmt = getInstanceRuleStmt(singleTestCaseStmt);
+                Statement stmt = singleCaseStmtWithInstanceRules(individualTestClosure);
 
                 if (stmt == null) {
                     notifier.ignored(individualTestClosure.testCase);
@@ -102,20 +105,9 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         }
     }
 
-    private Statement stmt(ExecutionClosure individualTestClosure) {
-        return individualTestClosure.ignored
-                ? null
-                : new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                Throwable throwable = individualTestClosure.executable.execute();
-                if (throwable != null)
-                    throw throwable;
-            }
-        };
-    }
+    private Statement singleCaseStmtWithInstanceRules(ExecutionClosure individualTestClosure) {
+        Statement singleTestCaseStmt = singleTestCaseStmt(individualTestClosure);
 
-    private Statement getInstanceRuleStmt(Statement singleTestCaseStmt) {
         if (singleTestCaseStmt == null)
             return null;
 
@@ -136,25 +128,46 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                 Rule.Wrapper wrapper = methodRuleHolder.new Wrapper();
                 wrapper.reset();
 
-                return wrapper.apply(singleTestCaseStmt, StubMethod.frameworkMethod(), specInstance);
+                return wrapper.apply(singleTestCaseStmt,
+                        testCases2Descriptions.get(individualTestClosure.testCase),
+                        StubMethod.frameworkMethod(), specInstance);
             }
         }
 
         return singleTestCaseStmt;
     }
 
-    private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription) {
+    private Statement singleTestCaseStmt(ExecutionClosure individualTestClosure) {
+        return individualTestClosure.ignored
+                ? null
+                : new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                Throwable throwable = individualTestClosure.executable.execute();
+                if (throwable != null)
+                    throw throwable;
+            }
+        };
+    }
+
+    private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription,
+            IdentityHashMap<SingleTestCase, Description> testCases2Descriptions) {
         List<SingleTestCase> testCases = testsGroupNode.value.testCases;
-        for (SingleTestCase testCase : testCases)
-            addChildDescription(testCase.description, parentDescription);
-        if (!testCases.isEmpty() && testsGroupNode.value.afterAllsCount() > 0)
+        for (SingleTestCase testCase : testCases) {
+            Description description = JUnitDescUtils.makeTestDesc(testCase.description, parentDescription);
+            parentDescription.addChild(description);
+            testCases2Descriptions.put(testCase, description);
+        }
+        if (!testCases.isEmpty() && testsGroupNode.value.afterAllsCount() > 0) {
             addChildDescription("teardown", parentDescription);
+            // ToDo handle afterAll methods correctly in testCases2Descriptions
+        }
 
         for (TreeNode<TestsGroup> child : testsGroupNode.children()) {
             if (child.value.testsInTree > 0) {
                 Description suiteDescription = createSuiteDescription(child.value.description);
                 parentDescription.addChild(suiteDescription);
-                parseSubGroupDescriptions(child, suiteDescription);
+                parseSubGroupDescriptions(child, suiteDescription, testCases2Descriptions);
             }
         }
     }

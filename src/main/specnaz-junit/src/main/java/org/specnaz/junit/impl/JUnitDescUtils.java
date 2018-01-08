@@ -7,7 +7,7 @@ public class JUnitDescUtils {
         parentDescription.addChild(makeTestDesc(description, parentDescription));
     }
 
-    private static Description makeTestDesc(String description, Description parentDescription) {
+    public static Description makeTestDesc(String description, Description parentDescription) {
         return Description.createTestDescription(parentDescription.getDisplayName(), description);
     }
 }

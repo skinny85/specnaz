@@ -2,6 +2,7 @@ package org.specnaz.junit.rules;
 
 import org.junit.rules.MethodRule;
 import org.junit.rules.TestRule;
+import org.junit.runner.Description;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
@@ -29,15 +30,15 @@ public abstract class Rule<T> {
 
     abstract T create();
 
-    abstract Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target);
+    abstract Statement apply(Statement statement, Description description, FrameworkMethod frameworkMethod, Object target);
 
     public final class Wrapper {
         public void reset() {
             Rule.this.reset();
         }
 
-        public Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target) {
-            return Rule.this.apply(statement, frameworkMethod, target);
+        public Statement apply(Statement statement, Description description, FrameworkMethod frameworkMethod, Object target) {
+            return Rule.this.apply(statement, description, frameworkMethod, target);
         }
     }
 }
@@ -55,7 +56,7 @@ final class InstanceMethodRule<T extends MethodRule> extends Rule<T> {
     }
 
     @Override
-    Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target) {
+    Statement apply(Statement statement, Description description, FrameworkMethod frameworkMethod, Object target) {
         return current.apply(statement, frameworkMethod, target);
     }
 }
@@ -73,7 +74,7 @@ final class InstanceTestRule<T extends TestRule> extends Rule<T> {
     }
 
     @Override
-    Statement apply(Statement statement, FrameworkMethod frameworkMethod, Object target) {
-        throw new UnsupportedOperationException();
+    Statement apply(Statement statement, Description description, FrameworkMethod frameworkMethod, Object target) {
+        return current.apply(statement, description);
     }
 }
