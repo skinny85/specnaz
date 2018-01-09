@@ -1,6 +1,13 @@
+ext {
+    spring_version = '5.0.2.RELEASE'
+}
+
 dependencies {
     testCompile project(':src:main:specnaz-junit')
     testCompile "junit:junit:$junit_version"
     testCompile "org.assertj:assertj-core:$assertj_version"
     testCompile "org.mockito:mockito-core:1.10.19"
+    testCompile "org.springframework:spring-beans:$spring_version"
+    testCompile "org.springframework:spring-context:$spring_version"
+    testCompile "org.springframework:spring-test:$spring_version"
 }
