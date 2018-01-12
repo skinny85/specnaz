@@ -1,3 +1,6 @@
+package spring;
+
+import a.ServiceA;
 import org.junit.ClassRule;
 import org.specnaz.junit.SpecnazJUnit2_Rules;
 import org.specnaz.junit.rules.Rule;
@@ -24,7 +27,7 @@ public class SpringIntegrationSpec extends SpecnazJUnit2_Rules {
                 assertThat(serviceA).isNotNull();
             });
 
-            it.should("inject the dependencies correctly", () -> {
+            it.xshould("inject the dependencies correctly", () -> {
                 assertThat(serviceA.findA()).isEqualTo("ServiceA:TestDaoA");
             });
         });

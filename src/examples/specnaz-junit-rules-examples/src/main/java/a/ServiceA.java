@@ -1,3 +1,5 @@
+package a;
+
 public class ServiceA {
     private final DaoA daoA;
 

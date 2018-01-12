@@ -1,3 +1,7 @@
+package mockito;
+
+import a.DaoA;
+import a.ServiceA;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

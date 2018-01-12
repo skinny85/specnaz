@@ -1,3 +1,5 @@
+package built_in_rules;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

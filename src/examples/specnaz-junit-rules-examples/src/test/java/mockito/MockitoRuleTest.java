@@ -1,3 +1,7 @@
+package mockito;
+
+import a.DaoA;
+import a.ServiceA;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
