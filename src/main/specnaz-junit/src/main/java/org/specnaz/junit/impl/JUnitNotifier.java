@@ -51,6 +51,13 @@ public final class JUnitNotifier implements Notifier {
     }
 
     @Override
+    public void skipped(SingleTestCase test, Throwable assumptionViolated) {
+        Description testDescription = currentTestDescription();
+        runNotifier.fireTestAssumptionFailed(new Failure(testDescription, assumptionViolated));
+        runNotifier.fireTestFinished(testDescription);
+    }
+
+    @Override
     public void ignored(SingleTestCase test) {
         Description testDescription = advanceToNextTestDescription(test);
         runNotifier.fireTestIgnored(testDescription);

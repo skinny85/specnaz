@@ -19,6 +19,8 @@ public interface Notifier {
 
     void failed(SingleTestCase testCase, Throwable e);
 
+    void skipped(SingleTestCase testCase, Throwable assumptionViolated);
+
     void ignored(SingleTestCase test);
 
     Notifier subgroup(String description);

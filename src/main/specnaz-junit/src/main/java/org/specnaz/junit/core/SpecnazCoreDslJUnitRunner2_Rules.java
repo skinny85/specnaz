@@ -1,5 +1,6 @@
 package org.specnaz.junit.core;
 
+import org.junit.AssumptionViolatedException;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -97,6 +98,8 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                     try {
                         stmt.evaluate();
                         notifier.passed(individualTestClosure.testCase);
+                    } catch (AssumptionViolatedException e) {
+                        notifier.skipped(individualTestClosure.testCase, e);
                     } catch (Throwable throwable) {
                         notifier.failed(individualTestClosure.testCase, throwable);
                     }
