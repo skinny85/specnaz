@@ -27,9 +27,13 @@ public class SpringIntegrationSpec extends SpecnazJUnit2_Rules {
                 assertThat(serviceA).isNotNull();
             });
 
-            it.xshould("inject the dependencies correctly", () -> {
+            it.should("inject the dependencies correctly", () -> {
                 assertThat(serviceA.findA()).isEqualTo("ServiceA:TestDaoA");
             });
         });
     }
+
+    // needed only to fool the Spring validation
+    @org.junit.Rule
+    public SpringMethodRule dummy = null;
 }

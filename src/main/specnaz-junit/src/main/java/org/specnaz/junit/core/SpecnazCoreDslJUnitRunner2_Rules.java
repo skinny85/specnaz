@@ -1,6 +1,8 @@
 package org.specnaz.junit.core;
 
 import org.junit.AssumptionViolatedException;
+import org.junit.ClassRule;
+import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -66,7 +68,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
          * To make the behavior consistent, we add an extra
          * description with the class name at the top level ourselves.
          */
-        Description extraDescription = createSuiteDescription(getClassName());
+        Description extraDescription = createSuiteDescription(classs);
         Description rootDescription = createSuiteDescription(specRunner.name());
         extraDescription.addChild(rootDescription);
 
@@ -83,12 +85,63 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
 
     @Override
     public void run(RunNotifier runNotifier) {
+        Statement entireClassStmt = new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                doRun(runNotifier);
+            }
+        };
+
+        Statement embellishedStmt = stmtWithClassRules(entireClassStmt);
+
+        try {
+            embellishedStmt.evaluate();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Statement stmtWithClassRules(Statement entireClassStmt) {
+        Field[] fields = classs.getFields();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(ClassRule.class)) {
+                if ((field.getModifiers() & Modifier.STATIC) == 0) {
+                    // throw
+                }
+                if (!TestRule.class.isAssignableFrom(field.getType())) {
+                    // throw
+                }
+
+                TestRule testRule;
+                try {
+                    testRule = (TestRule) field.get(null);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return testRule.apply(entireClassStmt, extraDescription);
+            }
+        }
+        return entireClassStmt;
+    }
+
+    private void doRun(RunNotifier runNotifier) {
         Collection<ExecutableTestGroup> executableTestGroups = specRunner.executableTestGroups(
                 new JUnitNotifier(runNotifier, rootDescription));
         for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
             Notifier notifier = executableTestGroup.notifier;
 
-            for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(null)) {
+            Throwable beforeAllsError;
+//            Executable beforeAllsExecutable = executableTestGroup.beforeAllsClosure();
+//            if (beforeAllsExecutable == null) {
+//                beforeAllsError = null;
+//            } else {
+//                beforeAllsError = beforeAllsExecutable.execute();
+//            }
+            // temporary, see above
+            beforeAllsError = null;
+
+            for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(beforeAllsError)) {
                 Statement stmt = singleCaseStmtWithInstanceRules(individualTestClosure);
 
                 if (stmt == null) {
