@@ -8,6 +8,7 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.Statement;
 import org.specnaz.core.SpecnazCoreDsl;
+import org.specnaz.impl.Executable;
 import org.specnaz.impl.ExecutableTestGroup;
 import org.specnaz.impl.ExecutionClosure;
 import org.specnaz.impl.Notifier;
@@ -132,14 +133,12 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
             Notifier notifier = executableTestGroup.notifier;
 
             Throwable beforeAllsError;
-//            Executable beforeAllsExecutable = executableTestGroup.beforeAllsClosure();
-//            if (beforeAllsExecutable == null) {
-//                beforeAllsError = null;
-//            } else {
-//                beforeAllsError = beforeAllsExecutable.execute();
-//            }
-            // temporary, see above
-            beforeAllsError = null;
+            Executable beforeAllsExecutable = executableTestGroup.beforeAllsClosure();
+            if (beforeAllsExecutable == null) {
+                beforeAllsError = null;
+            } else {
+                beforeAllsError = beforeAllsExecutable.execute();
+            }
 
             for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(beforeAllsError)) {
                 Statement stmt = singleCaseStmtWithInstanceRules(individualTestClosure);

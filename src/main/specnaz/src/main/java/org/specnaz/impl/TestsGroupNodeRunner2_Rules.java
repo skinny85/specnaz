@@ -71,11 +71,7 @@ public class TestsGroupNodeRunner2_Rules {
     }
 
     Throwable runSingleTestCase2(SingleTestCase testCase, Throwable beforeAllsError) {
-        if (beforeAllsError == null) {
-            return runSingleTestCase2(testCase);
-        } else {
-            return beforeAllsError;
-        }
+        return beforeAllsError == null ? runSingleTestCase2(testCase) : beforeAllsError;
     }
 
     private Throwable runSingleTestCase2(SingleTestCase testCase) {
