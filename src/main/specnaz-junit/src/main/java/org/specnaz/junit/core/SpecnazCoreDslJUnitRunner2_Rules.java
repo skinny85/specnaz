@@ -130,32 +130,54 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         Collection<ExecutableTestGroup> executableTestGroups = specRunner.executableTestGroups(
                 new JUnitNotifier(runNotifier, rootDescription));
         for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
-            Notifier notifier = executableTestGroup.notifier;
+            runTestGroup(executableTestGroup);
+        }
+    }
 
-            Throwable beforeAllsError;
-            Executable beforeAllsExecutable = executableTestGroup.beforeAllsClosure();
-            if (beforeAllsExecutable == null) {
-                beforeAllsError = null;
+    private void runTestGroup(ExecutableTestGroup executableTestGroup) {
+        Notifier notifier = executableTestGroup.notifier;
+
+        Throwable beforeAllsError;
+        Executable beforeAllsExecutable = executableTestGroup.beforeAllsClosure();
+        if (beforeAllsExecutable == null) {
+            beforeAllsError = null;
+        } else {
+            notifier.setupStarted();
+            beforeAllsError = beforeAllsExecutable.execute();
+            if (beforeAllsError == null) {
+                notifier.setupSucceeded();
             } else {
-                beforeAllsError = beforeAllsExecutable.execute();
+                notifier.setupFailed(beforeAllsError);
             }
+        }
 
-            for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(beforeAllsError)) {
-                Statement stmt = singleCaseStmtWithInstanceRules(individualTestClosure);
+        for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(beforeAllsError)) {
+            Statement stmt = singleCaseStmtWithInstanceRules(individualTestClosure);
 
-                if (stmt == null) {
-                    notifier.ignored(individualTestClosure.testCase);
-                } else {
-                    notifier.started(individualTestClosure.testCase);
-                    try {
-                        stmt.evaluate();
-                        notifier.passed(individualTestClosure.testCase);
-                    } catch (AssumptionViolatedException e) {
-                        notifier.skipped(individualTestClosure.testCase, e);
-                    } catch (Throwable throwable) {
-                        notifier.failed(individualTestClosure.testCase, throwable);
-                    }
+            if (stmt == null) {
+                notifier.ignored(individualTestClosure.testCase);
+            } else {
+                notifier.started(individualTestClosure.testCase);
+                try {
+                    stmt.evaluate();
+                    notifier.passed(individualTestClosure.testCase);
+                } catch (AssumptionViolatedException e) {
+                    notifier.skipped(individualTestClosure.testCase, e);
+                } catch (Throwable throwable) {
+                    notifier.failed(individualTestClosure.testCase, throwable);
                 }
+            }
+        }
+
+        Executable afterAllsClosure = executableTestGroup.afterAllsClosure();
+        if (afterAllsClosure != null) {
+            notifier.teardownStarted();
+            Throwable afterAllsError = afterAllsClosure.execute();
+            Throwable effectiveError = beforeAllsError == null ? afterAllsError : beforeAllsError;
+            if (effectiveError == null) {
+                notifier.teardownSucceeded();
+            } else {
+                notifier.teardownFailed(effectiveError);
             }
         }
     }

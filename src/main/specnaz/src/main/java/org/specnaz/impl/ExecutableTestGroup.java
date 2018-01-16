@@ -13,7 +13,7 @@ public final class ExecutableTestGroup {
     }
 
     public Executable beforeAllsClosure() {
-        return testsGroupNodeRunner.allTestsInGroupAreIgnored()
+        return testsGroupNodeRunner.beforeAllsCount() == 0
                 ? null
                 : testsGroupNodeRunner::invokeBeforeAlls;
     }
@@ -21,7 +21,13 @@ public final class ExecutableTestGroup {
     public Collection<ExecutionClosure> individualTestsClosures(Throwable beforeAllsError) {
         return testsGroupNodeRunner.testCases().stream().map(testCase -> testsGroupNodeRunner.shouldIgnoreTest(testCase)
                 ? new ExecutionClosure(testCase)
-                : new ExecutionClosure(testCase, () -> testsGroupNodeRunner.runSingleTestCase2(testCase, beforeAllsError))
+                : new ExecutionClosure(testCase, () -> testsGroupNodeRunner.runSingleTestCase(testCase, beforeAllsError))
         ).collect(Collectors.toList());
+    }
+
+    public Executable afterAllsClosure() {
+        return testsGroupNodeRunner.afterAllsCount() == 0
+                ? null
+                : testsGroupNodeRunner::invokeAfterAlls;
     }
 }

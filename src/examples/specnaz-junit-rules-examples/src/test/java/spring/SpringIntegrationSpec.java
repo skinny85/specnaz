@@ -35,10 +35,15 @@ public class SpringIntegrationSpec extends SpecnazJUnit2_Rules {
 
             it.beginsAll(() -> {
                 count++;
+//                throw new RuntimeException();
             });
 
             it.should("run the beginsAll methods", () -> {
                 assertThat(count).isOne();
+            });
+
+            it.endsAll(() -> {
+//                throw new RuntimeException();
             });
         });
     }
