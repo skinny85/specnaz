@@ -19,7 +19,9 @@ import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitDescUtils;
 import org.specnaz.junit.impl.JUnitNotifier;
+import org.specnaz.junit.impl.JUnitNotifier2_Rules;
 import org.specnaz.junit.impl.StubMethod;
+import org.specnaz.junit.impl.TestCase2DescriptionMap;
 import org.specnaz.junit.rules.Rule;
 import org.specnaz.junit.utils.Utils;
 
@@ -30,7 +32,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 
 import static org.junit.runner.Description.createSuiteDescription;
-import static org.specnaz.junit.impl.JUnitDescUtils.addChildDescription;
 
 public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     private final SpecRunner2_Rules specRunner;
@@ -54,32 +55,23 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private Description extraDescription, rootDescription;
-    private IdentityHashMap<SingleTestCase, Description> testCases2Descriptions;
+    private TestCase2DescriptionMap testCases2DescriptionsMap;
 
     @Override
     public Description getDescription() {
         if (extraDescription != null)
             return extraDescription;
 
-        /*
-         * JUnit sucks, and behaves differently when running a single test
-         * and running a group of tests. In the former case, the top-level description
-         * is always the name of the class, even if you overwrite it like we do
-         * here with the spec name (and it messes up the names of the tests in the root group).
-         * To make the behavior consistent, we add an extra
-         * description with the class name at the top level ourselves.
-         */
-        Description extraDescription = createSuiteDescription(classs);
-        Description rootDescription = createSuiteDescription(specRunner.name());
+        this.extraDescription = createSuiteDescription(classs);
+        this.rootDescription = createSuiteDescription(specRunner.name());
         extraDescription.addChild(rootDescription);
 
         TreeNode<TestsGroup> testsPlan = specRunner.testsPlan();
         IdentityHashMap<SingleTestCase, Description> testCases2Descriptions = new IdentityHashMap<>();
-        parseSubGroupDescriptions(testsPlan, rootDescription, testCases2Descriptions);
+        TestCase2DescriptionMap.Builder testCase2DescriptionsBuilder = new TestCase2DescriptionMap.Builder();
+        parseSubGroupDescriptions(testsPlan, rootDescription, testCase2DescriptionsBuilder);
 
-        this.extraDescription = extraDescription;
-        this.rootDescription = rootDescription;
-        this.testCases2Descriptions = testCases2Descriptions;
+        this.testCases2DescriptionsMap = testCase2DescriptionsBuilder.build();
 
         return extraDescription;
     }
@@ -89,7 +81,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         Statement entireClassStmt = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                doRun(runNotifier);
+                doRun(runNotifier, new JUnitNotifier2_Rules(runNotifier, testCases2DescriptionsMap));
             }
         };
 
@@ -126,15 +118,15 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         return entireClassStmt;
     }
 
-    private void doRun(RunNotifier runNotifier) {
+    private void doRun(RunNotifier runNotifier, JUnitNotifier2_Rules junitNotifier) {
         Collection<ExecutableTestGroup> executableTestGroups = specRunner.executableTestGroups(
                 new JUnitNotifier(runNotifier, rootDescription));
         for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
-            runTestGroup(executableTestGroup);
+            runTestGroup(executableTestGroup, junitNotifier);
         }
     }
 
-    private void runTestGroup(ExecutableTestGroup executableTestGroup) {
+    private void runTestGroup(ExecutableTestGroup executableTestGroup, JUnitNotifier2_Rules junitNotifier) {
         Notifier notifier = executableTestGroup.notifier;
 
         Throwable beforeAllsError;
@@ -142,42 +134,45 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         if (beforeAllsExecutable == null) {
             beforeAllsError = null;
         } else {
-            notifier.setupStarted();
+            junitNotifier.setupStarted();
             beforeAllsError = beforeAllsExecutable.execute();
             if (beforeAllsError == null) {
-                notifier.setupSucceeded();
+                junitNotifier.setupSucceeded();
             } else {
-                notifier.setupFailed(beforeAllsError);
+                junitNotifier.setupFailed(beforeAllsError);
             }
         }
 
+        SingleTestCase lastTestCase = null;
         for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(beforeAllsError)) {
             Statement stmt = singleCaseStmtWithInstanceRules(individualTestClosure);
 
             if (stmt == null) {
-                notifier.ignored(individualTestClosure.testCase);
+                junitNotifier.ignored(individualTestClosure.testCase);
             } else {
-                notifier.started(individualTestClosure.testCase);
+                junitNotifier.started(individualTestClosure.testCase);
                 try {
                     stmt.evaluate();
-                    notifier.passed(individualTestClosure.testCase);
+                    junitNotifier.passed(individualTestClosure.testCase);
                 } catch (AssumptionViolatedException e) {
-                    notifier.skipped(individualTestClosure.testCase, e);
+                    junitNotifier.skipped(individualTestClosure.testCase, e);
                 } catch (Throwable throwable) {
-                    notifier.failed(individualTestClosure.testCase, throwable);
+                    junitNotifier.failed(individualTestClosure.testCase, throwable);
                 }
             }
+
+            lastTestCase = individualTestClosure.testCase;
         }
 
         Executable afterAllsClosure = executableTestGroup.afterAllsClosure();
         if (afterAllsClosure != null) {
-            notifier.teardownStarted();
+            junitNotifier.teardownStarted(lastTestCase);
             Throwable afterAllsError = afterAllsClosure.execute();
             Throwable effectiveError = beforeAllsError == null ? afterAllsError : beforeAllsError;
             if (effectiveError == null) {
-                notifier.teardownSucceeded();
+                junitNotifier.teardownSucceeded(lastTestCase);
             } else {
-                notifier.teardownFailed(effectiveError);
+                junitNotifier.teardownFailed(lastTestCase, effectiveError);
             }
         }
     }
@@ -206,7 +201,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                 wrapper.reset();
 
                 return wrapper.apply(singleTestCaseStmt,
-                        testCases2Descriptions.get(individualTestClosure.testCase),
+                        testCases2DescriptionsMap.findDesc(individualTestClosure.testCase),
                         StubMethod.frameworkMethod(), specInstance);
             }
         }
@@ -228,23 +223,26 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription,
-            IdentityHashMap<SingleTestCase, Description> testCases2Descriptions) {
+            TestCase2DescriptionMap.Builder testCase2DescriptionsBuilder) {
         List<SingleTestCase> testCases = testsGroupNode.value.testCases;
         for (SingleTestCase testCase : testCases) {
             Description description = JUnitDescUtils.makeTestDesc(testCase.description, parentDescription);
             parentDescription.addChild(description);
-            testCases2Descriptions.put(testCase, description);
+            testCase2DescriptionsBuilder.addDescMapping(testCase, description);
         }
         if (!testCases.isEmpty() && testsGroupNode.value.afterAllsCount() > 0) {
-            addChildDescription("teardown", parentDescription);
-            // ToDo handle afterAll methods correctly in testCases2Descriptions
+            Description description = JUnitDescUtils.makeTestDesc("teardown", parentDescription);
+            parentDescription.addChild(description);
+            for (SingleTestCase testCase : testCases) {
+                testCase2DescriptionsBuilder.addTeardownMapping(testCase, description);
+            }
         }
 
         for (TreeNode<TestsGroup> child : testsGroupNode.children()) {
             if (child.value.testsInTree > 0) {
                 Description suiteDescription = createSuiteDescription(child.value.description);
                 parentDescription.addChild(suiteDescription);
-                parseSubGroupDescriptions(child, suiteDescription, testCases2Descriptions);
+                parseSubGroupDescriptions(child, suiteDescription, testCase2DescriptionsBuilder);
             }
         }
     }

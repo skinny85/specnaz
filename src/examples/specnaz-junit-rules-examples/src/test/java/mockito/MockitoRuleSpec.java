@@ -72,6 +72,10 @@ public class MockitoRuleSpec implements Specnaz {
                 // However, in Specnaz, the same instance is re-used for all tests.
                 serviceA = null;
             });
+
+            it.endsAll(() -> {
+//                throw new RuntimeException();
+            });
         });
     }
 }

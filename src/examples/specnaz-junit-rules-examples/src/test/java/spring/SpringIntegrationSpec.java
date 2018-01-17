@@ -21,8 +21,6 @@ public class SpringIntegrationSpec extends SpecnazJUnit2_Rules {
     @Autowired
     ServiceA serviceA;
 
-    int count;
-
     {
         describes("Spring integration", it -> {
             it.should("inject ServiceA correctly", () -> {
@@ -31,19 +29,6 @@ public class SpringIntegrationSpec extends SpecnazJUnit2_Rules {
 
             it.should("inject the dependencies correctly", () -> {
                 assertThat(serviceA.findA()).isEqualTo("ServiceA:TestDaoA");
-            });
-
-            it.beginsAll(() -> {
-                count++;
-//                throw new RuntimeException();
-            });
-
-            it.should("run the beginsAll methods", () -> {
-                assertThat(count).isOne();
-            });
-
-            it.endsAll(() -> {
-//                throw new RuntimeException();
             });
         });
     }
