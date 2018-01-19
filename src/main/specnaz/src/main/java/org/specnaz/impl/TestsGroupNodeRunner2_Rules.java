@@ -6,22 +6,21 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class TestsGroupNodeRunner2_Rules {
+public final class TestsGroupNodeRunner2_Rules {
     private final TreeNode<TestsGroup> testsGroupNode;
-    private final Notifier notifier;
     private final boolean runOnlyFocusedTests;
 
     public TestsGroupNodeRunner2_Rules(TreeNode<TestsGroup> testsGroupNode, boolean runOnlyFocusedTests) {
         this.testsGroupNode = testsGroupNode;
-        this.notifier = null;
         this.runOnlyFocusedTests = runOnlyFocusedTests;
     }
 
-    public Collection<ExecutableTestGroup> executableTestGroups(Notifier notifier) {
+    public Collection<ExecutableTestGroup> executableTestGroups() {
         List<ExecutableTestGroup> ret = new LinkedList<>();
 
-        ExecutableTestGroup thisNodesExecutableTestGroup = thisNodesExecutableTestGroup(notifier);
+        ExecutableTestGroup thisNodesExecutableTestGroup = thisNodesExecutableTestGroup();
         if (thisNodesExecutableTestGroup != null)
             ret.add(thisNodesExecutableTestGroup);
 
@@ -41,19 +40,24 @@ public class TestsGroupNodeRunner2_Rules {
              */
             if (subGroupTestsNode.value.testsInTree > 0) {
                 ret.addAll(new TestsGroupNodeRunner2_Rules(
-                        subGroupTestsNode,
-                        runOnlyFocusedTests)
-                        .executableTestGroups(notifier.subgroup(subGroupTestsNode.value.description)));
+                        subGroupTestsNode, runOnlyFocusedTests).executableTestGroups());
             }
         }
 
         return ret;
     }
 
-    private ExecutableTestGroup thisNodesExecutableTestGroup(Notifier notifier) {
+    private ExecutableTestGroup thisNodesExecutableTestGroup() {
         return testsGroupNode.value.testCases.isEmpty()
                 ? null
-                : new ExecutableTestGroup(this, notifier);
+                : new ExecutableTestGroup(this);
+    }
+
+    public Collection<ExecutableTestCase> executableTestCases(Throwable beforeAllsError) {
+        return testCases().stream().map(testCase -> shouldIgnoreTest(testCase)
+                ? new ExecutableTestCase(testCase)
+                : new ExecutableTestCase(testCase, () -> runSingleTestCase(testCase, beforeAllsError))
+        ).collect(Collectors.toList());
     }
 
     private boolean allTestsInGroupAreIgnored() {
@@ -64,7 +68,7 @@ public class TestsGroupNodeRunner2_Rules {
         return testsGroupNode.value.testCases;
     }
 
-    Throwable runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
+    private Throwable runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
         return beforeAllsError == null ? runSingleTestCase(testCase) : beforeAllsError;
     }
 

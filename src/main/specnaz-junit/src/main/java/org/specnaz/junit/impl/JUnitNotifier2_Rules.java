@@ -1,5 +1,6 @@
 package org.specnaz.junit.impl;
 
+import org.junit.AssumptionViolatedException;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
@@ -28,7 +29,7 @@ public final class JUnitNotifier2_Rules {
         runNotifier.fireTestFinished(testDescription);
     }
 
-    public void skipped(SingleTestCase test, Throwable assumptionViolated) {
+    public void skipped(SingleTestCase test, AssumptionViolatedException assumptionViolated) {
         Description testDescription = findDesc(test);
         runNotifier.fireTestAssumptionFailed(new Failure(testDescription, assumptionViolated));
         runNotifier.fireTestFinished(testDescription);
@@ -36,15 +37,6 @@ public final class JUnitNotifier2_Rules {
 
     public void ignored(SingleTestCase test) {
         runNotifier.fireTestIgnored(findDesc(test));
-    }
-
-    public void setupStarted() {
-    }
-
-    public void setupSucceeded() {
-    }
-
-    public void setupFailed(Throwable e) {
     }
 
     public void teardownStarted(SingleTestCase test) {

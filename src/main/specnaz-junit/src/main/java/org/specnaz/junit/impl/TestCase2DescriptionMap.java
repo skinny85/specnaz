@@ -25,7 +25,7 @@ public final class TestCase2DescriptionMap {
 
     private final IdentityHashMap<SingleTestCase, Description> testCases, teardowns;
 
-    public TestCase2DescriptionMap(IdentityHashMap<SingleTestCase, Description> testCases,
+    private TestCase2DescriptionMap(IdentityHashMap<SingleTestCase, Description> testCases,
             IdentityHashMap<SingleTestCase, Description> teardowns) {
         this.testCases = testCases;
         this.teardowns = teardowns;

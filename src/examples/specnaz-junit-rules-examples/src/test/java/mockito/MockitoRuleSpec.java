@@ -53,6 +53,10 @@ public class MockitoRuleSpec implements Specnaz {
                         assertThat(4 + 5).isEqualTo(9);
                     });
                 });
+
+                it.endsAll(() -> {
+
+                });
             });
 
             it.should("work correctly with @InjectMocks", () -> {

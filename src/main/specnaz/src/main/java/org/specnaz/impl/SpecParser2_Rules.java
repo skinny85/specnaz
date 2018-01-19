@@ -2,11 +2,11 @@ package org.specnaz.impl;
 
 import java.util.Collection;
 
-public class SpecRunner2_Rules {
+public final class SpecParser2_Rules {
     private final SpecDescriptor specDescriptor;
     private TreeNode<TestsGroup> rootTestsGroupNode;
 
-    public SpecRunner2_Rules(Object specInstance) throws SpecsRegistryViolation {
+    public SpecParser2_Rules(Object specInstance) throws SpecsRegistryViolation {
         this.specDescriptor = SpecsRegistry.specFor(specInstance);
     }
 
@@ -20,10 +20,10 @@ public class SpecRunner2_Rules {
         return rootTestsGroupNode;
     }
 
-    public Collection<ExecutableTestGroup> executableTestGroups(Notifier notifier) {
+    public Collection<ExecutableTestGroup> executableTestGroups() {
         TreeNode<TestsGroup> testsPlan = testsPlan();
         return new TestsGroupNodeRunner2_Rules(testsPlan, testsPlan.value.containsFocusedTests)
-                .executableTestGroups(notifier);
+                .executableTestGroups();
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {

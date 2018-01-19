@@ -9,16 +9,14 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.Statement;
 import org.specnaz.core.SpecnazCoreDsl;
 import org.specnaz.impl.Executable;
+import org.specnaz.impl.ExecutableTestCase;
 import org.specnaz.impl.ExecutableTestGroup;
-import org.specnaz.impl.ExecutionClosure;
-import org.specnaz.impl.Notifier;
 import org.specnaz.impl.SingleTestCase;
-import org.specnaz.impl.SpecRunner2_Rules;
+import org.specnaz.impl.SpecParser2_Rules;
 import org.specnaz.impl.SpecsRegistryViolation;
 import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitDescUtils;
-import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.impl.JUnitNotifier2_Rules;
 import org.specnaz.junit.impl.StubMethod;
 import org.specnaz.junit.impl.TestCase2DescriptionMap;
@@ -28,13 +26,12 @@ import org.specnaz.junit.utils.Utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
-import java.util.IdentityHashMap;
 import java.util.List;
 
 import static org.junit.runner.Description.createSuiteDescription;
 
 public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
-    private final SpecRunner2_Rules specRunner;
+    private final SpecParser2_Rules specParser;
     private final Class<?> classs;
     private final Object specInstance;
 
@@ -44,36 +41,35 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
 
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs, Object specInstance)
             throws IllegalStateException {
-        this.classs = classs;
-        this.specInstance = specInstance;
         try {
-            this.specRunner = new SpecRunner2_Rules(specInstance);
+            this.specParser = new SpecParser2_Rules(specInstance);
         } catch (SpecsRegistryViolation e) {
             throw new IllegalStateException("SpecnazCoreDsl.specification() was never called in the " +
-                    "no-argument constructor of " + getClassName());
+                    "no-argument constructor of " + classs.getSimpleName());
         }
+        this.classs = classs;
+        this.specInstance = specInstance;
     }
 
-    private Description extraDescription, rootDescription;
+    private Description classDescription;
     private TestCase2DescriptionMap testCases2DescriptionsMap;
 
     @Override
     public Description getDescription() {
-        if (extraDescription != null)
-            return extraDescription;
+        if (classDescription != null)
+            return classDescription;
 
-        this.extraDescription = createSuiteDescription(classs);
-        this.rootDescription = createSuiteDescription(specRunner.name());
-        extraDescription.addChild(rootDescription);
+        classDescription = createSuiteDescription(classs);
+        Description rootDescribeDescription = createSuiteDescription(specParser.name());
+        classDescription.addChild(rootDescribeDescription);
 
-        TreeNode<TestsGroup> testsPlan = specRunner.testsPlan();
-        IdentityHashMap<SingleTestCase, Description> testCases2Descriptions = new IdentityHashMap<>();
+        TreeNode<TestsGroup> testsPlan = specParser.testsPlan();
         TestCase2DescriptionMap.Builder testCase2DescriptionsBuilder = new TestCase2DescriptionMap.Builder();
-        parseSubGroupDescriptions(testsPlan, rootDescription, testCase2DescriptionsBuilder);
+        parseSubGroupDescriptions(testsPlan, rootDescribeDescription, testCase2DescriptionsBuilder);
 
         this.testCases2DescriptionsMap = testCase2DescriptionsBuilder.build();
 
-        return extraDescription;
+        return classDescription;
     }
 
     @Override
@@ -81,7 +77,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         Statement entireClassStmt = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                doRun(runNotifier, new JUnitNotifier2_Rules(runNotifier, testCases2DescriptionsMap));
+                doRun(new JUnitNotifier2_Rules(runNotifier, testCases2DescriptionsMap));
             }
         };
 
@@ -112,56 +108,47 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                     throw new RuntimeException(e);
                 }
 
-                return testRule.apply(entireClassStmt, extraDescription);
+                return testRule.apply(entireClassStmt, classDescription);
             }
         }
         return entireClassStmt;
     }
 
-    private void doRun(RunNotifier runNotifier, JUnitNotifier2_Rules junitNotifier) {
-        Collection<ExecutableTestGroup> executableTestGroups = specRunner.executableTestGroups(
-                new JUnitNotifier(runNotifier, rootDescription));
+    private void doRun(JUnitNotifier2_Rules junitNotifier) {
+        Collection<ExecutableTestGroup> executableTestGroups = specParser.executableTestGroups();
         for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
             runTestGroup(executableTestGroup, junitNotifier);
         }
     }
 
     private void runTestGroup(ExecutableTestGroup executableTestGroup, JUnitNotifier2_Rules junitNotifier) {
-        Notifier notifier = executableTestGroup.notifier;
-
         Throwable beforeAllsError;
         Executable beforeAllsExecutable = executableTestGroup.beforeAllsClosure();
         if (beforeAllsExecutable == null) {
             beforeAllsError = null;
         } else {
-            junitNotifier.setupStarted();
             beforeAllsError = beforeAllsExecutable.execute();
-            if (beforeAllsError == null) {
-                junitNotifier.setupSucceeded();
-            } else {
-                junitNotifier.setupFailed(beforeAllsError);
-            }
         }
 
         SingleTestCase lastTestCase = null;
-        for (ExecutionClosure individualTestClosure : executableTestGroup.individualTestsClosures(beforeAllsError)) {
-            Statement stmt = singleCaseStmtWithInstanceRules(individualTestClosure);
+        for (ExecutableTestCase executableTestCase : executableTestGroup.executableTestCases(beforeAllsError)) {
+            Statement stmt = singleCaseStmtWithInstanceRules(executableTestCase);
 
             if (stmt == null) {
-                junitNotifier.ignored(individualTestClosure.testCase);
+                junitNotifier.ignored(executableTestCase.testCase);
             } else {
-                junitNotifier.started(individualTestClosure.testCase);
+                junitNotifier.started(executableTestCase.testCase);
                 try {
                     stmt.evaluate();
-                    junitNotifier.passed(individualTestClosure.testCase);
+                    junitNotifier.passed(executableTestCase.testCase);
                 } catch (AssumptionViolatedException e) {
-                    junitNotifier.skipped(individualTestClosure.testCase, e);
+                    junitNotifier.skipped(executableTestCase.testCase, e);
                 } catch (Throwable throwable) {
-                    junitNotifier.failed(individualTestClosure.testCase, throwable);
+                    junitNotifier.failed(executableTestCase.testCase, throwable);
                 }
             }
 
-            lastTestCase = individualTestClosure.testCase;
+            lastTestCase = executableTestCase.testCase;
         }
 
         Executable afterAllsClosure = executableTestGroup.afterAllsClosure();
@@ -177,8 +164,8 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         }
     }
 
-    private Statement singleCaseStmtWithInstanceRules(ExecutionClosure individualTestClosure) {
-        Statement singleTestCaseStmt = singleTestCaseStmt(individualTestClosure);
+    private Statement singleCaseStmtWithInstanceRules(ExecutableTestCase executableTestCase) {
+        Statement singleTestCaseStmt = singleTestCaseStmt(executableTestCase);
 
         if (singleTestCaseStmt == null)
             return null;
@@ -201,7 +188,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                 wrapper.reset();
 
                 return wrapper.apply(singleTestCaseStmt,
-                        testCases2DescriptionsMap.findDesc(individualTestClosure.testCase),
+                        testCases2DescriptionsMap.findDesc(executableTestCase.testCase),
                         StubMethod.frameworkMethod(), specInstance);
             }
         }
@@ -209,7 +196,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         return singleTestCaseStmt;
     }
 
-    private Statement singleTestCaseStmt(ExecutionClosure individualTestClosure) {
+    private Statement singleTestCaseStmt(ExecutableTestCase individualTestClosure) {
         return individualTestClosure.ignored
                 ? null
                 : new Statement() {
@@ -245,9 +232,5 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                 parseSubGroupDescriptions(child, suiteDescription, testCase2DescriptionsBuilder);
             }
         }
-    }
-
-    private String getClassName() {
-        return classs.getSimpleName();
     }
 }
