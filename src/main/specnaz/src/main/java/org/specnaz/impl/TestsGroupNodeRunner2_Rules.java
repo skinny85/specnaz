@@ -69,7 +69,9 @@ public final class TestsGroupNodeRunner2_Rules {
     }
 
     private Throwable runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
-        return beforeAllsError == null ? runSingleTestCase(testCase) : beforeAllsError;
+        return beforeAllsError == null
+                ? shouldIgnoreTest(testCase) ? null : runSingleTestCase(testCase)
+                : beforeAllsError;
     }
 
     private Throwable runSingleTestCase(SingleTestCase testCase) {
@@ -103,21 +105,21 @@ public final class TestsGroupNodeRunner2_Rules {
         return previousError == null ? aftersError : previousError;
     }
 
-    int beforeAllsCount() {
-        return testsGroupNode.value.beforeAllsCount();
+    public Executable beforeAllsExecutable() {
+        return this::invokeBeforeAlls;
     }
 
-    Throwable invokeBeforeAlls() {
+    private Throwable invokeBeforeAlls() {
         return allTestsInGroupAreIgnored()
                 ? null
                 : recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
     }
 
-    int afterAllsCount() {
-        return testsGroupNode.value.afterAllsCount();
+    public Executable afterAllsExecutable() {
+        return this::invokeAfterAlls;
     }
 
-    Throwable invokeAfterAlls() {
+    private Throwable invokeAfterAlls() {
         return allTestsInGroupAreIgnored()
                 ? null
                 : recursivelyInvokeFixturesAncestorsLast(testsGroupNode, g -> g.afterAlls);

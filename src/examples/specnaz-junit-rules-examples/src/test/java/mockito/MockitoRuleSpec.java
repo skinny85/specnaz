@@ -29,6 +29,8 @@ public class MockitoRuleSpec implements Specnaz {
     @InjectMocks
     ServiceA serviceA;
 
+    int count = 0;
+
     {
         describes("Using the JUnit Mockito Rule in Specnaz", it -> {
             it.should("initialize fields annotated with @Mock", () -> {
@@ -43,19 +45,32 @@ public class MockitoRuleSpec implements Specnaz {
                 assertThat(listMock.get(0)).isNull();
             });
 
-            it.should("still add correctly", () -> {
+            it.xshould("still add correctly", () -> {
                 assertThat(1 + 2).isEqualTo(3);
             });
 
             it.describes("with a subgroup without any tests in it", () -> {
+                it.beginsAll(() -> {
+                    count++;
+                });
+
                 it.describes("but with another subgroup, which does have tests", () -> {
                     it.should("not explode", () -> {
                         assertThat(4 + 5).isEqualTo(9);
                     });
+
+                    it.should("run the beginsAll from the parent subgroup, once", () -> {
+                        assertThat(count).isEqualTo(1);
+                    });
+
+                    it.describes("with another subgroup", () -> {
+                        it.should("have a test that passes", () -> {
+                        });
+                    });
                 });
 
                 it.endsAll(() -> {
-
+//                    throw new RuntimeException();
                 });
             });
 
@@ -75,10 +90,6 @@ public class MockitoRuleSpec implements Specnaz {
                 // meaning serviceA will be null again.
                 // However, in Specnaz, the same instance is re-used for all tests.
                 serviceA = null;
-            });
-
-            it.endsAll(() -> {
-//                throw new RuntimeException();
             });
         });
     }

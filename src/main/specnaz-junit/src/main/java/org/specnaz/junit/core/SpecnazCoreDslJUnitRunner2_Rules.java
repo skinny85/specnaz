@@ -25,7 +25,6 @@ import org.specnaz.junit.utils.Utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.runner.Description.createSuiteDescription;
@@ -115,20 +114,13 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private void doRun(JUnitNotifier2_Rules junitNotifier) {
-        Collection<ExecutableTestGroup> executableTestGroups = specParser.executableTestGroups();
-        for (ExecutableTestGroup executableTestGroup : executableTestGroups) {
+        for (ExecutableTestGroup executableTestGroup : specParser.executableTestGroups()) {
             runTestGroup(executableTestGroup, junitNotifier);
         }
     }
 
     private void runTestGroup(ExecutableTestGroup executableTestGroup, JUnitNotifier2_Rules junitNotifier) {
-        Throwable beforeAllsError;
-        Executable beforeAllsExecutable = executableTestGroup.beforeAllsClosure();
-        if (beforeAllsExecutable == null) {
-            beforeAllsError = null;
-        } else {
-            beforeAllsError = beforeAllsExecutable.execute();
-        }
+        Throwable beforeAllsError = executableTestGroup.beforeAllsExecutable().execute();
 
         SingleTestCase lastTestCase = null;
         for (ExecutableTestCase executableTestCase : executableTestGroup.executableTestCases(beforeAllsError)) {
@@ -151,16 +143,14 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
             lastTestCase = executableTestCase.testCase;
         }
 
-        Executable afterAllsClosure = executableTestGroup.afterAllsClosure();
-        if (afterAllsClosure != null) {
-            junitNotifier.teardownStarted(lastTestCase);
-            Throwable afterAllsError = afterAllsClosure.execute();
-            Throwable effectiveError = beforeAllsError == null ? afterAllsError : beforeAllsError;
-            if (effectiveError == null) {
-                junitNotifier.teardownSucceeded(lastTestCase);
-            } else {
-                junitNotifier.teardownFailed(lastTestCase, effectiveError);
-            }
+        Executable afterAllsClosure = executableTestGroup.afterAllsExecutable();
+        junitNotifier.teardownStarted(lastTestCase);
+        Throwable afterAllsError = afterAllsClosure.execute();
+        Throwable effectiveError = beforeAllsError == null ? afterAllsError : beforeAllsError;
+        if (effectiveError == null) {
+            junitNotifier.teardownSucceeded(lastTestCase);
+        } else {
+            junitNotifier.teardownFailed(lastTestCase, effectiveError);
         }
     }
 

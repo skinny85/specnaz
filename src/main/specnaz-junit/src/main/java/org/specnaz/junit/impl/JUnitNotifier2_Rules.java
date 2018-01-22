@@ -48,7 +48,9 @@ public final class JUnitNotifier2_Rules {
     }
 
     public void teardownFailed(SingleTestCase test, Throwable e) {
-        runNotifier.fireTestFailure(new Failure(findTeardown(test), e));
+        Description testDescription = findTeardown(test);
+        runNotifier.fireTestFailure(new Failure(testDescription, e));
+        runNotifier.fireTestFinished(testDescription);
     }
 
     private Description findDesc(SingleTestCase test) {

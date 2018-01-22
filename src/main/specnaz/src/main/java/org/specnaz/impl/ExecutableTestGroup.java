@@ -9,19 +9,15 @@ public final class ExecutableTestGroup {
         this.testsGroupNodeRunner = testsGroupNodeRunner;
     }
 
-    public Executable beforeAllsClosure() {
-        return testsGroupNodeRunner.beforeAllsCount() == 0
-                ? null
-                : testsGroupNodeRunner::invokeBeforeAlls;
+    public Executable beforeAllsExecutable() {
+        return testsGroupNodeRunner.beforeAllsExecutable();
     }
 
     public Collection<ExecutableTestCase> executableTestCases(Throwable beforeAllsError) {
         return testsGroupNodeRunner.executableTestCases(beforeAllsError);
     }
 
-    public Executable afterAllsClosure() {
-        return testsGroupNodeRunner.afterAllsCount() == 0
-                ? null
-                : testsGroupNodeRunner::invokeAfterAlls;
+    public Executable afterAllsExecutable() {
+        return testsGroupNodeRunner.afterAllsExecutable();
     }
 }
