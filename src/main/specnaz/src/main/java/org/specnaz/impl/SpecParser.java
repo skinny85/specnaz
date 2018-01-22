@@ -20,10 +20,10 @@ public final class SpecParser {
         return rootTestsGroupNode;
     }
 
-    public Collection<ExecutableTestGroup> executableTestGroups() {
+    public Collection<TestsGroupNodeExecutor> testsGroupNodeExecutors() {
         TreeNode<TestsGroup> testsPlan = testsPlan();
         return new TestsGroupNodeExecutor(testsPlan, testsPlan.value.containsFocusedTests)
-                .executableTestGroups();
+                .testsGroupNodeExecutors();
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {

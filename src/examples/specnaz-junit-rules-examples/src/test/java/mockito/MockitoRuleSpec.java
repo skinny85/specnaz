@@ -74,6 +74,12 @@ public class MockitoRuleSpec implements Specnaz {
                 });
             });
 
+            it.describes("and a second subgroup, on the same level", () -> {
+                it.should("pass", () -> {
+
+                });
+            });
+
             it.should("work correctly with @InjectMocks", () -> {
                 when(daoA.getA()).thenReturn("Mock");
 
@@ -90,6 +96,10 @@ public class MockitoRuleSpec implements Specnaz {
                 // meaning serviceA will be null again.
                 // However, in Specnaz, the same instance is re-used for all tests.
                 serviceA = null;
+            });
+
+            it.beginsEach(() -> {
+//                Thread.sleep(500);
             });
         });
     }

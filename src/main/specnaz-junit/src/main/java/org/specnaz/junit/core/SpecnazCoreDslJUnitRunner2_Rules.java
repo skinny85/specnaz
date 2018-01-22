@@ -8,13 +8,12 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.Statement;
 import org.specnaz.core.SpecnazCoreDsl;
-import org.specnaz.impl.Executable;
 import org.specnaz.impl.ExecutableTestCase;
-import org.specnaz.impl.ExecutableTestGroup;
 import org.specnaz.impl.SingleTestCase;
 import org.specnaz.impl.SpecParser;
 import org.specnaz.impl.SpecsRegistryViolation;
 import org.specnaz.impl.TestsGroup;
+import org.specnaz.impl.TestsGroupNodeExecutor;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitDescUtils;
 import org.specnaz.junit.impl.JUnitNotifier2_Rules;
@@ -76,7 +75,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         Statement entireClassStmt = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                doRun(new JUnitNotifier2_Rules(runNotifier, testCases2DescriptionsMap));
+                run(new JUnitNotifier2_Rules(runNotifier, testCases2DescriptionsMap));
             }
         };
 
@@ -113,17 +112,17 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         return entireClassStmt;
     }
 
-    private void doRun(JUnitNotifier2_Rules junitNotifier) {
-        for (ExecutableTestGroup executableTestGroup : specParser.executableTestGroups()) {
-            runTestGroup(executableTestGroup, junitNotifier);
+    private void run(JUnitNotifier2_Rules junitNotifier) {
+        for (TestsGroupNodeExecutor testsGroupNodeExecutor : specParser.testsGroupNodeExecutors()) {
+            runTestsGroup(testsGroupNodeExecutor, junitNotifier);
         }
     }
 
-    private void runTestGroup(ExecutableTestGroup executableTestGroup, JUnitNotifier2_Rules junitNotifier) {
-        Throwable beforeAllsError = executableTestGroup.beforeAllsExecutable().execute();
+    private void runTestsGroup(TestsGroupNodeExecutor testsGroupNodeExecutor, JUnitNotifier2_Rules junitNotifier) {
+        Throwable beforeAllsError = testsGroupNodeExecutor.beforeAllsExecutable().execute();
 
         SingleTestCase lastTestCase = null;
-        for (ExecutableTestCase executableTestCase : executableTestGroup.executableTestCases(beforeAllsError)) {
+        for (ExecutableTestCase executableTestCase : testsGroupNodeExecutor.executableTestCases(beforeAllsError)) {
             Statement stmt = singleCaseStmtWithInstanceRules(executableTestCase);
 
             if (stmt == null) {
@@ -143,9 +142,8 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
             lastTestCase = executableTestCase.testCase;
         }
 
-        Executable afterAllsClosure = executableTestGroup.afterAllsExecutable();
         junitNotifier.teardownStarted(lastTestCase);
-        Throwable afterAllsError = afterAllsClosure.execute();
+        Throwable afterAllsError = testsGroupNodeExecutor.afterAllsExecutable().execute();
         Throwable effectiveError = beforeAllsError == null ? afterAllsError : beforeAllsError;
         if (effectiveError == null) {
             junitNotifier.teardownSucceeded(lastTestCase);

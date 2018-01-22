@@ -3,10 +3,10 @@ package org.specnaz.impl;
 import org.specnaz.utils.TestClosure;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class TestsGroupNodeExecutor {
     private final TreeNode<TestsGroup> testsGroupNode;
@@ -17,40 +17,12 @@ public final class TestsGroupNodeExecutor {
         this.runOnlyFocusedTests = runOnlyFocusedTests;
     }
 
-    public Collection<ExecutableTestGroup> executableTestGroups() {
-        List<ExecutableTestGroup> ret = new LinkedList<>();
-
-        ExecutableTestGroup thisNodesExecutableTestGroup = thisNodesExecutableTestGroup();
-        if (thisNodesExecutableTestGroup != null)
-            ret.add(thisNodesExecutableTestGroup);
-
-        for (TreeNode<TestsGroup> subGroupTestsNode : testsGroupNode.children()) {
-            /*
-             * In theory, this condition is superfluous -
-             * if there are 0 tests in this tree,
-             * then `testsGroupNode.value.testCases.isEmpty()`
-             * will be `true` for all of the subgroups of this group,
-             * and we would always return `null` from `thisNodesExecutableTestGroup`.
-             * However, the JUnit notifier doesn't do well when it's called for a suite
-             * Description without any non-suite Description children
-             * (the results tree gets completely messed up),
-             * and so we don't add them to the Description tree
-             * (see the SpecnazCoreDslJUnitRunner class, method parseSubGroupDescriptions).
-             * For that reason, we also need this condition here.
-             */
-            if (subGroupTestsNode.value.testsInTree > 0) {
-                ret.addAll(new TestsGroupNodeExecutor(
-                        subGroupTestsNode, runOnlyFocusedTests).executableTestGroups());
-            }
-        }
-
-        return ret;
+    public Collection<TestsGroupNodeExecutor> testsGroupNodeExecutors() {
+        return streamOfTestsGroupNodeExecutors().collect(Collectors.toList());
     }
 
-    private ExecutableTestGroup thisNodesExecutableTestGroup() {
-        return testsGroupNode.value.testCases.isEmpty()
-                ? null
-                : new ExecutableTestGroup(this);
+    public Executable beforeAllsExecutable() {
+        return this::invokeBeforeAlls;
     }
 
     public Collection<ExecutableTestCase> executableTestCases(Throwable beforeAllsError) {
@@ -60,12 +32,25 @@ public final class TestsGroupNodeExecutor {
         ).collect(Collectors.toList());
     }
 
-    private boolean allTestsInGroupAreIgnored() {
-        return testCases().stream().allMatch(this::shouldIgnoreTest);
+    public Executable afterAllsExecutable() {
+        return this::invokeAfterAlls;
     }
 
-    Collection<SingleTestCase> testCases() {
-        return testsGroupNode.value.testCases;
+    private Stream<TestsGroupNodeExecutor> streamOfTestsGroupNodeExecutors() {
+        Stream<TestsGroupNodeExecutor> ret = testCases().isEmpty()
+                ? Stream.empty()
+                : Stream.of(this);
+        return Stream.concat(
+                ret,
+                testsGroupNode.children().stream()
+                        .map(child -> new TestsGroupNodeExecutor(child, runOnlyFocusedTests))
+                        .flatMap(TestsGroupNodeExecutor::streamOfTestsGroupNodeExecutors));
+    }
+
+    private Throwable invokeBeforeAlls() {
+        return allTestsInGroupAreIgnored()
+                ? null
+                : recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
     }
 
     private Throwable runSingleTestCase(SingleTestCase testCase, Throwable beforeAllsError) {
@@ -84,11 +69,6 @@ public final class TestsGroupNodeExecutor {
         return e;
     }
 
-    boolean shouldIgnoreTest(SingleTestCase testCase) {
-        return testCase.type == TestCaseType.IGNORED ||
-                (runOnlyFocusedTests && testCase.type != TestCaseType.FOCUSED);
-    }
-
     private Throwable invokeBefores() {
         return recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.befores);
     }
@@ -103,20 +83,6 @@ public final class TestsGroupNodeExecutor {
     private Throwable invokeAfters(Throwable previousError) {
         Throwable aftersError = recursivelyInvokeFixturesAncestorsLast(testsGroupNode, g -> g.afters);
         return previousError == null ? aftersError : previousError;
-    }
-
-    public Executable beforeAllsExecutable() {
-        return this::invokeBeforeAlls;
-    }
-
-    private Throwable invokeBeforeAlls() {
-        return allTestsInGroupAreIgnored()
-                ? null
-                : recursivelyInvokeFixturesAncestorsFirst(testsGroupNode, g -> g.beforeAlls);
-    }
-
-    public Executable afterAllsExecutable() {
-        return this::invokeAfterAlls;
     }
 
     private Throwable invokeAfterAlls() {
@@ -159,5 +125,18 @@ public final class TestsGroupNodeExecutor {
                 ret = result;
         }
         return ret;
+    }
+
+    private boolean allTestsInGroupAreIgnored() {
+        return testCases().stream().allMatch(this::shouldIgnoreTest);
+    }
+
+    private Collection<SingleTestCase> testCases() {
+        return testsGroupNode.value.testCases;
+    }
+
+    private boolean shouldIgnoreTest(SingleTestCase testCase) {
+        return testCase.type == TestCaseType.IGNORED ||
+                (runOnlyFocusedTests && testCase.type != TestCaseType.FOCUSED);
     }
 }
