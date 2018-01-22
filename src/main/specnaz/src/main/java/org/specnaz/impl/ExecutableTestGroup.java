@@ -3,9 +3,9 @@ package org.specnaz.impl;
 import java.util.Collection;
 
 public final class ExecutableTestGroup {
-    private final TestsGroupNodeRunner2_Rules testsGroupNodeRunner;
+    private final TestsGroupNodeExecutor testsGroupNodeRunner;
 
-    public ExecutableTestGroup(TestsGroupNodeRunner2_Rules testsGroupNodeRunner) {
+    public ExecutableTestGroup(TestsGroupNodeExecutor testsGroupNodeRunner) {
         this.testsGroupNodeRunner = testsGroupNodeRunner;
     }
 

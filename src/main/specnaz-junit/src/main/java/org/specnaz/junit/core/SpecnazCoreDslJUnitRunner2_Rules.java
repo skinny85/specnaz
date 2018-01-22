@@ -12,7 +12,7 @@ import org.specnaz.impl.Executable;
 import org.specnaz.impl.ExecutableTestCase;
 import org.specnaz.impl.ExecutableTestGroup;
 import org.specnaz.impl.SingleTestCase;
-import org.specnaz.impl.SpecParser2_Rules;
+import org.specnaz.impl.SpecParser;
 import org.specnaz.impl.SpecsRegistryViolation;
 import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
@@ -30,7 +30,7 @@ import java.util.List;
 import static org.junit.runner.Description.createSuiteDescription;
 
 public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
-    private final SpecParser2_Rules specParser;
+    private final SpecParser specParser;
     private final Class<?> classs;
     private final Object specInstance;
 
@@ -41,7 +41,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs, Object specInstance)
             throws IllegalStateException {
         try {
-            this.specParser = new SpecParser2_Rules(specInstance);
+            this.specParser = new SpecParser(specInstance);
         } catch (SpecsRegistryViolation e) {
             throw new IllegalStateException("SpecnazCoreDsl.specification() was never called in the " +
                     "no-argument constructor of " + classs.getSimpleName());

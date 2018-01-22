@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class TestsGroupNodeRunner2_Rules {
+public final class TestsGroupNodeExecutor {
     private final TreeNode<TestsGroup> testsGroupNode;
     private final boolean runOnlyFocusedTests;
 
-    public TestsGroupNodeRunner2_Rules(TreeNode<TestsGroup> testsGroupNode, boolean runOnlyFocusedTests) {
+    public TestsGroupNodeExecutor(TreeNode<TestsGroup> testsGroupNode, boolean runOnlyFocusedTests) {
         this.testsGroupNode = testsGroupNode;
         this.runOnlyFocusedTests = runOnlyFocusedTests;
     }
@@ -39,7 +39,7 @@ public final class TestsGroupNodeRunner2_Rules {
              * For that reason, we also need this condition here.
              */
             if (subGroupTestsNode.value.testsInTree > 0) {
-                ret.addAll(new TestsGroupNodeRunner2_Rules(
+                ret.addAll(new TestsGroupNodeExecutor(
                         subGroupTestsNode, runOnlyFocusedTests).executableTestGroups());
             }
         }
