@@ -1,4 +1,4 @@
-package org.specnaz.junit.rules;
+package org.specnaz.junit;
 
 import org.junit.runner.Description;
 import org.junit.runner.Runner;

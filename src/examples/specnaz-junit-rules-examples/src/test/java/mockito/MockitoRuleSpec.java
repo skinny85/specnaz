@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.specnaz.Specnaz;
 import org.specnaz.junit.rules.Rule;
-import org.specnaz.junit.rules.SpecnazJUnitRunner2_Rules;
+import org.specnaz.junit.SpecnazJUnitRunner2_Rules;
 
 import java.util.List;
 
