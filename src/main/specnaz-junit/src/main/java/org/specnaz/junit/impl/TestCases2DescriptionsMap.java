@@ -5,7 +5,7 @@ import org.specnaz.impl.SingleTestCase;
 
 import java.util.IdentityHashMap;
 
-public final class TestCase2DescriptionMap {
+public final class TestCases2DescriptionsMap {
     public static final class Builder {
         private final IdentityHashMap<SingleTestCase, Description> testCases = new IdentityHashMap<>(),
                 teardowns = new IdentityHashMap<>();
@@ -18,14 +18,14 @@ public final class TestCase2DescriptionMap {
             teardowns.put(testCase, description);
         }
 
-        public TestCase2DescriptionMap build() {
-            return new TestCase2DescriptionMap(testCases, teardowns);
+        public TestCases2DescriptionsMap build() {
+            return new TestCases2DescriptionsMap(testCases, teardowns);
         }
     }
 
     private final IdentityHashMap<SingleTestCase, Description> testCases, teardowns;
 
-    private TestCase2DescriptionMap(IdentityHashMap<SingleTestCase, Description> testCases,
+    private TestCases2DescriptionsMap(IdentityHashMap<SingleTestCase, Description> testCases,
             IdentityHashMap<SingleTestCase, Description> teardowns) {
         this.testCases = testCases;
         this.teardowns = teardowns;

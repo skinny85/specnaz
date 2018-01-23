@@ -8,11 +8,11 @@ import org.specnaz.impl.SingleTestCase;
 
 public final class JUnitNotifier2_Rules {
     private final RunNotifier runNotifier;
-    private final TestCase2DescriptionMap testCase2DescriptionMap;
+    private final TestCases2DescriptionsMap testCases2DescriptionsMap;
 
-    public JUnitNotifier2_Rules(RunNotifier runNotifier, TestCase2DescriptionMap testCase2DescriptionMap) {
+    public JUnitNotifier2_Rules(RunNotifier runNotifier, TestCases2DescriptionsMap testCases2DescriptionsMap) {
         this.runNotifier = runNotifier;
-        this.testCase2DescriptionMap = testCase2DescriptionMap;
+        this.testCases2DescriptionsMap = testCases2DescriptionsMap;
     }
 
     public void started(SingleTestCase test) {
@@ -54,10 +54,10 @@ public final class JUnitNotifier2_Rules {
     }
 
     private Description findDesc(SingleTestCase test) {
-        return testCase2DescriptionMap.findDesc(test);
+        return testCases2DescriptionsMap.findDesc(test);
     }
 
     private Description findTeardown(SingleTestCase test) {
-        return testCase2DescriptionMap.findTeardown(test);
+        return testCases2DescriptionsMap.findTeardown(test);
     }
 }

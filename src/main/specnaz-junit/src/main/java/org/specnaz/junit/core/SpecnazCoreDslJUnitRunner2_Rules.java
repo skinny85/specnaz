@@ -18,7 +18,7 @@ import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitDescUtils;
 import org.specnaz.junit.impl.JUnitNotifier2_Rules;
 import org.specnaz.junit.impl.StubMethod;
-import org.specnaz.junit.impl.TestCase2DescriptionMap;
+import org.specnaz.junit.impl.TestCases2DescriptionsMap;
 import org.specnaz.junit.rules.Rule;
 import org.specnaz.junit.utils.Utils;
 
@@ -50,7 +50,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private Description classDescription;
-    private TestCase2DescriptionMap testCases2DescriptionsMap;
+    private TestCases2DescriptionsMap testCases2DescriptionsMap;
 
     @Override
     public Description getDescription() {
@@ -62,10 +62,10 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         classDescription.addChild(rootDescribeDescription);
 
         TreeNode<TestsGroup> testsPlan = specParser.testsPlan();
-        TestCase2DescriptionMap.Builder testCase2DescriptionsBuilder = new TestCase2DescriptionMap.Builder();
-        parseSubGroupDescriptions(testsPlan, rootDescribeDescription, testCase2DescriptionsBuilder);
+        TestCases2DescriptionsMap.Builder testCases2DescriptionsMapBuilder = new TestCases2DescriptionsMap.Builder();
+        parseSubGroupDescriptions(testsPlan, rootDescribeDescription, testCases2DescriptionsMapBuilder);
 
-        this.testCases2DescriptionsMap = testCase2DescriptionsBuilder.build();
+        this.testCases2DescriptionsMap = testCases2DescriptionsMapBuilder.build();
 
         return classDescription;
     }
@@ -198,18 +198,18 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription,
-            TestCase2DescriptionMap.Builder testCase2DescriptionsBuilder) {
+            TestCases2DescriptionsMap.Builder testCases2DescriptionsMapBuilder) {
         List<SingleTestCase> testCases = testsGroupNode.value.testCases;
         for (SingleTestCase testCase : testCases) {
             Description description = JUnitDescUtils.makeTestDesc(testCase.description, parentDescription);
             parentDescription.addChild(description);
-            testCase2DescriptionsBuilder.addDescMapping(testCase, description);
+            testCases2DescriptionsMapBuilder.addDescMapping(testCase, description);
         }
         if (!testCases.isEmpty() && testsGroupNode.value.afterAllsCount() > 0) {
             Description description = JUnitDescUtils.makeTestDesc("teardown", parentDescription);
             parentDescription.addChild(description);
             for (SingleTestCase testCase : testCases) {
-                testCase2DescriptionsBuilder.addTeardownMapping(testCase, description);
+                testCases2DescriptionsMapBuilder.addTeardownMapping(testCase, description);
             }
         }
 
@@ -217,7 +217,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
             if (child.value.testsInTree > 0) {
                 Description suiteDescription = createSuiteDescription(child.value.description);
                 parentDescription.addChild(suiteDescription);
-                parseSubGroupDescriptions(child, suiteDescription, testCase2DescriptionsBuilder);
+                parseSubGroupDescriptions(child, suiteDescription, testCases2DescriptionsMapBuilder);
             }
         }
     }
