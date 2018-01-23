@@ -35,7 +35,9 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     private final Class<?> classs;
     private final Object specInstance;
     private final List<TestRule> classRules;
+    private final List<Rule<?>.Wrapper> instanceRules;
 
+    @SuppressWarnings("unused")
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs) throws IllegalStateException {
         this(classs, Utils.instantiateTestClass(classs, SpecnazCoreDsl.class));
     }
@@ -51,6 +53,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         this.classs = classs;
         this.specInstance = specInstance;
         this.classRules = discoverClassRules(classs);
+        this.instanceRules = discoverInstanceRules(classs);
     }
 
     private Description classDescription;
@@ -171,35 +174,18 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private Statement singleCaseStmtWithInstanceRules(ExecutableTestCase executableTestCase) {
-        Statement singleTestCaseStmt = singleTestCaseStmt(executableTestCase);
+        Statement ret = singleTestCaseStmt(executableTestCase);
 
-        if (singleTestCaseStmt == null)
+        if (ret == null)
             return null;
 
-        Field[] fields = classs.getFields();
-        for (Field field : fields) {
-            if (Rule.class.isAssignableFrom(field.getType())) {
-                if ((field.getModifiers() & Modifier.STATIC) != 0) {
-                    // throw
-                }
-
-                Rule methodRuleHolder;
-                try {
-                    methodRuleHolder = (Rule) field.get(specInstance);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-
-                Rule.Wrapper wrapper = methodRuleHolder.new Wrapper();
-                wrapper.reset();
-
-                return wrapper.apply(singleTestCaseStmt,
-                        testCases2DescriptionsMap.findDesc(executableTestCase.testCase),
-                        StubMethod.frameworkMethod(), specInstance);
-            }
+        for (Rule<?>.Wrapper instanceRule : instanceRules) {
+            instanceRule.reset();
+            ret = instanceRule.apply(ret,
+                    testCases2DescriptionsMap.findDesc(executableTestCase.testCase),
+                    StubMethod.frameworkMethod(), specInstance);
         }
-
-        return singleTestCaseStmt;
+        return ret;
     }
 
     private Statement singleTestCaseStmt(ExecutableTestCase executableTestCase) {
@@ -213,6 +199,32 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                     throw throwable;
             }
         };
+    }
+
+    private List<Rule<?>.Wrapper> discoverInstanceRules(Class<?> classs) {
+        List<Rule<?>.Wrapper> ret = new LinkedList<>();
+
+        for (Field field : classs.getFields()) {
+            if (Rule.class.isAssignableFrom(field.getType())) {
+                if (Modifier.isStatic(field.getModifiers())) {
+                    throw new RuntimeException(format(
+                            "The field '%s' of class '%s' is of type org.specnaz.junit.rules.Rule, " +
+                                    "but is static. Rule fields must be instance fields",
+                            field.getName(), classs.getSimpleName()));
+                }
+
+                Rule instanceRule;
+                try {
+                    instanceRule = (Rule) field.get(specInstance);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+                ret.add(instanceRule.new Wrapper());
+            }
+        }
+
+        return ret;
     }
 
     private void parseSubGroupDescriptions(TreeNode<TestsGroup> testsGroupNode, Description parentDescription,
