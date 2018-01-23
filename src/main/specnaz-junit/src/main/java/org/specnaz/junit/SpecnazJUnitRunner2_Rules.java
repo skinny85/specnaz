@@ -11,13 +11,12 @@ public class SpecnazJUnitRunner2_Rules extends Runner {
     private final SpecnazCoreDslJUnitRunner2_Rules coreDslRunner;
 
     public SpecnazJUnitRunner2_Rules(Class<?> classs) throws IllegalStateException {
-        String className = classs.getSimpleName();
         try {
             this.coreDslRunner = new SpecnazCoreDslJUnitRunner2_Rules(classs,
                     Utils.instantiateTestClass(classs, Specnaz.class));
         } catch (IllegalStateException e) {
             throw new IllegalStateException("Specnaz.describes() was never called in the no-argument constructor of " +
-                    className);
+                    classs.getSimpleName());
         }
     }
 

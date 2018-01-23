@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.specnaz.Specnaz;
-import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner;
+import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner2_Rules;
 import org.specnaz.junit.utils.Utils;
 
 /**
@@ -26,7 +26,7 @@ import org.specnaz.junit.utils.Utils;
  * </pre>
  */
 public final class SpecnazJUnitRunner extends Runner {
-    private final SpecnazCoreDslJUnitRunner coreDslRunner;
+    private final SpecnazCoreDslJUnitRunner2_Rules coreDslRunner;
 
     /**
      * This is JUnit's entry point for {@link Runner}s.
@@ -37,13 +37,12 @@ public final class SpecnazJUnitRunner extends Runner {
      *     {@link Specnaz} interface
      */
     public SpecnazJUnitRunner(Class<?> classs) throws IllegalStateException {
-        String className = classs.getSimpleName();
         try {
-            this.coreDslRunner = new SpecnazCoreDslJUnitRunner(className,
+            this.coreDslRunner = new SpecnazCoreDslJUnitRunner2_Rules(classs,
                     Utils.instantiateTestClass(classs, Specnaz.class));
         } catch (IllegalStateException e) {
             throw new IllegalStateException("Specnaz.describes() was never called in the no-argument constructor of " +
-                    className);
+                    classs.getSimpleName());
         }
     }
 
