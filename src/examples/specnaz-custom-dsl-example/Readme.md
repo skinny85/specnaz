@@ -323,7 +323,7 @@ as the only parameter. The implementation should:
     `SpecnazCoreDsl` concepts, so that Specnaz can execute our tests
     (we can use a wrapper class for this, as shown above)
     * finally, we instantiate `SpecnazCoreDslJUnitRunner` using its
-    `(String, Object)` constructor, passing the name of the test class
+    `(Class, Object)` constructor, passing the test class
     and whatever object instance that we called `SpecnazCoreDsl#specification` on
 - we delegate to the instance of `SpecnazCoreDslJUnitRunner`
 created in the constructor to implement the required `Runner` methods,
@@ -347,8 +347,7 @@ public class GivenWhenThenStandaloneJUnitRunner extends Runner {
                      classs.getSimpleName());
         }
         coreWrapper.callSpecification();
-        coreDslJUnitRunner = new SpecnazCoreDslJUnitRunner(classs.getSimpleName(),
-            coreWrapper);
+        coreDslJUnitRunner = new SpecnazCoreDslJUnitRunner(classs, coreWrapper);
     }
 
     @Override
