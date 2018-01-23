@@ -2,22 +2,19 @@ package mockito;
 
 import a.DaoA;
 import a.ServiceA;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.specnaz.Specnaz;
+import org.specnaz.junit.SpecnazJUnit2_Rules;
 import org.specnaz.junit.rules.Rule;
-import org.specnaz.junit.SpecnazJUnitRunner2_Rules;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpecnazJUnitRunner2_Rules.class)
-public class MockitoRuleSpec implements Specnaz {
+public class MockitoRuleSpec extends SpecnazJUnit2_Rules {
     public Rule<MockitoRule> mockitoRule = Rule.of(() -> MockitoJUnit.rule());
 
     @Mock
