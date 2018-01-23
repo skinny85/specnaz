@@ -3,7 +3,7 @@ package org.specnaz.impl;
 public final class ExecutableTestCase {
     public final SingleTestCase testCase;
     public final boolean ignored;
-    public final Executable executable;
+    private final Executable executable;
 
     public ExecutableTestCase(SingleTestCase testCase) {
         this(testCase, true, null);
@@ -17,5 +17,9 @@ public final class ExecutableTestCase {
         this.testCase = testCase;
         this.ignored = ignored;
         this.executable = executable;
+    }
+
+    public Throwable execute() {
+        return executable.execute();
     }
 }

@@ -190,7 +190,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
                 : new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                Throwable throwable = individualTestClosure.executable.execute();
+                Throwable throwable = individualTestClosure.execute();
                 if (throwable != null)
                     throw throwable;
             }
