@@ -202,13 +202,13 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         return singleTestCaseStmt;
     }
 
-    private Statement singleTestCaseStmt(ExecutableTestCase individualTestClosure) {
-        return individualTestClosure.ignored
+    private Statement singleTestCaseStmt(ExecutableTestCase executableTestCase) {
+        return executableTestCase.ignored
                 ? null
                 : new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                Throwable throwable = individualTestClosure.execute();
+                Throwable throwable = executableTestCase.execute();
                 if (throwable != null)
                     throw throwable;
             }
