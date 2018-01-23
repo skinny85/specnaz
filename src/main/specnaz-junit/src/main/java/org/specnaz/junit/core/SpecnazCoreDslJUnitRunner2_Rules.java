@@ -24,14 +24,17 @@ import org.specnaz.junit.utils.Utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.LinkedList;
 import java.util.List;
 
+import static java.lang.String.format;
 import static org.junit.runner.Description.createSuiteDescription;
 
 public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     private final SpecParser specParser;
     private final Class<?> classs;
     private final Object specInstance;
+    private final List<TestRule> classRules;
 
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs) throws IllegalStateException {
         this(classs, Utils.instantiateTestClass(classs, SpecnazCoreDsl.class));
@@ -47,6 +50,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         }
         this.classs = classs;
         this.specInstance = specInstance;
+        this.classRules = discoverClassRules(classs);
     }
 
     private Description classDescription;
@@ -89,27 +93,41 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private Statement stmtWithClassRules(Statement entireClassStmt) {
-        Field[] fields = classs.getFields();
-        for (Field field : fields) {
+        Statement ret = entireClassStmt;
+        for (TestRule classRule : classRules) {
+            ret = classRule.apply(ret, classDescription);
+        }
+        return ret;
+    }
+
+    private List<TestRule> discoverClassRules(Class<?> classs) {
+        List<TestRule> ret = new LinkedList<>();
+
+        for (Field field : classs.getFields()) {
             if (field.isAnnotationPresent(ClassRule.class)) {
-                if ((field.getModifiers() & Modifier.STATIC) == 0) {
-                    // throw
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    throw new RuntimeException(format(
+                            "The field '%s' of the class '%s' is annotated with @ClassRule, " +
+                                    "but is not static. Only static fields can be annotated " +
+                                    "with @ClassRule", field.getName(), classs.getSimpleName()));
                 }
                 if (!TestRule.class.isAssignableFrom(field.getType())) {
-                    // throw
+                    throw new RuntimeException(format(
+                            "The field '%s' of the class '%s' is annotated with @ClassRule, " +
+                                    "but is not of the type org.junit.rules.TestRule. " +
+                                    "Only fields of that type are allowed to be annotated " +
+                                    "with @ClassRule (org.junit.rules.MethodRule is also not allowed)",
+                            field.getName(), classs.getSimpleName()));
                 }
-
-                TestRule testRule;
                 try {
-                    testRule = (TestRule) field.get(null);
+                    ret.add((TestRule) field.get(null));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
-
-                return testRule.apply(entireClassStmt, classDescription);
             }
         }
-        return entireClassStmt;
+
+        return ret;
     }
 
     private void run(JUnitNotifier2_Rules junitNotifier) {
