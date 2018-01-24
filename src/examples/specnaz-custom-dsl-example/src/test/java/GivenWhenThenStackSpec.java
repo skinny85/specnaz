@@ -1,6 +1,6 @@
 import org.junit.runner.RunWith;
 import org.specnaz.examples.custom_dsl.given_when_then.SpecnazGivenWhenThen;
-import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner2_Rules;
+import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner;
 import org.specnaz.utils.IntBox;
 
 import java.util.Stack;
@@ -8,7 +8,7 @@ import java.util.Stack;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.specnaz.utils.IntBox.boxWith;
 
-@RunWith(SpecnazCoreDslJUnitRunner2_Rules.class)
+@RunWith(SpecnazCoreDslJUnitRunner.class)
 public class GivenWhenThenStackSpec implements SpecnazGivenWhenThen {
     {
         given("a Stack", that -> {

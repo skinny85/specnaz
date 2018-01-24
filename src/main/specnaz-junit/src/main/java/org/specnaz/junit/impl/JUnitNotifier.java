@@ -6,11 +6,11 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.specnaz.impl.SingleTestCase;
 
-public final class JUnitNotifier2_Rules {
+public final class JUnitNotifier {
     private final RunNotifier runNotifier;
     private final TestCases2DescriptionsMap testCases2DescriptionsMap;
 
-    public JUnitNotifier2_Rules(RunNotifier runNotifier, TestCases2DescriptionsMap testCases2DescriptionsMap) {
+    public JUnitNotifier(RunNotifier runNotifier, TestCases2DescriptionsMap testCases2DescriptionsMap) {
         this.runNotifier = runNotifier;
         this.testCases2DescriptionsMap = testCases2DescriptionsMap;
     }

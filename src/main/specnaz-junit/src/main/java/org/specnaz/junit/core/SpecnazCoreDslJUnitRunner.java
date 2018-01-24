@@ -17,7 +17,7 @@ import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TestsGroupNodeExecutor;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitDescUtils;
-import org.specnaz.junit.impl.JUnitNotifier2_Rules;
+import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.impl.StubMethod;
 import org.specnaz.junit.impl.TestCases2DescriptionsMap;
 import org.specnaz.junit.rules.Rule;
@@ -35,7 +35,7 @@ import static org.junit.runner.Description.createSuiteDescription;
  * The JUnit {@link Runner} for {@link SpecnazCoreDsl}.
  * This is the runner you should use when writing your own custom Specnaz DSL.
  */
-public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
+public final class SpecnazCoreDslJUnitRunner extends Runner {
     private final SpecParser specParser;
     private final Class<?> classs;
     private final Object specInstance;
@@ -51,7 +51,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
      *     {@link SpecnazCoreDsl} interface
      */
     @SuppressWarnings("unused")
-    public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs) throws IllegalStateException {
+    public SpecnazCoreDslJUnitRunner(Class<?> classs) throws IllegalStateException {
         this(classs, Utils.instantiateTestClass(classs, SpecnazCoreDsl.class));
     }
 
@@ -71,7 +71,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
      * @throws IllegalStateException
      *     if the {@code specInstance} was never registered for running
      */
-    public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs, Object specInstance)
+    public SpecnazCoreDslJUnitRunner(Class<?> classs, Object specInstance)
             throws IllegalStateException {
         try {
             this.specParser = new SpecParser(specInstance);
@@ -111,7 +111,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         Statement entireClassStmt = new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                run(new JUnitNotifier2_Rules(runNotifier, testCases2DescriptionsMap));
+                run(new JUnitNotifier(runNotifier, testCases2DescriptionsMap));
             }
         };
 
@@ -162,13 +162,13 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
         return ret;
     }
 
-    private void run(JUnitNotifier2_Rules junitNotifier) {
+    private void run(JUnitNotifier junitNotifier) {
         for (TestsGroupNodeExecutor testsGroupNodeExecutor : specParser.testsGroupNodeExecutors()) {
             runTestsGroup(testsGroupNodeExecutor, junitNotifier);
         }
     }
 
-    private void runTestsGroup(TestsGroupNodeExecutor testsGroupNodeExecutor, JUnitNotifier2_Rules junitNotifier) {
+    private void runTestsGroup(TestsGroupNodeExecutor testsGroupNodeExecutor, JUnitNotifier junitNotifier) {
         Throwable beforeAllsError = testsGroupNodeExecutor.beforeAllsExecutable().execute();
 
         SingleTestCase lastTestCase = null;

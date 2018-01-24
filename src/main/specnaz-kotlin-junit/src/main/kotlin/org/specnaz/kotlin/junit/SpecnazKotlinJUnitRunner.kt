@@ -5,7 +5,7 @@ import org.junit.runner.RunWith
 import org.junit.runner.Runner
 import org.junit.runner.notification.RunNotifier
 import org.specnaz.junit.SpecnazJUnitRunner
-import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner2_Rules
+import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner
 import org.specnaz.junit.utils.Utils
 import org.specnaz.kotlin.SpecnazKotlin
 
@@ -27,11 +27,11 @@ import org.specnaz.kotlin.SpecnazKotlin
  * ```
  */
 class SpecnazKotlinJUnitRunner(classs: Class<*>) : Runner() {
-    private val coreDslRunner: SpecnazCoreDslJUnitRunner2_Rules
+    private val coreDslRunner: SpecnazCoreDslJUnitRunner
 
     init {
         try {
-            coreDslRunner = SpecnazCoreDslJUnitRunner2_Rules(classs,
+            coreDslRunner = SpecnazCoreDslJUnitRunner(classs,
                     Utils.instantiateTestClass(classs, SpecnazKotlin::class.java))
         } catch (e: IllegalStateException) {
             throw IllegalStateException(
