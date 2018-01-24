@@ -2,12 +2,12 @@ package dropwizard;
 
 import com.fasterxml.jackson.databind.ObjectReader;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.specnaz.junit.SpecnazJUnit2_Rules;
+import org.specnaz.junit.SpecnazJUnit;
 import org.specnaz.junit.rules.Rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class HelloWorldEndpointSpec extends SpecnazJUnit2_Rules {
+public class HelloWorldEndpointSpec extends SpecnazJUnit {
     public final Rule<ResourceTestRule> resources = Rule.of(() -> ResourceTestRule.builder()
             .addResource(new HelloWorldResource("Hello, %s!", "Stranger"))
             .build());

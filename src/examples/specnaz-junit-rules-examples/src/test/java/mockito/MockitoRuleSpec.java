@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.specnaz.junit.SpecnazJUnit2_Rules;
+import org.specnaz.junit.SpecnazJUnit;
 import org.specnaz.junit.rules.Rule;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class MockitoRuleSpec extends SpecnazJUnit2_Rules {
+public class MockitoRuleSpec extends SpecnazJUnit {
     public Rule<MockitoRule> mockitoRule = Rule.of(() -> MockitoJUnit.rule());
 
     @Mock

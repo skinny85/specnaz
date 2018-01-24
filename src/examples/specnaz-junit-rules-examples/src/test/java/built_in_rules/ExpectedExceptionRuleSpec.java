@@ -1,10 +1,10 @@
 package built_in_rules;
 
 import org.junit.rules.ExpectedException;
-import org.specnaz.junit.SpecnazJUnit2_Rules;
+import org.specnaz.junit.SpecnazJUnit;
 import org.specnaz.junit.rules.Rule;
 
-public class ExpectedExceptionRuleSpec extends SpecnazJUnit2_Rules {
+public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
     public Rule<ExpectedException> expectedException = Rule.of(() -> ExpectedException.none());
 
     {

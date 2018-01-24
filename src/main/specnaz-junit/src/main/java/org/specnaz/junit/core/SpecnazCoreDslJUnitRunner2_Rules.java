@@ -7,6 +7,7 @@ import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.Statement;
+import org.specnaz.Specnaz;
 import org.specnaz.core.SpecnazCoreDsl;
 import org.specnaz.impl.ExecutableTestCase;
 import org.specnaz.impl.SingleTestCase;
@@ -30,6 +31,10 @@ import java.util.List;
 import static java.lang.String.format;
 import static org.junit.runner.Description.createSuiteDescription;
 
+/**
+ * The JUnit {@link Runner} for {@link SpecnazCoreDsl}.
+ * This is the runner you should use when writing your own custom Specnaz DSL.
+ */
 public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     private final SpecParser specParser;
     private final Class<?> classs;
@@ -37,11 +42,35 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     private final List<TestRule> classRules;
     private final List<Rule<?>.Wrapper> instanceRules;
 
+    /**
+     * This is JUnit's entry point for {@link Runner}s.
+     *
+     * @param classs
+     *     the class of the tests currently being run.
+     *     It must implement and obey the contract of the
+     *     {@link SpecnazCoreDsl} interface
+     */
     @SuppressWarnings("unused")
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs) throws IllegalStateException {
         this(classs, Utils.instantiateTestClass(classs, SpecnazCoreDsl.class));
     }
 
+    /**
+     * This is the extension point for custom {@link Runner}s that want
+     * to leverage existing JUnit infrastructure provided by this class.
+     * <p>
+     * It's used by the Kotlin Specnaz bindings, for example.
+     *
+     * @param classs
+     *     the {@link Class} instance of the test class
+     * @param specInstance
+     *     an instance of the test object.
+     *     It had to be registered for running, most likely by calling,
+     *     directly or indirectly, a method like {@link Specnaz#describes},
+     *     {@link SpecnazCoreDsl#specification}, or its equivalent
+     * @throws IllegalStateException
+     *     if the {@code specInstance} was never registered for running
+     */
     public SpecnazCoreDslJUnitRunner2_Rules(Class<?> classs, Object specInstance)
             throws IllegalStateException {
         try {

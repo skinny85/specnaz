@@ -2,7 +2,7 @@ package spring;
 
 import a.ServiceA;
 import org.junit.ClassRule;
-import org.specnaz.junit.SpecnazJUnit2_Rules;
+import org.specnaz.junit.SpecnazJUnit;
 import org.specnaz.junit.rules.Rule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration(classes = TestSpringConfig.class)
-public class SpringIntegrationSpec extends SpecnazJUnit2_Rules {
+public class SpringIntegrationSpec extends SpecnazJUnit {
     @ClassRule
     public static final SpringClassRule springClassRule = new SpringClassRule();
 
