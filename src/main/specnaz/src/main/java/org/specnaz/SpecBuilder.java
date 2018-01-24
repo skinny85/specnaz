@@ -108,7 +108,7 @@ public interface SpecBuilder {
      * @see #xshouldThrow
      * @see #xdescribes
      */
-    void should(String description, TestClosure testBody);
+    TestSettings should(String description, TestClosure testBody);
 
     /**
      * Define a test expecting an Exception to be thrown.
@@ -293,7 +293,7 @@ public interface SpecBuilder {
      * @see #xdescribes
      */
     @Deprecated
-    void fshould(String description, TestClosure testBody);
+    TestSettings fshould(String description, TestClosure testBody);
 
     /**
      * The 'focused' equivalent of {@link #shouldThrow}.
@@ -400,7 +400,7 @@ public interface SpecBuilder {
      * @see #xshouldThrow
      * @see #xdescribes
      */
-    void xshould(String description, TestClosure testBody);
+    TestSettings xshould(String description, TestClosure testBody);
 
     /**
      * Allows you to ignore a test.

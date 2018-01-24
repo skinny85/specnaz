@@ -18,7 +18,7 @@ import org.specnaz.impl.TestsGroupNodeExecutor;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitDescUtils;
 import org.specnaz.junit.impl.JUnitNotifier;
-import org.specnaz.junit.impl.StubMethod;
+import org.specnaz.junit.impl.JUnitFrameworkMethod;
 import org.specnaz.junit.impl.TestCases2DescriptionsMap;
 import org.specnaz.junit.rules.Rule;
 import org.specnaz.junit.utils.Utils;
@@ -212,7 +212,7 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
             instanceRule.reset();
             ret = instanceRule.apply(ret,
                     testCases2DescriptionsMap.findDesc(executableTestCase.testCase),
-                    StubMethod.frameworkMethod(), specInstance);
+                    JUnitFrameworkMethod.frameworkMethod(executableTestCase), specInstance);
         }
         return ret;
     }

@@ -1,6 +1,7 @@
 package org.specnaz.impl;
 
 import org.specnaz.SpecBuilder;
+import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
@@ -25,8 +26,8 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
-    public void should(String description, TestClosure testBody) {
-        coreDslBuilder.test("should " + description, testBody);
+    public TestSettings should(String description, TestClosure testBody) {
+        return coreDslBuilder.test("should " + description, testBody);
     }
 
     @Override
@@ -39,8 +40,8 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
 
     @Override
     @SuppressWarnings("deprecation")
-    public void fshould(String description, TestClosure testBody) {
-        coreDslBuilder.focusedTest("should " + description, testBody);
+    public TestSettings fshould(String description, TestClosure testBody) {
+        return coreDslBuilder.focusedTest("should " + description, testBody);
     }
 
     @Override
@@ -53,8 +54,8 @@ public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
     }
 
     @Override
-    public void xshould(String description, TestClosure testBody) {
-        coreDslBuilder.ignoredTest("should " + description, testBody);
+    public TestSettings xshould(String description, TestClosure testBody) {
+        return coreDslBuilder.ignoredTest("should " + description, testBody);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.specnaz.core;
 
 import org.specnaz.SpecBuilder;
+import org.specnaz.TestSettings;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -58,7 +59,7 @@ public interface CoreDslBuilder {
      * @param testBody
      *     the body of the test case
      */
-    void test(String description, TestClosure testBody);
+    TestSettings test(String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#shouldThrow}.
@@ -88,7 +89,7 @@ public interface CoreDslBuilder {
      * @param testBody
      *     the body of the test case
      */
-    void focusedTest(String description, TestClosure testBody);
+    TestSettings focusedTest(String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#fshouldThrow}.
@@ -118,7 +119,7 @@ public interface CoreDslBuilder {
      * @param testBody
      *     the body of the test case
      */
-    void ignoredTest(String description, TestClosure testBody);
+    TestSettings ignoredTest(String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#xshouldThrow}.

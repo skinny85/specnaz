@@ -1,6 +1,7 @@
 package org.specnaz.kotlin
 
 import org.specnaz.SpecBuilder
+import org.specnaz.TestSettings
 import org.specnaz.utils.ThrowableExpectations
 
 /**
@@ -47,9 +48,9 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
     /**
      * The equivalent of [SpecBuilder.should] for Kotlin.
      */
-    fun should(description: String, testBody: (Nothing?) -> Unit) {
+    fun should(description: String, testBody: (Nothing?) -> Unit): TestSettings {
         @Suppress("DEPRECATION")
-        specBuilder.should(description, { testBody.invoke(null) })
+        return specBuilder.should(description, { testBody.invoke(null) })
     }
 
     /**
@@ -98,9 +99,9 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
      * The equivalent of [SpecBuilder.fshould] for Kotlin.
      */
     @Deprecated("Deprecated for the same reason SpecBuilder#fshould is")
-    fun fshould(description: String, testBody: (Nothing?) -> Unit) {
+    fun fshould(description: String, testBody: (Nothing?) -> Unit): TestSettings {
         @Suppress("DEPRECATION")
-        specBuilder.fshould(description, { testBody.invoke(null) })
+        return specBuilder.fshould(description, { testBody.invoke(null) })
     }
 
     /**
@@ -125,9 +126,9 @@ class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reif
     /**
      * The equivalent of [SpecBuilder.xshould] for Kotlin.
      */
-    fun xshould(description: String, testBody: (Nothing?) -> Unit) {
+    fun xshould(description: String, testBody: (Nothing?) -> Unit): TestSettings {
         @Suppress("DEPRECATION")
-        specBuilder.xshould(description, { testBody.invoke(null) })
+        return specBuilder.xshould(description, { testBody.invoke(null) })
     }
 
     /**

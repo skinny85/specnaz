@@ -1,5 +1,6 @@
 package org.specnaz.impl;
 
+import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
@@ -22,8 +23,8 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public void test(String description, TestClosure testBody) {
-        testsGroupNodeBuilder.addTestCase(new SinglePositiveTestCase(TestCaseType.REGULAR, description, testBody));
+    public TestSettings test(String description, TestClosure testBody) {
+        return testsGroupNodeBuilder.addTestCase(new SinglePositiveTestCase(TestCaseType.REGULAR, description, testBody));
     }
 
     @Override
@@ -33,8 +34,8 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public void focusedTest(String description, TestClosure testBody) {
-        testsGroupNodeBuilder.addTestCase(new SinglePositiveTestCase(TestCaseType.FOCUSED, description, testBody));
+    public TestSettings focusedTest(String description, TestClosure testBody) {
+        return testsGroupNodeBuilder.addTestCase(new SinglePositiveTestCase(TestCaseType.FOCUSED, description, testBody));
     }
 
     @Override
@@ -44,8 +45,8 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public void ignoredTest(String description, TestClosure testBody) {
-        testsGroupNodeBuilder.addTestCase(new SinglePositiveTestCase(TestCaseType.IGNORED, description, testBody));
+    public TestSettings ignoredTest(String description, TestClosure testBody) {
+        return testsGroupNodeBuilder.addTestCase(new SinglePositiveTestCase(TestCaseType.IGNORED, description, testBody));
     }
 
     @Override

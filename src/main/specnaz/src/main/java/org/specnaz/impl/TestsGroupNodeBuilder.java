@@ -1,5 +1,6 @@
 package org.specnaz.impl;
 
+import org.specnaz.TestSettings;
 import org.specnaz.utils.TestClosure;
 
 import java.util.LinkedList;
@@ -31,22 +32,25 @@ public final class TestsGroupNodeBuilder {
         befores.add(closure);
     }
 
-    public void addTestCase(SingleTestCase testCase) {
+    public TestSettings addTestCase(SingleTestCase testCase) {
+        SingleTestCase testCaseToAdd = null;
         switch (testCaseType) {
             case REGULAR:
-                testCases.add(testCase);
+                testCaseToAdd = testCase;
                 if (testCase.type == TestCaseType.FOCUSED)
                     containsFocusedTests = true;
                 break;
             case FOCUSED:
-                testCases.add(testCase.type == TestCaseType.REGULAR
+                testCaseToAdd = testCase.type == TestCaseType.REGULAR
                         ? testCase.type(TestCaseType.FOCUSED)
-                        : testCase);
+                        : testCase;
                 break;
             case IGNORED:
-                testCases.add(testCase.type(TestCaseType.IGNORED));
+                testCaseToAdd = testCase.type(TestCaseType.IGNORED);
                 break;
         }
+        testCases.add(testCaseToAdd);
+        return testCaseToAdd.testSettings().unwrap();
     }
 
     public void addAfterEach(TestClosure closure) {
