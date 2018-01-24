@@ -189,7 +189,7 @@ public final class SpecnazCoreDslJUnitRunner2_Rules extends Runner {
     }
 
     private Statement singleTestCaseStmt(ExecutableTestCase executableTestCase) {
-        return executableTestCase.ignored
+        return executableTestCase.isIgnored()
                 ? null
                 : new Statement() {
             @Override
