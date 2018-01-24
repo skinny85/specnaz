@@ -30,13 +30,12 @@ class SpecnazKotlinJUnitRunner(classs: Class<*>) : Runner() {
     private val coreDslRunner: SpecnazCoreDslJUnitRunner
 
     init {
-        val className = classs.simpleName
         try {
-            coreDslRunner = SpecnazCoreDslJUnitRunner(className,
+            coreDslRunner = SpecnazCoreDslJUnitRunner(classs,
                     Utils.instantiateTestClass(classs, SpecnazKotlin::class.java))
         } catch (e: IllegalStateException) {
             throw IllegalStateException(
-                    "SpecnazKotlin.describes() was never called in the no-argument constructor of $className")
+                    "SpecnazKotlin.describes() was never called in the no-argument constructor of ${classs.simpleName}")
         }
     }
 

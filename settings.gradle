@@ -5,6 +5,7 @@ include 'src:main:specnaz',
         'src:main:specnaz-kotlin',
         'src:main:specnaz-kotlin-junit',
         'src:examples:specnaz-java-examples',
+        'src:examples:specnaz-junit-rules-examples',
         'src:examples:specnaz-kotlin-examples',
         'src:examples:specnaz-groovy-examples',
         'src:examples:specnaz-custom-dsl-example'

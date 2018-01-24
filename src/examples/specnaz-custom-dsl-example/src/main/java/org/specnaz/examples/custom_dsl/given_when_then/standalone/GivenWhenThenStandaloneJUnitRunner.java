@@ -20,7 +20,7 @@ public class GivenWhenThenStandaloneJUnitRunner extends Runner {
                     "in the no-argument constructor of " + classs.getSimpleName());
         }
         coreWrapper.callSpecification();
-        coreDslJUnitRunner = new SpecnazCoreDslJUnitRunner(classs.getSimpleName(), coreWrapper);
+        coreDslJUnitRunner = new SpecnazCoreDslJUnitRunner(classs, coreWrapper);
     }
 
     @Override

@@ -1,0 +1,17 @@
+ext {
+    spring_version = '5.0.2.RELEASE'
+    dropwizard_version = '1.2.2'
+}
+
+dependencies {
+    compile "io.dropwizard:dropwizard-core:$dropwizard_version"
+
+    testCompile project(':src:main:specnaz-junit')
+    testCompile "junit:junit:$junit_version"
+    testCompile "org.assertj:assertj-core:$assertj_version"
+    testCompile "org.mockito:mockito-core:1.10.19"
+    testCompile "org.springframework:spring-beans:$spring_version"
+    testCompile "org.springframework:spring-context:$spring_version"
+    testCompile "org.springframework:spring-test:$spring_version"
+    testCompile "io.dropwizard:dropwizard-testing:$dropwizard_version"
+}

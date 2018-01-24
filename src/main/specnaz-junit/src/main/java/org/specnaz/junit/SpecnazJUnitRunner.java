@@ -37,13 +37,12 @@ public final class SpecnazJUnitRunner extends Runner {
      *     {@link Specnaz} interface
      */
     public SpecnazJUnitRunner(Class<?> classs) throws IllegalStateException {
-        String className = classs.getSimpleName();
         try {
-            this.coreDslRunner = new SpecnazCoreDslJUnitRunner(className,
+            this.coreDslRunner = new SpecnazCoreDslJUnitRunner(classs,
                     Utils.instantiateTestClass(classs, Specnaz.class));
         } catch (IllegalStateException e) {
             throw new IllegalStateException("Specnaz.describes() was never called in the no-argument constructor of " +
-                    className);
+                    classs.getSimpleName());
         }
     }
 

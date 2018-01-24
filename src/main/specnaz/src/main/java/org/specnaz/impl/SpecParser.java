@@ -1,10 +1,12 @@
 package org.specnaz.impl;
 
-public class SpecRunner {
+import java.util.Collection;
+
+public final class SpecParser {
     private final SpecDescriptor specDescriptor;
     private TreeNode<TestsGroup> rootTestsGroupNode;
 
-    public SpecRunner(Object specInstance) throws SpecsRegistryViolation {
+    public SpecParser(Object specInstance) throws SpecsRegistryViolation {
         this.specDescriptor = SpecsRegistry.specFor(specInstance);
     }
 
@@ -18,9 +20,10 @@ public class SpecRunner {
         return rootTestsGroupNode;
     }
 
-    public void run(Notifier notifier) {
+    public Collection<TestsGroupNodeExecutor> testsGroupNodeExecutors() {
         TreeNode<TestsGroup> testsPlan = testsPlan();
-        new TestsGroupNodeRunner(testsPlan, notifier, testsPlan.value.containsFocusedTests).run();
+        return new TestsGroupNodeExecutor(testsPlan, testsPlan.value.containsFocusedTests)
+                .testsGroupNodeExecutors();
     }
 
     private TreeNode<TestsGroup> formulateTestPlan() {
