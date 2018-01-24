@@ -40,17 +40,25 @@ public final class JUnitNotifier2_Rules {
     }
 
     public void teardownStarted(SingleTestCase test) {
-        runNotifier.fireTestStarted(findTeardown(test));
+        Description teardownDescription = findTeardown(test);
+        if (teardownDescription != null) {
+            runNotifier.fireTestStarted(teardownDescription);
+        }
     }
 
     public void teardownSucceeded(SingleTestCase test) {
-        runNotifier.fireTestFinished(findTeardown(test));
+        Description teardownDescription = findTeardown(test);
+        if (teardownDescription != null) {
+            runNotifier.fireTestFinished(teardownDescription);
+        }
     }
 
     public void teardownFailed(SingleTestCase test, Throwable e) {
-        Description testDescription = findTeardown(test);
-        runNotifier.fireTestFailure(new Failure(testDescription, e));
-        runNotifier.fireTestFinished(testDescription);
+        Description teardownDescription = findTeardown(test);
+        if (teardownDescription != null) {
+            runNotifier.fireTestFailure(new Failure(teardownDescription, e));
+            runNotifier.fireTestFinished(teardownDescription);
+        }
     }
 
     private Description findDesc(SingleTestCase test) {
