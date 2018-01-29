@@ -3,7 +3,6 @@ package built_in_rules;
 import org.junit.rules.ExpectedException;
 import org.specnaz.junit.SpecnazJUnit;
 import org.specnaz.junit.rules.Rule;
-import org.specnaz.utils.TestClosure;
 
 /**
  * An example of using Specnaz with the built-in {@link ExpectedException} Rule.

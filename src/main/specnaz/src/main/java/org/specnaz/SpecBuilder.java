@@ -94,6 +94,8 @@ public interface SpecBuilder {
      *     by the library
      * @param testBody
      *     the body of the test case
+     * @return
+     *     an instance of the {@link TestSettings} class
      *
      * @see #shouldThrow
      * @see #beginsEach
@@ -278,6 +280,8 @@ public interface SpecBuilder {
      *     part of the test suite permanently. Deprecating it means
      *     there is a higher chance you notice it, and remember to remove the 'f'
      *     at the beginning before committing the change to source control.
+     * @return
+     *     an instance of the {@link TestSettings} class
      *
      * @see #should
      * @see #shouldThrow
@@ -386,6 +390,8 @@ public interface SpecBuilder {
      *     by the library
      * @param testBody
      *     the body of the test case (will not be executed)
+     * @return
+     *     an instance of the {@link TestSettings} class
      *
      * @see #should
      * @see #shouldThrow

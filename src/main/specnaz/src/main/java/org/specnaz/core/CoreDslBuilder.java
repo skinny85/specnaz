@@ -58,6 +58,8 @@ public interface CoreDslBuilder {
      *     the description of the test case
      * @param testBody
      *     the body of the test case
+     * @return
+     *     an instance of the {@link TestSettings} class
      */
     TestSettings test(String description, TestClosure testBody);
 
@@ -88,6 +90,8 @@ public interface CoreDslBuilder {
      *     the description of the test case
      * @param testBody
      *     the body of the test case
+     * @return
+     *     an instance of the {@link TestSettings} class
      */
     TestSettings focusedTest(String description, TestClosure testBody);
 
@@ -118,6 +122,8 @@ public interface CoreDslBuilder {
      *     the description of the test case
      * @param testBody
      *     the body of the test case
+     * @return
+     *     an instance of the {@link TestSettings} class
      */
     TestSettings ignoredTest(String description, TestClosure testBody);
 
