@@ -4,6 +4,9 @@ import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * Taken from <a href="http://www.dropwizard.io/1.2.2/docs/getting-started.html#creating-a-configuration-class">here</a>.
+ */
 public class HelloWorldConfiguration extends Configuration {
     @NotEmpty
     private String template;

@@ -8,5 +8,5 @@ This directory contains various projects demonstrating using Specnaz in differen
 * [specnaz-junit-rules-examples](specnaz-junit-rules-examples) shows how to leverage the
    [JUnit Rules API](https://github.com/junit-team/junit4/wiki/rules) in Specnaz,
    including using third-party Rules from [Mockito](http://site.mockito.org/),
-   [Spring](https://spring.io/) and [Dropwizard](www.dropwizard.io)
+   [Spring](https://spring.io/) and [Dropwizard](http://www.dropwizard.io)
 * [specnaz-custom-dsl-example](specnaz-custom-dsl-example) walks you through extending Specnaz by creating your own custom DSL for defining tests.

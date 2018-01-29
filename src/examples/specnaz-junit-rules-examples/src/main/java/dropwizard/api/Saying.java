@@ -1,8 +1,11 @@
-package dropwizard;
+package dropwizard.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * Taken from <a href="http://www.dropwizard.io/1.2.2/docs/getting-started.html#creating-a-representation-class">here</a>.
+ */
 public class Saying {
     private long id;
 

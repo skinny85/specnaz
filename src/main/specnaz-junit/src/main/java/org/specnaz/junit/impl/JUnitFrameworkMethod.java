@@ -12,13 +12,13 @@ public final class JUnitFrameworkMethod {
     }
 
     private static FrameworkMethod placeholderFrameworkMethod() {
-        Method stubMethod;
+        Method placeholderMethod;
         try {
-            stubMethod = JUnitFrameworkMethod.class.getMethod("placeholderMethod");
+            placeholderMethod = JUnitFrameworkMethod.class.getMethod("placeholderMethod");
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-        return frameworkMethod(stubMethod);
+        return frameworkMethod(placeholderMethod);
     }
 
     private static FrameworkMethod frameworkMethod(Method method) {

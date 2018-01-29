@@ -1,12 +1,18 @@
 package dropwizard;
 
 import com.fasterxml.jackson.databind.ObjectReader;
+import dropwizard.api.Saying;
+import dropwizard.resources.HelloWorldResource;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.specnaz.junit.SpecnazJUnit;
 import org.specnaz.junit.rules.Rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ *
+ * Taken from <a href="https://nbsoftsolutions.com/blog/getting-started-with-dropwizard-testing#endpoint-testing">here</a>.
+ */
 public class HelloWorldEndpointSpec extends SpecnazJUnit {
     public final Rule<ResourceTestRule> resources = Rule.of(() -> ResourceTestRule.builder()
             .addResource(new HelloWorldResource("Hello, %s!", "Stranger"))
