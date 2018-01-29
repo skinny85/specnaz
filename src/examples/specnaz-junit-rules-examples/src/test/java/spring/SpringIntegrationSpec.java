@@ -14,6 +14,12 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+/**
+ * An example of integration testing Spring using its JUnit Rules support.
+ * The most interesting part is the {@link #dummy} field.
+ *
+ * @see #dummy
+ */
 @ContextConfiguration(classes = TestSpringConfig.class)
 public class SpringIntegrationSpec extends SpecnazJUnit {
     @ClassRule
@@ -40,11 +46,15 @@ public class SpringIntegrationSpec extends SpecnazJUnit {
         });
     }
 
-    // needed only to fool the Spring validation
-    @org.junit.Rule
-    public SpringMethodRule dummy = null;
-
     @IfProfileValue(name = "does_not_exist")
     public void ifProfile() {
     }
+
+    /**
+     * This field needs to be declared because of validation that the
+     * {@link SpringClassRule} performs. It will never be used,
+     * and so can be set to {@code null} safely.
+     */
+    @org.junit.Rule
+    public SpringMethodRule dummy = null;
 }
