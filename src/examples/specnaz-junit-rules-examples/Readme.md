@@ -17,3 +17,6 @@ The project contains different packages, demonstrating using various pre-existin
 * [dropwizard](src/test/java/dropwizard) shows how to use
    [Dropwizard's ResourceTestRule](http://www.dropwizard.io/1.2.2/docs/manual/testing.html#testing-resources)
    in Specnaz
+
+Check out the [main documentation on JUnit Rules](../../../docs/reference-manual.md#junit-rules)
+for more details on how to use JUnit Rules in Specnaz.

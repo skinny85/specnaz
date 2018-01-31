@@ -42,6 +42,10 @@ Table of Contents
           * [Ignoring specs inheriting from SpecnazKotlinJUnit](#ignoring-specs-inheriting-from-specnazkotlinjunit)
         * [The Deferred helper](#the-deferred-helper)
       * [Groovy](#groovy)
+    * [Framework extensions](#framework-extensions)
+      * [JUnit Rules](#junit-rules)
+        * [Class JUnit Rules](#class-junit-rules)
+        * [Instance JUnit Rules](#instance-junit-rules)
   * [Extending Specnaz](#extending-specnaz)
 
 
@@ -996,6 +1000,133 @@ class KotlinSpec : SpecnazKotlinJUnit("A spec", {
 You can use the Specnaz from Groovy without any special bindings.
 Check out the [Readme file of the Groovy examples](../src/examples/specnaz-groovy-examples/Readme.md)
 for more info.
+
+## Framework extensions
+
+### JUnit Rules
+
+Specnaz supports the [JUnit Rules API](https://github.com/junit-team/junit4/wiki/rules) natively.
+The integration looks a tiny bit different than in 'vanilla' JUnit,
+mostly because of the the different object lifecycle
+(in 'vanilla' JUnit, each test executes with its own instance of the test class;
+in Specnaz, all tests share the same object).
+However, the basic idea is exactly the same.
+
+JUnit supports 2 types of Rules:
+class Rules (those annotated with [@ClassRule](http://junit.org/junit4/javadoc/4.12/org/junit/ClassRule.html))
+and instance Rules (those annotated with [@Rule](http://junit.org/junit4/javadoc/4.12/org/junit/Rule.html)).
+Both of them are supported in Specnaz.
+
+Let's start with class Rules, as they are simpler.
+
+#### Class JUnit Rules
+
+Class Rules work pretty much exactly the same as 'vanilla' JUnit.
+It's a `public`, `static` field of the test class,
+annotated with [@ClassRule](http://junit.org/junit4/javadoc/4.12/org/junit/ClassRule.html).
+
+**Note**: 'vanilla' JUnit also allows class Rules returned by (`static`) methods.
+This is not supported by Specnaz.
+
+Example:
+
+```java
+import org.junit.ClassRule;
+import org.specnaz.junit.SpecnazJUnit;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+
+public class SpringSpec extends SpecnazJUnit {
+    @ClassRule
+    public static final SpringClassRule springClassRule = new SpringClassRule();
+    
+    {
+        describes("A Spring spec", it -> {
+            // spec body here...
+        });
+    }
+}
+```
+
+The Rule works exactly the same like in 'vanilla' JUnit:
+it wraps the execution of the entire test class
+(that is, it's executed even before any `beginsAll` methods).
+Because of that, it's a good place to put any setup or cleanup
+that you want to be executed exactly once for the whole class
+(and not, like `beginsAll` methods, for every nested subgroup).
+
+Example:
+
+```java
+import org.junit.ClassRule;
+import org.junit.ExternalResource;
+import org.specnaz.junit.SpecnazJUnit;
+
+public class SomeSpec extends SpecnazJUnit {
+    @ClassRule
+    public static final ExternalResource fixture = new ExternalResource() {
+        protected void before() {
+            // set up here...
+        }
+    
+        protected void after() {
+            // ...and tear down here
+        }
+    };
+
+    {
+        describes("A spec", it -> {
+            // spec body here...
+        });
+    }
+}
+```
+
+#### Instance JUnit Rules
+
+Instance Rules work a little bit differently than in 'vanilla' JUnit.
+Instead of annotating fields with [@Rule](http://junit.org/junit4/javadoc/4.12/org/junit/Rule.html),
+you use the class `org.specnaz.junit.rules.Rule`.
+
+Every `public`, non-`static` field of the test class of that type will be picked up by the Runner,
+and included in your tests.
+
+**Note**: similarly as with class Rules,
+'vanilla' JUnit allows you to have instance Rules returned by methods.
+This is also not supported by Specnaz.
+
+You create instances of `Rule` by calling the `of` static factory method,
+passing in a lambda expression that returns your Rule.
+The Runner will execute your lambda before each test,
+this way ensuring that each test has a fresh copy of the Rule -
+in other words, instance Rules obey the same lifecycle as `beginsEach` / `endsEach` methods.
+
+You access the current instance of the Rule by using the `r()` method.
+
+Example:
+
+```java
+import org.junit.rules.ExpectedException;
+import org.specnaz.junit.SpecnazJUnit;
+import org.specnaz.junit.rules.Rule;
+
+public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
+      public Rule<ExpectedException> expectedException = Rule.of(() -> ExpectedException.none());
+
+      {
+          describes("Using the ExpectedException JUnit Rule in Specnaz", it -> {
+              it.should("correctly set the expected Exception", () -> {
+                  expectedException.r().expect(IllegalArgumentException.class);
+                  throw new IllegalArgumentException();
+              });
+          });
+      }
+}
+```
+
+Check out the [specnaz-junit-rules-examples subproject](../src/examples/specnaz-junit-rules-examples) -
+it contains examples of integrating Specnaz specs with both Rules that ship with JUnit,
+as well as third-party Rules from [Mockito](http://site.mockito.org/),
+[Spring](https://spring.io/) and [Dropwizard](http://www.dropwizard.io).
 
 # Extending Specnaz
 

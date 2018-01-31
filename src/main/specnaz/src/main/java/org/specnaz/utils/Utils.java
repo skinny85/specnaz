@@ -14,7 +14,7 @@ public final class Utils {
      * You call it something like this:
      *
      * <pre class="code"><code class="java">
-     * public class SomeSpec {
+     * public class SomeSpec extends SpecnazJUnit {
      *       {
      *           describes("some example tests", it -> {
      *               it.should("correctly find the method", () -> {
