@@ -10,7 +10,6 @@ import org.specnaz.junit.rules.Rule;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *
  * Taken from <a href="https://nbsoftsolutions.com/blog/getting-started-with-dropwizard-testing#endpoint-testing">here</a>.
  */
 public class HelloWorldEndpointSpec extends SpecnazJUnit {

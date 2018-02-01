@@ -46,6 +46,7 @@ Table of Contents
       * [JUnit Rules](#junit-rules)
         * [Class JUnit Rules](#class-junit-rules)
         * [Instance JUnit Rules](#instance-junit-rules)
+        * [Setting the test method](#setting-the-test-method)
   * [Extending Specnaz](#extending-specnaz)
 
 
@@ -1007,9 +1008,9 @@ for more info.
 
 Specnaz supports the [JUnit Rules API](https://github.com/junit-team/junit4/wiki/rules) natively.
 The integration looks a tiny bit different than in 'vanilla' JUnit,
-mostly because of the the different object lifecycle
+mostly because of the different object lifecycle
 (in 'vanilla' JUnit, each test executes with its own instance of the test class;
-in Specnaz, all tests share the same object).
+in Specnaz, all tests share the same object instance).
 However, the basic idea is exactly the same.
 
 JUnit supports 2 types of Rules:
@@ -1087,7 +1088,7 @@ Instance Rules work a little bit differently than in 'vanilla' JUnit.
 Instead of annotating fields with [@Rule](http://junit.org/junit4/javadoc/4.12/org/junit/Rule.html),
 you use the class `org.specnaz.junit.rules.Rule`.
 
-Every `public`, non-`static` field of the test class of that type will be picked up by the Runner,
+Every `public`, non-`static` field of the test class of this type will be picked up by the Runner,
 and included in your tests.
 
 **Note**: similarly as with class Rules,
@@ -1122,6 +1123,56 @@ public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
       }
 }
 ```
+
+#### Setting the test method
+
+Some JUnit Rules recognize certain annotations placed on the test method in a 'vanilla' JUnit test class
+(it's quite common in Spring, for example - see
+[here](https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#integration-testing-annotations)
+for a list of recognized annotations).
+This is tricky in Specnaz, as tests are defined through method calls, not method declarations,
+and you can't place annotations on calls.
+
+For that reason, the `should` method returns an instance of a class, `org.specnaz.TestSettings`,
+that allows you to set a custom method for a Specnaz test by calling its
+`usingMethod(java.lang.reflect.Method)` method.
+The provided `Method` will be passed to all instance JUnit Rules defined in this class.
+Because obtaining method instances is somewhat cumbersome in Java,
+Specnaz includes a utility method that helps with that,
+`org.specnaz.utils.Utils.findMethod`.
+
+Example usage:
+
+```java
+import org.specnaz.junit.SpecnazJUnit;
+import org.specnaz.utils.Utils;
+
+import org.springframework.test.annotation.DirtiesContext;
+
+public class SomeSpringSpec extends SpecnazJUnit {
+    {
+        describes("some example tests", it -> {
+            it.should("correctly find the method", () -> {
+                // test body...
+            }).usingMethod(Utils.findMethod(this, "someMethod"));
+        });
+    }
+
+    @DirtiesContext
+    public void someMethod() {
+    }
+}
+```
+
+**Note**: because the `shouldThrow` method returns a different class
+(`ThrowableExpectations`), you can't set the method for tests defined using it.
+If you need to combine a JUnit Rule with an exception throwing test that requires annotations on the method,
+you have to use `should` and some alternative mechanism of specifying the exception, such as:
+* [CatchException](https://github.com/Codearte/catch-exception)
+* If you're using [AssertJ](http://joel-costigliola.github.io/assertj/index.html) for assertions,
+  you have [a lot of options](http://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#exception-assertion)
+* The [ExpectedException](http://junit.org/junit4/javadoc/4.12/org/junit/rules/ExpectedException.html)
+  Rule that ships with JUnit
 
 Check out the [specnaz-junit-rules-examples subproject](../src/examples/specnaz-junit-rules-examples) -
 it contains examples of integrating Specnaz specs with both Rules that ship with JUnit,
