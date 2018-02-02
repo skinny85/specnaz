@@ -4,16 +4,16 @@ import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
 public final class SingleExceptionTestCase<T extends Throwable> extends SingleTestCase {
-    private final ThrowableExpectations<T>.Wrapper throwableExpectations;
+    private final ThrowableExpectations.Wrapper<T> throwableExpectations;
     private final TestClosure testBody;
 
     public SingleExceptionTestCase(TestCaseType type, Class<T> expectedException,
             String description, TestClosure testBody) {
-        this(type, new ThrowableExpectations<>(expectedException).new Wrapper(),
+        this(type, new ThrowableExpectations.Wrapper<>(new ThrowableExpectations<>(expectedException)),
                 description, testBody);
     }
 
-    private SingleExceptionTestCase(TestCaseType type, ThrowableExpectations<T>.Wrapper throwableExpectations,
+    private SingleExceptionTestCase(TestCaseType type, ThrowableExpectations.Wrapper<T> throwableExpectations,
             String description, TestClosure testBody) {
         super(type, description);
         this.throwableExpectations = throwableExpectations;
@@ -22,7 +22,7 @@ public final class SingleExceptionTestCase<T extends Throwable> extends SingleTe
 
     @Override
     public SingleTestCase type(TestCaseType type) {
-        return new SingleExceptionTestCase(type, throwableExpectations, description, testBody);
+        return new SingleExceptionTestCase<>(type, throwableExpectations, description, testBody);
     }
 
     @Override

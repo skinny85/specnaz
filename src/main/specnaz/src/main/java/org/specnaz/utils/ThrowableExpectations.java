@@ -249,13 +249,19 @@ public final class ThrowableExpectations<T extends Throwable> {
      * <b>Note</b>: you should never need this class when writing tests,
      * it's just an implementation detail.
      */
-    public class Wrapper {
+    public static final class Wrapper<T extends Throwable> {
+        private final ThrowableExpectations<T> inner;
+
+        public Wrapper(ThrowableExpectations<T> inner) {
+            this.inner = inner;
+        }
+
         public void verify(Throwable throwable) {
-            ThrowableExpectations.this.verify(throwable);
+            inner.verify(throwable);
         }
 
         public ThrowableExpectations<T> inner() {
-            return ThrowableExpectations.this;
+            return inner;
         }
     }
 }
