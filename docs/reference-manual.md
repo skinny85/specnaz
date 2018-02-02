@@ -47,8 +47,8 @@ Table of Contents
         * [Class JUnit Rules](#class-junit-rules)
         * [Instance JUnit Rules](#instance-junit-rules)
         * [Setting the test method](#setting-the-test-method)
+        * [JUnit Rules examples](#junit-rules-examples)
   * [Extending Specnaz](#extending-specnaz)
-
 
 # Getting Specnaz
 
@@ -1082,6 +1082,12 @@ public class SomeSpec extends SpecnazJUnit {
 }
 ```
 
+If you want to have multiple class Rules in the same class,
+it's important to know that the order in which they will be chained is unspecified -
+it won't necessarily be the same order that they were declared in in source code.
+If you need to control that ordering, you should use the `org.junit.rules.RuleChain` class
+that ships with JUnit.
+
 #### Instance JUnit Rules
 
 Instance Rules work a little bit differently than in 'vanilla' JUnit.
@@ -1124,6 +1130,10 @@ public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
 }
 ```
 
+The same remark about multiple class Rules applies to instance Rules as well -
+if you need control over the order in which multiple instance Rules in the same class are applied,
+use the `org.junit.rules.RuleChain` class that ships with JUnit.
+
 #### Setting the test method
 
 Some JUnit Rules recognize certain annotations placed on the test method in a 'vanilla' JUnit test class
@@ -1164,8 +1174,8 @@ public class SomeSpringSpec extends SpecnazJUnit {
 }
 ```
 
-**Note**: because the `shouldThrow` method returns a different class
-(`ThrowableExpectations`), you can't set the method for tests defined using it.
+**Note**: because the `shouldThrow` method returns an instance of a different class (`ThrowableExpectations`),
+you can't call `usingMethod` for tests defined using `shouldThrow`.
 If you need to combine a JUnit Rule with an exception throwing test that requires annotations on the method,
 you have to use `should` and some alternative mechanism of specifying the exception, such as:
 * [CatchException](https://github.com/Codearte/catch-exception)
@@ -1174,8 +1184,11 @@ you have to use `should` and some alternative mechanism of specifying the except
 * The [ExpectedException](http://junit.org/junit4/javadoc/4.12/org/junit/rules/ExpectedException.html)
   Rule that ships with JUnit
 
+#### JUnit Rules examples
+
 Check out the [specnaz-junit-rules-examples subproject](../src/examples/specnaz-junit-rules-examples) -
-it contains examples of integrating Specnaz specs with both Rules that ship with JUnit,
+it contains examples of Specnaz specs using various Rules,
+both those that ship with the standard JUnit distribution,
 as well as third-party Rules from [Mockito](http://site.mockito.org/),
 [Spring](https://spring.io/) and [Dropwizard](http://www.dropwizard.io).
 

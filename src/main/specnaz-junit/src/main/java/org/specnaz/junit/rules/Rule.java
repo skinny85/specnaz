@@ -48,7 +48,7 @@ import org.junit.runners.model.Statement;
  * <p>
  * <b>Note</b>: if you have multiple {@link Rule} fields in the same class,
  * the order in which they will be applied is unspecified -
- * most importantly, it will <b>not</b> be the order in which they were declared in the class.
+ * most importantly, it will most likely <b>not</b> be the order in which they were declared in the class.
  * If you need to control that order, look into the {@link org.junit.rules.RuleChain} class.
  *
  * @param <T>
