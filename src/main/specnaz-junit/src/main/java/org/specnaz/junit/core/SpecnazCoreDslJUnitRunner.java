@@ -40,7 +40,7 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
     private final Class<?> classs;
     private final Object specInstance;
     private final List<TestRule> classRules;
-    private final List<Rule<?>.Wrapper> instanceRules;
+    private final List<Rule.Wrapper<?>> instanceRules;
 
     /**
      * This is JUnit's entry point for {@link Runner}s.
@@ -184,8 +184,8 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
                     junitNotifier.passed(executableTestCase.testCase);
                 } catch (AssumptionViolatedException e) {
                     junitNotifier.skipped(executableTestCase.testCase, e);
-                } catch (Throwable throwable) {
-                    junitNotifier.failed(executableTestCase.testCase, throwable);
+                } catch (Throwable e) {
+                    junitNotifier.failed(executableTestCase.testCase, e);
                 }
             }
 
@@ -208,7 +208,7 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
         if (ret == null)
             return null;
 
-        for (Rule<?>.Wrapper instanceRule : instanceRules) {
+        for (Rule.Wrapper<?> instanceRule : instanceRules) {
             instanceRule.reset();
             ret = instanceRule.apply(ret,
                     testCases2DescriptionsMap.findDesc(executableTestCase.testCase),
@@ -230,8 +230,8 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
         };
     }
 
-    private List<Rule<?>.Wrapper> discoverInstanceRules(Class<?> classs) {
-        List<Rule<?>.Wrapper> ret = new LinkedList<>();
+    private List<Rule.Wrapper<?>> discoverInstanceRules(Class<?> classs) {
+        List<Rule.Wrapper<?>> ret = new LinkedList<>();
 
         for (Field field : classs.getFields()) {
             if (Rule.class.isAssignableFrom(field.getType())) {
@@ -242,14 +242,14 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
                             field.getName(), classs.getSimpleName()));
                 }
 
-                Rule instanceRule;
+                Rule<?> instanceRule;
                 try {
                     instanceRule = (Rule) field.get(specInstance);
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
 
-                ret.add(instanceRule.new Wrapper());
+                ret.add(new Rule.Wrapper<>(instanceRule));
             }
         }
 

@@ -117,13 +117,19 @@ public abstract class Rule<T> {
      * You never need this class when writing tests,
      * it's just an implementation detail.
      */
-    public final class Wrapper {
+    public static final class Wrapper<T> {
+        private final Rule<T> inner;
+
+        public Wrapper(Rule<T> inner) {
+            this.inner = inner;
+        }
+
         public void reset() {
-            Rule.this.reset();
+            inner.reset();
         }
 
         public Statement apply(Statement statement, Description description, FrameworkMethod frameworkMethod, Object target) {
-            return Rule.this.apply(statement, description, frameworkMethod, target);
+            return inner.apply(statement, description, frameworkMethod, target);
         }
     }
 }
