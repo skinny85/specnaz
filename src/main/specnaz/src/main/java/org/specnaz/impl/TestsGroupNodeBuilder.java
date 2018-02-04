@@ -50,7 +50,7 @@ public final class TestsGroupNodeBuilder {
                 break;
         }
         testCases.add(testCaseToAdd);
-        return testCaseToAdd.testSettings().unwrap();
+        return testCaseToAdd.testSettings().inner();
     }
 
     public void addAfterEach(TestClosure closure) {

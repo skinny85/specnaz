@@ -34,13 +34,19 @@ public final class TestSettings {
      * You never need it when writing tests,
      * it's just an implementation detail.
      */
-    public final class Wrapper {
-        public Method method() {
-            return TestSettings.this.method;
+    public static final class Wrapper {
+        private final TestSettings inner;
+
+        public Wrapper(TestSettings inner) {
+            this.inner = inner;
         }
 
-        public TestSettings unwrap() {
-            return TestSettings.this;
+        public Method method() {
+            return inner.method;
+        }
+
+        public TestSettings inner() {
+            return inner;
         }
     }
 }

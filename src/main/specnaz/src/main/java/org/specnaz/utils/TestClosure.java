@@ -6,6 +6,8 @@ package org.specnaz.utils;
  * Exception in the body of the method.
  * Used for lifecycle callbacks ({@code begins/ends})
  * and test bodies.
+ *
+ * @see #invoke
  */
 @FunctionalInterface
 public interface TestClosure {

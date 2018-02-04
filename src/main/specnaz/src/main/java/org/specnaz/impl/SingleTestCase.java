@@ -20,7 +20,7 @@ public abstract class SingleTestCase {
     SingleTestCase(TestCaseType type, String description) {
         this.type = type;
         this.description = description;
-        this.testSettings = new TestSettings(). new Wrapper();
+        this.testSettings = new TestSettings.Wrapper(new TestSettings());
     }
 
     public abstract SingleTestCase type(TestCaseType type);
