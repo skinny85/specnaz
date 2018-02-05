@@ -28,10 +28,17 @@ public final class ParametrizedTest1<T> {
     public Collection<SingleTestCase> testCases() {
         List<SingleTestCase> ret = new LinkedList<>();
         for (T param : params) {
-            ret.add(new SinglePositiveTestCase(TestCaseType.REGULAR, description, () -> {
+            ret.add(new SinglePositiveTestCase(TestCaseType.REGULAR, formatDesc(description, param), () -> {
                 testBody.invoke(param);
             }));
         }
         return ret;
+    }
+
+    private String formatDesc(String description, T param) {
+        if (!description.contains("%1"))
+            return description;
+
+        return description.replaceAll("%1", param.toString());
     }
 }
