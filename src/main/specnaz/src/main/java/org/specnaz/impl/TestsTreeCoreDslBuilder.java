@@ -2,6 +2,8 @@ package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
+import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.TestClosureParams1;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -78,6 +80,11 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     @Override
     public void ignoredSubSpecification(String description, Runnable specClosure) {
         handleSubSpecification(description, specClosure, TestCaseType.IGNORED);
+    }
+
+    @Override
+    public <T> ParamsExpected1<T> parametrizedTest1(String description, TestClosureParams1<T> testBody) {
+        return testsGroupNodeBuilder.addParametrizedTestCase1(description, testBody);
     }
 
     private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {

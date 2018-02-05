@@ -8,8 +8,8 @@ import org.specnaz.utils.ThrowableExpectations;
 
 import static java.lang.String.format;
 
-public final class SpecBuilderCoreDslAdapter implements SpecBuilder {
-    private final CoreDslBuilder coreDslBuilder;
+public class SpecBuilderCoreDslAdapter implements SpecBuilder {
+    protected final CoreDslBuilder coreDslBuilder;
 
     public SpecBuilderCoreDslAdapter(CoreDslBuilder coreDslBuilder) {
         this.coreDslBuilder = coreDslBuilder;

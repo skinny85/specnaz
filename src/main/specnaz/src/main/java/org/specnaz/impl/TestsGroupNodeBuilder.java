@@ -1,6 +1,9 @@
 package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
+import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.TestClosureParams1;
+import org.specnaz.params.impl.ParametrizedTest1;
 import org.specnaz.utils.TestClosure;
 
 import java.util.LinkedList;
@@ -14,6 +17,7 @@ public final class TestsGroupNodeBuilder {
                                     afters     = new LinkedList<>(),
                                     afterAlls  = new LinkedList<>();
     private final List<SingleTestCase> testCases  = new LinkedList<>();
+    private final List<ParametrizedTest1<?>> parametrizedTests = new LinkedList<>();
     private final List<TreeNode<TestsGroup>> subgroups = new LinkedList<>();
     private boolean containsFocusedTests = false;
 
@@ -69,12 +73,24 @@ public final class TestsGroupNodeBuilder {
         subgroups.add(subgroupNode);
     }
 
+    public <T> ParamsExpected1<T> addParametrizedTestCase1(String description, TestClosureParams1<T> testBody) {
+        TestSettings testSettings = new TestSettings();
+        ParametrizedTest1<T> parametrizedTest = new ParametrizedTest1<>(description, testBody);
+        parametrizedTests.add(parametrizedTest);
+        return new ParamsExpected1<>(parametrizedTest, testSettings);
+    }
+
     public TreeNode<TestsGroup> build() {
         // count tests in subgroups
         int testsInSubgroups = subgroups.stream().mapToInt(node -> node.value.testsInTree).sum();
         // see if any subgroup contains focused tests
         for (TreeNode<TestsGroup> subgroupNode : subgroups) {
             containsFocusedTests |= subgroupNode.value.containsFocusedTests;
+        }
+
+        List<SingleTestCase> testCases = new LinkedList<>(this.testCases);
+        for (ParametrizedTest1<?> parametrizedTest : parametrizedTests) {
+            testCases.addAll(parametrizedTest.testCases());
         }
 
         TestsGroup testsGroup = new TestsGroup(description, beforeAlls, befores,
