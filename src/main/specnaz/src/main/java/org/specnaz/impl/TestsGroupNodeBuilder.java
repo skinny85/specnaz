@@ -73,9 +73,9 @@ public final class TestsGroupNodeBuilder {
         subgroups.add(subgroupNode);
     }
 
-    public <T> ParamsExpected1<T> addParametrizedTestCase1(String description, TestClosureParams1<T> testBody) {
+    public <P> ParamsExpected1<P> addParametrizedTestCase1(String description, TestClosureParams1<P> testBody) {
         TestSettings testSettings = new TestSettings();
-        ParametrizedTest1<T> parametrizedTest = new ParametrizedTest1<>(description, testBody);
+        ParametrizedTest1<P> parametrizedTest = new ParametrizedTest1<>(description, testBody);
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpected1<>(parametrizedTest, testSettings);
     }

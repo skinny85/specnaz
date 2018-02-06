@@ -193,5 +193,5 @@ public interface CoreDslBuilder {
      */
     void ignoredSubSpecification(String description, Runnable specClosure);
 
-    <T> ParamsExpected1<T> parametrizedTest1(String description, TestClosureParams1<T> testBody);
+    <P> ParamsExpected1<P> parametrizedTest1(String description, TestClosureParams1<P> testBody);
 }

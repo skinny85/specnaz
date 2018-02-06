@@ -83,7 +83,7 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public <T> ParamsExpected1<T> parametrizedTest1(String description, TestClosureParams1<T> testBody) {
+    public <P> ParamsExpected1<P> parametrizedTest1(String description, TestClosureParams1<P> testBody) {
         return testsGroupNodeBuilder.addParametrizedTestCase1(description, testBody);
     }
 
