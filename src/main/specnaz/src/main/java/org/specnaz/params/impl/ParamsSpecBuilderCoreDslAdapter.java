@@ -14,6 +14,6 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
 
     @Override
     public <T> ParamsExpected1<T> should(String description, TestClosureParams1<T> testBody) {
-        return coreDslBuilder.parametrizedTest1(description, testBody);
+        return coreDslBuilder.parametrizedTest1(shouldDescription(description), testBody);
     }
 }

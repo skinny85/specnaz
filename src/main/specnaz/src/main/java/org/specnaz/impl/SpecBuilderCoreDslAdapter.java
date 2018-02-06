@@ -27,7 +27,7 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
 
     @Override
     public TestSettings should(String description, TestClosure testBody) {
-        return coreDslBuilder.test("should " + description, testBody);
+        return coreDslBuilder.test(shouldDescription(description), testBody);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
     @Override
     @SuppressWarnings("deprecation")
     public TestSettings fshould(String description, TestClosure testBody) {
-        return coreDslBuilder.focusedTest("should " + description, testBody);
+        return coreDslBuilder.focusedTest(shouldDescription(description), testBody);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
 
     @Override
     public TestSettings xshould(String description, TestClosure testBody) {
-        return coreDslBuilder.ignoredTest("should " + description, testBody);
+        return coreDslBuilder.ignoredTest(shouldDescription(description), testBody);
     }
 
     @Override
@@ -89,5 +89,9 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
     @Override
     public void xdescribes(String description, Runnable specClosure) {
         coreDslBuilder.ignoredSubSpecification(description, specClosure);
+    }
+
+    protected String shouldDescription(String description) {
+        return "should " + description;
     }
 }
