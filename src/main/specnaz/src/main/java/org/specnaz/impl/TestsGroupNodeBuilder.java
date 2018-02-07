@@ -2,9 +2,13 @@ package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.ParamsExpectedThrow1;
 import org.specnaz.params.TestClosureParams1;
+import org.specnaz.params.impl.AbstractParametrizedTest1;
 import org.specnaz.params.impl.ParametrizedTest1;
+import org.specnaz.params.impl.ParametrizedTestThrow1;
 import org.specnaz.utils.TestClosure;
+import org.specnaz.utils.ThrowableExpectations;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +21,7 @@ public final class TestsGroupNodeBuilder {
                                     afters     = new LinkedList<>(),
                                     afterAlls  = new LinkedList<>();
     private final List<SingleTestCase> testCases  = new LinkedList<>();
-    private final List<ParametrizedTest1<?>> parametrizedTests = new LinkedList<>();
+    private final List<AbstractParametrizedTest1<?>> parametrizedTests = new LinkedList<>();
     private final List<TreeNode<TestsGroup>> subgroups = new LinkedList<>();
     private boolean containsFocusedTests = false;
 
@@ -74,10 +78,18 @@ public final class TestsGroupNodeBuilder {
     }
 
     public <P> ParamsExpected1<P> addParametrizedTestCase1(String description, TestClosureParams1<P> testBody) {
-        TestSettings testSettings = new TestSettings();
+        TestSettings testSettings = new TestSettings(); // ToDo we need to figure out how to pass this
         ParametrizedTest1<P> parametrizedTest = new ParametrizedTest1<>(description, testBody);
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpected1<>(parametrizedTest, testSettings);
+    }
+
+    public <T extends Throwable, P> ParamsExpectedThrow1<T, P> addParametrizedTestCaseExpectingException1(
+            Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
+        ParametrizedTestThrow1<T, P> parametrizedTest = new ParametrizedTestThrow1<>(expectedException, description, testBody);
+        parametrizedTests.add(parametrizedTest);
+        // ToDO we need to figure out how to pass ThrowableExpectations here
+        return new ParamsExpectedThrow1<>(parametrizedTest, new ThrowableExpectations<>(expectedException));
     }
 
     public TreeNode<TestsGroup> build() {
@@ -89,7 +101,7 @@ public final class TestsGroupNodeBuilder {
         }
 
         List<SingleTestCase> testCases = new LinkedList<>(this.testCases);
-        for (ParametrizedTest1<?> parametrizedTest : parametrizedTests) {
+        for (AbstractParametrizedTest1<?> parametrizedTest : parametrizedTests) {
             testCases.addAll(parametrizedTest.testCases());
         }
 
