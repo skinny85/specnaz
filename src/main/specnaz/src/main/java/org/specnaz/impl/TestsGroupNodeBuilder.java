@@ -40,25 +40,26 @@ public final class TestsGroupNodeBuilder {
         befores.add(closure);
     }
 
-    public TestSettings addTestCase(SingleTestCase testCase) {
-        SingleTestCase testCaseToAdd = null;
-        switch (testCaseType) {
-            case REGULAR:
-                testCaseToAdd = testCase;
-                if (testCase.type == TestCaseType.FOCUSED)
-                    containsFocusedTests = true;
-                break;
-            case FOCUSED:
-                testCaseToAdd = testCase.type == TestCaseType.REGULAR
-                        ? testCase.type(TestCaseType.FOCUSED)
-                        : testCase;
-                break;
-            case IGNORED:
-                testCaseToAdd = testCase.type(TestCaseType.IGNORED);
-                break;
-        }
-        testCases.add(testCaseToAdd);
-        return testCaseToAdd.testSettings().inner();
+    public TestSettings addPositiveTest(String description, TestClosure testBody, TestCaseType testCaseType) {
+        if (testCaseType == TestCaseType.FOCUSED)
+            containsFocusedTests = true;
+
+        TestCaseType finalTestCaseType = subgroupTestType(testCaseType);
+        TestSettings.Wrapper testSettings = new TestSettings.Wrapper(new TestSettings());
+        testCases.add(new SinglePositiveTestCase(description, testBody, finalTestCaseType, testSettings));
+        return testSettings.inner();
+    }
+
+    public <T extends Throwable> ThrowableExpectations<T> addThrowTest(Class<T> expectedException,
+            String description, TestClosure testBody, TestCaseType testCaseType) {
+        if (testCaseType == TestCaseType.FOCUSED)
+            containsFocusedTests = true;
+
+        TestCaseType finalTestCaseType = subgroupTestType(testCaseType);
+        ThrowableExpectations.Wrapper<T> throwableExpectations = new ThrowableExpectations.Wrapper<>(
+                new ThrowableExpectations<>(expectedException));
+        testCases.add(new SingleExceptionTestCase<T>(throwableExpectations, description, testBody, finalTestCaseType));
+        return throwableExpectations.inner();
     }
 
     public void addAfterEach(TestClosure closure) {
@@ -130,9 +131,9 @@ public final class TestsGroupNodeBuilder {
             case REGULAR:
                 return testCaseType;
             case FOCUSED:
-                return testCaseType == TestCaseType.IGNORED
-                        ? TestCaseType.IGNORED
-                        : TestCaseType.FOCUSED;
+                return testCaseType == TestCaseType.REGULAR
+                        ? TestCaseType.FOCUSED
+                        : testCaseType;
             case IGNORED:
             default:
                 return TestCaseType.IGNORED;

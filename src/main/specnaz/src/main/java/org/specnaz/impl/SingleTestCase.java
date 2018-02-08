@@ -23,7 +23,12 @@ public abstract class SingleTestCase {
         this.testSettings = new TestSettings.Wrapper(new TestSettings());
     }
 
-    public abstract SingleTestCase type(TestCaseType type);
+    SingleTestCase(String description, TestClosure testBody,
+            TestCaseType testCaseType, TestSettings.Wrapper testSettings) {
+        this.description = description;
+        this.type = testCaseType;
+        this.testSettings =testSettings;
+    }
 
     public abstract Throwable exercise();
 

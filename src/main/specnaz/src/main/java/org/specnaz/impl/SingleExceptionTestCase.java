@@ -9,20 +9,15 @@ public final class SingleExceptionTestCase<T extends Throwable> extends SingleTe
 
     public SingleExceptionTestCase(TestCaseType type, Class<T> expectedException,
             String description, TestClosure testBody) {
-        this(type, new ThrowableExpectations.Wrapper<>(new ThrowableExpectations<>(expectedException)),
-                description, testBody);
+        this(new ThrowableExpectations.Wrapper<>(new ThrowableExpectations<>(expectedException)),
+                description, testBody, type);
     }
 
-    private SingleExceptionTestCase(TestCaseType type, ThrowableExpectations.Wrapper<T> throwableExpectations,
-            String description, TestClosure testBody) {
+    public SingleExceptionTestCase(ThrowableExpectations.Wrapper<T> throwableExpectations,
+            String description, TestClosure testBody, TestCaseType type) {
         super(type, description);
         this.throwableExpectations = throwableExpectations;
         this.testBody = testBody;
-    }
-
-    @Override
-    public SingleTestCase type(TestCaseType type) {
-        return new SingleExceptionTestCase<>(type, throwableExpectations, description, testBody);
     }
 
     @Override
@@ -31,9 +26,5 @@ public final class SingleExceptionTestCase<T extends Throwable> extends SingleTe
         return SingleTestCase.invokeCallback(() -> {
             throwableExpectations.verify(resultingException);
         });
-    }
-
-    public ThrowableExpectations<T> throwableExpectations() {
-        return throwableExpectations.inner();
     }
 }
