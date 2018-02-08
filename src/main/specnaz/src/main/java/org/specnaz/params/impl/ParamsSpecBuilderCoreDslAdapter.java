@@ -22,6 +22,6 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     public <T extends Throwable, P> ParamsExpectedThrow1<T, P> shouldThrow(Class<T> expectedException,
             String description, TestClosureParams1<P> testBody) {
         return coreDslBuilder.parametrizedTestExpectingException1(expectedException,
-                description, testBody);
+                shouldThrowDescription(expectedException, description), testBody);
     }
 }

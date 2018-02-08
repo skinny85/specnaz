@@ -34,7 +34,7 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
     public <T extends Throwable> ThrowableExpectations<T> shouldThrow(Class<T> expectedException,
             String description, TestClosure testBody) {
         return coreDslBuilder.testExpectingException(expectedException,
-                format("should throw %s %s", expectedException.getSimpleName(), description),
+                shouldThrowDescription(expectedException, description),
                 testBody);
     }
 
@@ -49,7 +49,7 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
     public <T extends Throwable> ThrowableExpectations<T> fshouldThrow(Class<T> expectedException,
             String description, TestClosure testBody) {
         return coreDslBuilder.focusedTestExpectingException(expectedException,
-                format("should throw %s %s", expectedException.getSimpleName(), description),
+                shouldThrowDescription(expectedException, description),
                 testBody);
     }
 
@@ -62,7 +62,7 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
     public <T extends Throwable> ThrowableExpectations<T> xshouldThrow(Class<T> expectedException,
             String description, TestClosure testBody) {
         return coreDslBuilder.ignoredTestExpectingException(expectedException,
-                format("should throw %s %s", expectedException.getSimpleName(), description),
+                shouldThrowDescription(expectedException, description),
                 testBody);
     }
 
@@ -93,5 +93,9 @@ public class SpecBuilderCoreDslAdapter implements SpecBuilder {
 
     protected String shouldDescription(String description) {
         return "should " + description;
+    }
+
+    protected String shouldThrowDescription(Class<?> expectedException, String description) {
+        return format("should throw %s %s", expectedException.getSimpleName(), description);
     }
 }
