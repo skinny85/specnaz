@@ -17,7 +17,7 @@ public final class ParametrizedTestThrow1<T extends Throwable, P> extends Abstra
 
     @Override
     protected SingleTestCase testCase(P param) {
-        return new SingleExceptionTestCase<T>(new ThrowableExpectations.Wrapper<>(throwableExpectations),
+        return new SingleExceptionTestCase<>(throwableExpectations,
                 formatDesc(description, param), toTestClosure(param), TestCaseType.REGULAR);
     }
 }

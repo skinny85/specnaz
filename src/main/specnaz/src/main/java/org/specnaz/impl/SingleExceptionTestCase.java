@@ -1,22 +1,21 @@
 package org.specnaz.impl;
 
+import org.specnaz.TestSettings;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
 public final class SingleExceptionTestCase<T extends Throwable> extends SingleTestCase {
     private final ThrowableExpectations.Wrapper<T> throwableExpectations;
-    private final TestClosure testBody;
 
-    public SingleExceptionTestCase(ThrowableExpectations.Wrapper<T> throwableExpectations,
+    public SingleExceptionTestCase(ThrowableExpectations<T> throwableExpectations,
             String description, TestClosure testBody, TestCaseType type) {
-        super(type, description);
-        this.throwableExpectations = throwableExpectations;
-        this.testBody = testBody;
+        super(new TestSettings(), description, testBody, type);
+        this.throwableExpectations = new ThrowableExpectations.Wrapper<>(throwableExpectations);
     }
 
     @Override
     public Throwable exercise() {
-        Throwable resultingException = SingleTestCase.invokeCallback(testBody);
+        Throwable resultingException = super.exercise();
         return SingleTestCase.invokeCallback(() -> {
             throwableExpectations.verify(resultingException);
         });

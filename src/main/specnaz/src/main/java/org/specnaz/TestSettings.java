@@ -44,9 +44,5 @@ public final class TestSettings {
         public Method method() {
             return inner.method;
         }
-
-        public TestSettings inner() {
-            return inner;
-        }
     }
 }

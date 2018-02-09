@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 
 public final class JUnitFrameworkMethod {
     public static FrameworkMethod frameworkMethod(ExecutableTestCase executableTestCase) {
-        Method method = executableTestCase.testCase.testSettings().method();
+        Method method = executableTestCase.testCase.testSettings.method();
         return method == null ? placeholderFrameworkMethod() : frameworkMethod(method);
     }
 

@@ -45,9 +45,9 @@ public final class TestsGroupNodeBuilder {
             containsFocusedTests = true;
 
         TestCaseType finalTestCaseType = subgroupTestType(testCaseType);
-        TestSettings.Wrapper testSettings = new TestSettings.Wrapper(new TestSettings());
-        testCases.add(new SinglePositiveTestCase(description, testBody, finalTestCaseType, testSettings));
-        return testSettings.inner();
+        TestSettings testSettings = new TestSettings();
+        testCases.add(new SinglePositiveTestCase(testSettings, description, testBody, finalTestCaseType));
+        return testSettings;
     }
 
     public <T extends Throwable> ThrowableExpectations<T> addThrowTest(Class<T> expectedException,
@@ -56,10 +56,9 @@ public final class TestsGroupNodeBuilder {
             containsFocusedTests = true;
 
         TestCaseType finalTestCaseType = subgroupTestType(testCaseType);
-        ThrowableExpectations.Wrapper<T> throwableExpectations = new ThrowableExpectations.Wrapper<>(
-                new ThrowableExpectations<>(expectedException));
+        ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
         testCases.add(new SingleExceptionTestCase<T>(throwableExpectations, description, testBody, finalTestCaseType));
-        return throwableExpectations.inner();
+        return throwableExpectations;
     }
 
     public void addAfterEach(TestClosure closure) {

@@ -13,26 +13,20 @@ public abstract class SingleTestCase {
         }
     }
 
-    public final TestCaseType type;
+    public final TestSettings.Wrapper testSettings;
     public final String description;
-    private final TestSettings.Wrapper testSettings;
+    private final TestClosure testBody;
+    public final TestCaseType type;
 
-    SingleTestCase(TestCaseType type, String description) {
-        this.type = type;
+    SingleTestCase(TestSettings testSettings, String description, TestClosure testBody,
+            TestCaseType testCaseType) {
+        this.testSettings = new TestSettings.Wrapper(testSettings);
         this.description = description;
-        this.testSettings = new TestSettings.Wrapper(new TestSettings());
-    }
-
-    SingleTestCase(String description, TestClosure testBody,
-            TestCaseType testCaseType, TestSettings.Wrapper testSettings) {
-        this.description = description;
+        this.testBody = testBody;
         this.type = testCaseType;
-        this.testSettings = testSettings;
     }
 
-    public abstract Throwable exercise();
-
-    public TestSettings.Wrapper testSettings() {
-        return testSettings;
+    public Throwable exercise() {
+        return invokeCallback(testBody);
     }
 }

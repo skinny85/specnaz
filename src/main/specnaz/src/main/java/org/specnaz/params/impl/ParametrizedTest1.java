@@ -16,8 +16,7 @@ public final class ParametrizedTest1<P> extends AbstractParametrizedTest1<P> {
 
     @Override
     protected SingleTestCase testCase(P param) {
-        return new SinglePositiveTestCase(
-                formatDesc(description, param), toTestClosure(param), TestCaseType.REGULAR,
-                new TestSettings.Wrapper(testSettings));
+        return new SinglePositiveTestCase(testSettings,
+                formatDesc(description, param), toTestClosure(param), TestCaseType.REGULAR);
     }
 }
