@@ -6,11 +6,6 @@ import org.specnaz.utils.TestClosure;
 public final class SinglePositiveTestCase extends SingleTestCase {
     private final TestClosure testBody;
 
-    public SinglePositiveTestCase(TestCaseType type, String description, TestClosure testBody) {
-        super(type, description);
-        this.testBody = testBody;
-    }
-
     public SinglePositiveTestCase(String description, TestClosure testBody,
             TestCaseType testCaseType, TestSettings.Wrapper testSettings) {
         super(description, testBody, testCaseType, testSettings);

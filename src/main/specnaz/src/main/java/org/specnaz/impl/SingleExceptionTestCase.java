@@ -7,12 +7,6 @@ public final class SingleExceptionTestCase<T extends Throwable> extends SingleTe
     private final ThrowableExpectations.Wrapper<T> throwableExpectations;
     private final TestClosure testBody;
 
-    public SingleExceptionTestCase(TestCaseType type, Class<T> expectedException,
-            String description, TestClosure testBody) {
-        this(new ThrowableExpectations.Wrapper<>(new ThrowableExpectations<>(expectedException)),
-                description, testBody, type);
-    }
-
     public SingleExceptionTestCase(ThrowableExpectations.Wrapper<T> throwableExpectations,
             String description, TestClosure testBody, TestCaseType type) {
         super(type, description);

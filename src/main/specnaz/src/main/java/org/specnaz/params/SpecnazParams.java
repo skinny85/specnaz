@@ -9,11 +9,11 @@ import java.util.function.Consumer;
 public interface SpecnazParams {
     default void describes(String description, Consumer<ParamsSpecBuilder> specClosure) {
         try {
-            SpecsRegistry.register(this, description, true, coreDslBuilder -> {
+            SpecsRegistry.register(this, description, false, coreDslBuilder -> {
                 specClosure.accept(new ParamsSpecBuilderCoreDslAdapter(coreDslBuilder));
             });
         } catch (SpecsRegistryViolation e) {
-            throw new IllegalStateException("Specnaz.describes() was called multiple times in the " +
+            throw new IllegalStateException("SpecnazParams.describes() was called multiple times in the " +
                     "no-argument constructor of " + this.getClass().getSimpleName());
         }
     }

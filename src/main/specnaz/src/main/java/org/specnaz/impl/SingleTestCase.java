@@ -27,7 +27,7 @@ public abstract class SingleTestCase {
             TestCaseType testCaseType, TestSettings.Wrapper testSettings) {
         this.description = description;
         this.type = testCaseType;
-        this.testSettings =testSettings;
+        this.testSettings = testSettings;
     }
 
     public abstract Throwable exercise();

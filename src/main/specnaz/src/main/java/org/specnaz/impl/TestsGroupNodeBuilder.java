@@ -79,18 +79,19 @@ public final class TestsGroupNodeBuilder {
     }
 
     public <P> ParamsExpected1<P> addParametrizedTestCase1(String description, TestClosureParams1<P> testBody) {
-        TestSettings testSettings = new TestSettings(); // ToDo we need to figure out how to pass this
-        ParametrizedTest1<P> parametrizedTest = new ParametrizedTest1<>(description, testBody);
+        TestSettings testSettings = new TestSettings();
+        ParametrizedTest1<P> parametrizedTest = new ParametrizedTest1<>(description, testBody, testSettings);
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpected1<>(parametrizedTest, testSettings);
     }
 
     public <T extends Throwable, P> ParamsExpectedThrow1<T, P> addParametrizedTestCaseExpectingException1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
-        ParametrizedTestThrow1<T, P> parametrizedTest = new ParametrizedTestThrow1<>(expectedException, description, testBody);
+        ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
+        ParametrizedTestThrow1<T, P> parametrizedTest = new ParametrizedTestThrow1<>(throwableExpectations,
+                description, testBody);
         parametrizedTests.add(parametrizedTest);
-        // ToDO we need to figure out how to pass ThrowableExpectations here
-        return new ParamsExpectedThrow1<>(parametrizedTest, new ThrowableExpectations<>(expectedException));
+        return new ParamsExpectedThrow1<>(parametrizedTest, throwableExpectations);
     }
 
     public TreeNode<TestsGroup> build() {
