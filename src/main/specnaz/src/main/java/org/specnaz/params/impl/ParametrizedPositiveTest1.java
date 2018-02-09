@@ -6,10 +6,10 @@ import org.specnaz.impl.SingleTestCase;
 import org.specnaz.impl.TestCaseType;
 import org.specnaz.params.TestClosureParams1;
 
-public final class ParametrizedTest1<P> extends AbstractParametrizedTest1<P> {
+public final class ParametrizedPositiveTest1<P> extends AbstractParametrizedTest1<P> {
     private final TestSettings testSettings;
 
-    public ParametrizedTest1(String description, TestClosureParams1<P> testBody, TestSettings testSettings) {
+    public ParametrizedPositiveTest1(String description, TestClosureParams1<P> testBody, TestSettings testSettings) {
         super(description, testBody);
         this.testSettings = testSettings;
     }

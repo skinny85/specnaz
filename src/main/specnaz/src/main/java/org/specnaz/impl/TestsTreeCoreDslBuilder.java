@@ -3,7 +3,7 @@ package org.specnaz.impl;
 import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.params.ParamsExpected1;
-import org.specnaz.params.ParamsExpectedThrow1;
+import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
@@ -85,13 +85,13 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
 
     @Override
     public <P> ParamsExpected1<P> parametrizedTest1(String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedTestCase1(description, testBody);
+        return testsGroupNodeBuilder.addParametrizedPositiveTest1(description, testBody);
     }
 
     @Override
-    public <T extends Throwable, P> ParamsExpectedThrow1<T, P> parametrizedTestExpectingException1(Class<T> expectedException,
-            String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedTestCaseExpectingException1(expectedException,
+    public <T extends Throwable, P> ParamsExpectedException1<T, P> parametrizedTestExpectingException1(
+            Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
+        return testsGroupNodeBuilder.addParametrizedExceptionTest1(expectedException,
                 description, testBody);
     }
 

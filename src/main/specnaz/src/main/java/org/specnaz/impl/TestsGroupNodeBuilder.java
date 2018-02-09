@@ -2,11 +2,11 @@ package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.params.ParamsExpected1;
-import org.specnaz.params.ParamsExpectedThrow1;
+import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.impl.AbstractParametrizedTest1;
-import org.specnaz.params.impl.ParametrizedTest1;
-import org.specnaz.params.impl.ParametrizedTestThrow1;
+import org.specnaz.params.impl.ParametrizedPositiveTest1;
+import org.specnaz.params.impl.ParametrizedExceptionTest1;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -77,20 +77,20 @@ public final class TestsGroupNodeBuilder {
         subgroups.add(subgroupNode);
     }
 
-    public <P> ParamsExpected1<P> addParametrizedTestCase1(String description, TestClosureParams1<P> testBody) {
+    public <P> ParamsExpected1<P> addParametrizedPositiveTest1(String description, TestClosureParams1<P> testBody) {
         TestSettings testSettings = new TestSettings();
-        ParametrizedTest1<P> parametrizedTest = new ParametrizedTest1<>(description, testBody, testSettings);
+        ParametrizedPositiveTest1<P> parametrizedTest = new ParametrizedPositiveTest1<>(description, testBody, testSettings);
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpected1<>(parametrizedTest, testSettings);
     }
 
-    public <T extends Throwable, P> ParamsExpectedThrow1<T, P> addParametrizedTestCaseExpectingException1(
+    public <T extends Throwable, P> ParamsExpectedException1<T, P> addParametrizedExceptionTest1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
         ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
-        ParametrizedTestThrow1<T, P> parametrizedTest = new ParametrizedTestThrow1<>(throwableExpectations,
+        ParametrizedExceptionTest1<T, P> parametrizedTest = new ParametrizedExceptionTest1<>(throwableExpectations,
                 description, testBody);
         parametrizedTests.add(parametrizedTest);
-        return new ParamsExpectedThrow1<>(parametrizedTest, throwableExpectations);
+        return new ParamsExpectedException1<>(parametrizedTest, throwableExpectations);
     }
 
     public TreeNode<TestsGroup> build() {

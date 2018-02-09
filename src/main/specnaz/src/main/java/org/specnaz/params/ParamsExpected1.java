@@ -1,13 +1,13 @@
 package org.specnaz.params;
 
 import org.specnaz.TestSettings;
-import org.specnaz.params.impl.ParametrizedTest1;
+import org.specnaz.params.impl.ParametrizedPositiveTest1;
 
 public final class ParamsExpected1<P> {
-    private final ParametrizedTest1<P> parametrizedTest;
+    private final ParametrizedPositiveTest1<P> parametrizedTest;
     private final TestSettings testSettings;
 
-    public ParamsExpected1(ParametrizedTest1<P> parametrizedTest, TestSettings testSettings) {
+    public ParamsExpected1(ParametrizedPositiveTest1<P> parametrizedTest, TestSettings testSettings) {
         this.parametrizedTest = parametrizedTest;
         this.testSettings = testSettings;
     }

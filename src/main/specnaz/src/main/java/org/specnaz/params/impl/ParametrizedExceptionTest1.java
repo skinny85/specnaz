@@ -6,10 +6,10 @@ import org.specnaz.impl.TestCaseType;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.utils.ThrowableExpectations;
 
-public final class ParametrizedTestThrow1<T extends Throwable, P> extends AbstractParametrizedTest1<P> {
+public final class ParametrizedExceptionTest1<T extends Throwable, P> extends AbstractParametrizedTest1<P> {
     private final ThrowableExpectations<T> throwableExpectations;
 
-    public ParametrizedTestThrow1(ThrowableExpectations<T> throwableExpectations,
+    public ParametrizedExceptionTest1(ThrowableExpectations<T> throwableExpectations,
             String description, TestClosureParams1<P> testBody) {
         super(description, testBody);
         this.throwableExpectations = throwableExpectations;
