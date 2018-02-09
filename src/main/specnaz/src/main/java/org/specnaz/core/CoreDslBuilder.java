@@ -69,10 +69,10 @@ public interface CoreDslBuilder {
     /**
      * The core equivalent of {@link SpecBuilder#shouldThrow}.
      * The only difference is that it doesn't prepend the text
-     * 'should throw &lt;simple name of {@code exceptionClass}&gt;'
+     * 'should throw &lt;simple name of {@code expectedException}&gt;'
      * to the {@code description}.
      *
-     * @param exceptionClass
+     * @param expectedException
      *     the class of the Exception we expect in this test
      * @param description
      *     the description of the test case
@@ -82,7 +82,7 @@ public interface CoreDslBuilder {
      *     a new instance of the {@link ThrowableExpectations} class
      */
     <T extends Throwable> ThrowableExpectations<T> testExpectingException(
-            Class<T> exceptionClass, String description, TestClosure testBody);
+            Class<T> expectedException, String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#fshould}.
@@ -101,10 +101,10 @@ public interface CoreDslBuilder {
     /**
      * The core equivalent of {@link SpecBuilder#fshouldThrow}.
      * The only difference is that it doesn't prepend the text
-     * 'should throw &lt;simple name of {@code exceptionClass}&gt;'
+     * 'should throw &lt;simple name of {@code expectedException}&gt;'
      * to the {@code description}.
      *
-     * @param exceptionClass
+     * @param expectedException
      *     the class of the Exception we expect in this test
      * @param description
      *     the description of the test case
@@ -113,7 +113,7 @@ public interface CoreDslBuilder {
      * @return
      *     a new instance of the {@link ThrowableExpectations} class
      */
-    <T extends Throwable> ThrowableExpectations<T> focusedTestExpectingException(Class<T> exceptionClass,
+    <T extends Throwable> ThrowableExpectations<T> focusedTestExpectingException(Class<T> expectedException,
             String description, TestClosure testBody);
 
     /**
@@ -133,10 +133,10 @@ public interface CoreDslBuilder {
     /**
      * The core equivalent of {@link SpecBuilder#xshouldThrow}.
      * The only difference is that it doesn't prepend the text
-     * 'should throw &lt;simple name of {@code exceptionClass}&gt;'
+     * 'should throw &lt;simple name of {@code expectedException}&gt;'
      * to the {@code description}.
      *
-     * @param exceptionClass
+     * @param expectedException
      *     the class of the Exception we expect in this test
      * @param description
      *     the description of the test case
@@ -146,7 +146,7 @@ public interface CoreDslBuilder {
      *     a new instance of the {@link ThrowableExpectations} class
      */
     <T extends Throwable> ThrowableExpectations<T> ignoredTestExpectingException(
-            Class<T> exceptionClass, String description, TestClosure testBody);
+            Class<T> expectedException, String description, TestClosure testBody);
 
     /**
      * The core equivalent of {@link SpecBuilder#endsEach}.
