@@ -77,18 +77,26 @@ public final class TestsGroupNodeBuilder {
         subgroups.add(subgroupNode);
     }
 
-    public <P> ParamsExpected1<P> addParametrizedPositiveTest1(String description, TestClosureParams1<P> testBody) {
+    public <P> ParamsExpected1<P> addParametrizedPositiveTest1(String description, TestClosureParams1<P> testBody,
+            TestCaseType testCaseType) {
+        if (testCaseType == TestCaseType.FOCUSED)
+            containsFocusedTests = true;
+
         TestSettings testSettings = new TestSettings();
-        ParametrizedPositiveTest1<P> parametrizedTest = new ParametrizedPositiveTest1<>(description, testBody, testSettings);
+        ParametrizedPositiveTest1<P> parametrizedTest = new ParametrizedPositiveTest1<>(testSettings,
+                description, testBody, testCaseType);
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpected1<>(parametrizedTest, testSettings);
     }
 
     public <T extends Throwable, P> ParamsExpectedException1<T, P> addParametrizedExceptionTest1(
-            Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
+            Class<T> expectedException, String description, TestClosureParams1<P> testBody, TestCaseType testCaseType) {
+        if (testCaseType == TestCaseType.FOCUSED)
+            containsFocusedTests = true;
+
         ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
         ParametrizedExceptionTest1<T, P> parametrizedTest = new ParametrizedExceptionTest1<>(throwableExpectations,
-                description, testBody);
+                description, testBody, testCaseType);
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpectedException1<>(parametrizedTest, throwableExpectations);
     }

@@ -9,14 +9,15 @@ import org.specnaz.params.TestClosureParams1;
 public final class ParametrizedPositiveTest1<P> extends AbstractParametrizedTest1<P> {
     private final TestSettings testSettings;
 
-    public ParametrizedPositiveTest1(String description, TestClosureParams1<P> testBody, TestSettings testSettings) {
-        super(description, testBody);
+    public ParametrizedPositiveTest1(TestSettings testSettings,
+            String description, TestClosureParams1<P> testBody, TestCaseType testCaseType) {
+        super(description, testBody, testCaseType);
         this.testSettings = testSettings;
     }
 
     @Override
     protected SingleTestCase testCase(P param) {
         return new SinglePositiveTestCase(testSettings,
-                formatDesc(description, param), toTestClosure(param), TestCaseType.REGULAR);
+                formatDesc(description, param), toTestClosure(param), testCaseType);
     }
 }

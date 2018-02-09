@@ -85,14 +85,26 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
 
     @Override
     public <P> ParamsExpected1<P> parametrizedTest1(String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedPositiveTest1(description, testBody);
+        return testsGroupNodeBuilder.addParametrizedPositiveTest1(description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
     public <T extends Throwable, P> ParamsExpectedException1<T, P> parametrizedTestExpectingException1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
         return testsGroupNodeBuilder.addParametrizedExceptionTest1(expectedException,
-                description, testBody);
+                description, testBody, TestCaseType.REGULAR);
+    }
+
+    @Override
+    public <P> ParamsExpected1<P> focusedParametrizedTest1(String description, TestClosureParams1<P> testBody) {
+        return testsGroupNodeBuilder.addParametrizedPositiveTest1(description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <T extends Throwable, P> ParamsExpectedException1<T, P> focusedParametrizedTestExpectingException1(
+            Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
+        return testsGroupNodeBuilder.addParametrizedExceptionTest1(expectedException,
+                description, testBody, TestCaseType.FOCUSED);
     }
 
     private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {

@@ -1,6 +1,7 @@
 package org.specnaz.params.impl;
 
 import org.specnaz.impl.SingleTestCase;
+import org.specnaz.impl.TestCaseType;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.utils.TestClosure;
 
@@ -12,11 +13,13 @@ import java.util.List;
 public abstract class AbstractParametrizedTest1<P> {
     protected final String description;
     protected final TestClosureParams1<P> testBody;
+    protected final TestCaseType testCaseType;
     private List<P> params;
 
-    AbstractParametrizedTest1(String description, TestClosureParams1<P> testBody) {
+    AbstractParametrizedTest1(String description, TestClosureParams1<P> testBody, TestCaseType testCaseType) {
         this.testBody = testBody;
         this.description = description;
+        this.testCaseType = testCaseType;
     }
 
     @SafeVarargs
