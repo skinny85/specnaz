@@ -13,7 +13,7 @@ import org.specnaz.utils.ThrowableExpectations;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class TestsGroupNodeBuilder {
+public final class TestsGroupNodeAccumulator {
     private final String description;
     private final TestCaseType testCaseType;
     private final List<TestClosure> beforeAlls = new LinkedList<>(),
@@ -25,7 +25,7 @@ public final class TestsGroupNodeBuilder {
     private final List<TreeNode<TestsGroup>> subgroups = new LinkedList<>();
     private boolean containsFocusedTests = false;
 
-    public TestsGroupNodeBuilder(String description, TestCaseType testCaseType) {
+    public TestsGroupNodeAccumulator(String description, TestCaseType testCaseType) {
         this.description = description;
         this.testCaseType = testCaseType;
         if (testCaseType == TestCaseType.FOCUSED)
@@ -69,8 +69,8 @@ public final class TestsGroupNodeBuilder {
         afterAlls.add(closure);
     }
 
-    public TestsGroupNodeBuilder subgroupBuilder(String description, TestCaseType testCaseType) {
-        return new TestsGroupNodeBuilder(description, descendantTestType(testCaseType));
+    public TestsGroupNodeAccumulator subgroupAccumulator(String description, TestCaseType testCaseType) {
+        return new TestsGroupNodeAccumulator(description, descendantTestType(testCaseType));
     }
 
     public void addSubgroup(TreeNode<TestsGroup> subgroupNode) {
@@ -105,9 +105,7 @@ public final class TestsGroupNodeBuilder {
         // count tests in subgroups
         int testsInSubgroups = subgroups.stream().mapToInt(node -> node.value.testsInTree).sum();
         // see if any subgroup contains focused tests
-        for (TreeNode<TestsGroup> subgroupNode : subgroups) {
-            containsFocusedTests |= subgroupNode.value.containsFocusedTests;
-        }
+        containsFocusedTests |= subgroups.stream().anyMatch(s -> s.value.containsFocusedTests);
 
         List<SingleTestCase> testCases = new LinkedList<>(this.testCases);
         for (AbstractParametrizedTest1<?> parametrizedTest : parametrizedTests) {

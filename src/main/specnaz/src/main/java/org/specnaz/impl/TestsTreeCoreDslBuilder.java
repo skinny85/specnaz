@@ -9,63 +9,63 @@ import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
 public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
-    private TestsGroupNodeBuilder testsGroupNodeBuilder;
+    private TestsGroupNodeAccumulator testsGroupNodeAccumulator;
 
     public TestsTreeCoreDslBuilder(String description, TestCaseType testCaseType) {
-        testsGroupNodeBuilder = new TestsGroupNodeBuilder(description, testCaseType);
+        testsGroupNodeAccumulator = new TestsGroupNodeAccumulator(description, testCaseType);
     }
 
     @Override
     public void beforeAll(TestClosure closure) {
-        testsGroupNodeBuilder.addBeforeAll(closure);
+        testsGroupNodeAccumulator.addBeforeAll(closure);
     }
 
     @Override
     public void beforeEach(TestClosure closure) {
-        testsGroupNodeBuilder.addBeforeEach(closure);
+        testsGroupNodeAccumulator.addBeforeEach(closure);
     }
 
     @Override
     public TestSettings test(String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addPositiveTest(description, testBody, TestCaseType.REGULAR);
+        return testsGroupNodeAccumulator.addPositiveTest(description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
     public <T extends Throwable> ThrowableExpectations<T> testExpectingException(
             Class<T> expectedException, String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addExceptionTest(expectedException, description, testBody, TestCaseType.REGULAR);
+        return testsGroupNodeAccumulator.addExceptionTest(expectedException, description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
     public TestSettings focusedTest(String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addPositiveTest(description, testBody, TestCaseType.FOCUSED);
+        return testsGroupNodeAccumulator.addPositiveTest(description, testBody, TestCaseType.FOCUSED);
     }
 
     @Override
     public <T extends Throwable> ThrowableExpectations<T> focusedTestExpectingException(
             Class<T> expectedException, String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addExceptionTest(expectedException, description, testBody, TestCaseType.FOCUSED);
+        return testsGroupNodeAccumulator.addExceptionTest(expectedException, description, testBody, TestCaseType.FOCUSED);
     }
 
     @Override
     public TestSettings ignoredTest(String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addPositiveTest(description, testBody, TestCaseType.IGNORED);
+        return testsGroupNodeAccumulator.addPositiveTest(description, testBody, TestCaseType.IGNORED);
     }
 
     @Override
     public <T extends Throwable> ThrowableExpectations<T> ignoredTestExpectingException(
             Class<T> expectedException, String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addExceptionTest(expectedException, description, testBody, TestCaseType.IGNORED);
+        return testsGroupNodeAccumulator.addExceptionTest(expectedException, description, testBody, TestCaseType.IGNORED);
     }
 
     @Override
     public void afterEach(TestClosure closure) {
-        testsGroupNodeBuilder.addAfterEach(closure);
+        testsGroupNodeAccumulator.addAfterEach(closure);
     }
 
     @Override
     public void afterAll(TestClosure closure) {
-        testsGroupNodeBuilder.addAfterAll(closure);
+        testsGroupNodeAccumulator.addAfterAll(closure);
     }
 
     @Override
@@ -85,50 +85,50 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
 
     @Override
     public <P> ParamsExpected1<P> parametrizedTest1(String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedPositiveTest1(description, testBody, TestCaseType.REGULAR);
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest1(description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
     public <T extends Throwable, P> ParamsExpectedException1<T, P> parametrizedTestExpectingException1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedExceptionTest1(expectedException,
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest1(expectedException,
                 description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
     public <P> ParamsExpected1<P> focusedParametrizedTest1(String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedPositiveTest1(description, testBody, TestCaseType.FOCUSED);
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest1(description, testBody, TestCaseType.FOCUSED);
     }
 
     @Override
     public <T extends Throwable, P> ParamsExpectedException1<T, P> focusedParametrizedTestExpectingException1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedExceptionTest1(expectedException,
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest1(expectedException,
                 description, testBody, TestCaseType.FOCUSED);
     }
 
     @Override
     public <P> ParamsExpected1<P> ignoredParametrizedTest1(String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedPositiveTest1(description, testBody, TestCaseType.IGNORED);
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest1(description, testBody, TestCaseType.IGNORED);
     }
 
     @Override
     public <T extends Throwable, P> ParamsExpectedException1<T, P> ignoredParametrizedTestExpectingException1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
-        return testsGroupNodeBuilder.addParametrizedExceptionTest1(expectedException,
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest1(expectedException,
                 description, testBody, TestCaseType.IGNORED);
     }
 
     private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {
-        TestsGroupNodeBuilder previous = this.testsGroupNodeBuilder;
-        TestsGroupNodeBuilder subgroupBuilder = previous.subgroupBuilder(description, testCaseType);
-        this.testsGroupNodeBuilder = subgroupBuilder;
+        TestsGroupNodeAccumulator previous = this.testsGroupNodeAccumulator;
+        TestsGroupNodeAccumulator subgroupAccumulator = previous.subgroupAccumulator(description, testCaseType);
+        this.testsGroupNodeAccumulator = subgroupAccumulator;
         specClosure.run();
-        previous.addSubgroup(subgroupBuilder.build());
-        this.testsGroupNodeBuilder = previous;
+        previous.addSubgroup(subgroupAccumulator.build());
+        this.testsGroupNodeAccumulator = previous;
     }
 
     public TreeNode<TestsGroup> spec() {
-        return testsGroupNodeBuilder.build();
+        return testsGroupNodeAccumulator.build();
     }
 }
