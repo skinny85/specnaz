@@ -12,4 +12,8 @@ public interface ParamsSpecBuilder extends SpecBuilder {
     @Deprecated
     <T extends Throwable, P> ParamsExpectedException1<T, P> fshouldThrow(Class<T> expectedException,
             String description, TestClosureParams1<P> testBody);
+
+    <P> ParamsExpected1<P> xshould(String description, TestClosureParams1<P> testBody);
+    <T extends Throwable, P> ParamsExpectedException1<T, P> xshouldThrow(Class<T> expectedException,
+            String description, TestClosureParams1<P> testBody);
 }

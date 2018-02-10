@@ -203,4 +203,9 @@ public interface CoreDslBuilder {
 
     <T extends Throwable, P> ParamsExpectedException1<T, P> focusedParametrizedTestExpectingException1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody);
+
+    <P> ParamsExpected1<P> ignoredParametrizedTest1(String description, TestClosureParams1<P> testBody);
+
+    <T extends Throwable, P> ParamsExpectedException1<T, P> ignoredParametrizedTestExpectingException1(
+            Class<T> expectedException, String description, TestClosureParams1<P> testBody);
 }

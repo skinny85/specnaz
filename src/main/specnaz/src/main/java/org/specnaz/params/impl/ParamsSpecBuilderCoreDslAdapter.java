@@ -36,4 +36,16 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
         return coreDslBuilder.focusedParametrizedTestExpectingException1(expectedException,
                 shouldThrowDescription(expectedException, description), testBody);
     }
+
+    @Override
+    public <P> ParamsExpected1<P> xshould(String description, TestClosureParams1<P> testBody) {
+        return coreDslBuilder.ignoredParametrizedTest1(description, testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P> ParamsExpectedException1<T, P> xshouldThrow(Class<T> expectedException,
+            String description, TestClosureParams1<P> testBody) {
+        return coreDslBuilder.ignoredParametrizedTestExpectingException1(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
 }
