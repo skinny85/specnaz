@@ -44,9 +44,9 @@ public final class TestsGroupNodeAccumulator {
         if (testCaseType == TestCaseType.FOCUSED)
             containsFocusedTests = true;
 
-        TestCaseType finalTestCaseType = descendantTestType(testCaseType);
         TestSettings testSettings = new TestSettings();
-        testCases.add(new SinglePositiveTestCase(testSettings, description, testBody, finalTestCaseType));
+        testCases.add(new SinglePositiveTestCase(testSettings,
+                description, testBody, descendantTestType(testCaseType)));
         return testSettings;
     }
 
@@ -55,9 +55,9 @@ public final class TestsGroupNodeAccumulator {
         if (testCaseType == TestCaseType.FOCUSED)
             containsFocusedTests = true;
 
-        TestCaseType finalTestCaseType = descendantTestType(testCaseType);
         ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
-        testCases.add(new SingleExceptionTestCase<>(throwableExpectations, description, testBody, finalTestCaseType));
+        testCases.add(new SingleExceptionTestCase<>(throwableExpectations,
+                description, testBody, descendantTestType(testCaseType)));
         return throwableExpectations;
     }
 
@@ -84,7 +84,7 @@ public final class TestsGroupNodeAccumulator {
 
         TestSettings testSettings = new TestSettings();
         ParametrizedPositiveTest1<P> parametrizedTest = new ParametrizedPositiveTest1<>(testSettings,
-                description, testBody, testCaseType);
+                description, testBody, descendantTestType(testCaseType));
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpected1<>(parametrizedTest, testSettings);
     }
@@ -96,7 +96,7 @@ public final class TestsGroupNodeAccumulator {
 
         ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
         ParametrizedExceptionTest1<T, P> parametrizedTest = new ParametrizedExceptionTest1<>(throwableExpectations,
-                description, testBody, testCaseType);
+                description, testBody, descendantTestType(testCaseType));
         parametrizedTests.add(parametrizedTest);
         return new ParamsExpectedException1<>(parametrizedTest, throwableExpectations);
     }
