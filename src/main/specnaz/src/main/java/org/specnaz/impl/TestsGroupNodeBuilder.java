@@ -44,20 +44,20 @@ public final class TestsGroupNodeBuilder {
         if (testCaseType == TestCaseType.FOCUSED)
             containsFocusedTests = true;
 
-        TestCaseType finalTestCaseType = subgroupTestType(testCaseType);
+        TestCaseType finalTestCaseType = descendantTestType(testCaseType);
         TestSettings testSettings = new TestSettings();
         testCases.add(new SinglePositiveTestCase(testSettings, description, testBody, finalTestCaseType));
         return testSettings;
     }
 
-    public <T extends Throwable> ThrowableExpectations<T> addThrowTest(Class<T> expectedException,
+    public <T extends Throwable> ThrowableExpectations<T> addExceptionTest(Class<T> expectedException,
             String description, TestClosure testBody, TestCaseType testCaseType) {
         if (testCaseType == TestCaseType.FOCUSED)
             containsFocusedTests = true;
 
-        TestCaseType finalTestCaseType = subgroupTestType(testCaseType);
+        TestCaseType finalTestCaseType = descendantTestType(testCaseType);
         ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
-        testCases.add(new SingleExceptionTestCase<T>(throwableExpectations, description, testBody, finalTestCaseType));
+        testCases.add(new SingleExceptionTestCase<>(throwableExpectations, description, testBody, finalTestCaseType));
         return throwableExpectations;
     }
 
@@ -70,7 +70,7 @@ public final class TestsGroupNodeBuilder {
     }
 
     public TestsGroupNodeBuilder subgroupBuilder(String description, TestCaseType testCaseType) {
-        return new TestsGroupNodeBuilder(description, subgroupTestType(testCaseType));
+        return new TestsGroupNodeBuilder(description, descendantTestType(testCaseType));
     }
 
     public void addSubgroup(TreeNode<TestsGroup> subgroupNode) {
@@ -134,17 +134,7 @@ public final class TestsGroupNodeBuilder {
         }
     }
 
-    private TestCaseType subgroupTestType(TestCaseType testCaseType) {
-        switch (this.testCaseType) {
-            case REGULAR:
-                return testCaseType;
-            case FOCUSED:
-                return testCaseType == TestCaseType.REGULAR
-                        ? TestCaseType.FOCUSED
-                        : testCaseType;
-            case IGNORED:
-            default:
-                return TestCaseType.IGNORED;
-        }
+    private TestCaseType descendantTestType(TestCaseType testCaseType) {
+        return this.testCaseType.descendantTestType(testCaseType);
     }
 }

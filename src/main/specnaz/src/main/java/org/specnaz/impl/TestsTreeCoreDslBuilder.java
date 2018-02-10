@@ -33,7 +33,7 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     @Override
     public <T extends Throwable> ThrowableExpectations<T> testExpectingException(
             Class<T> expectedException, String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addThrowTest(expectedException, description, testBody, TestCaseType.REGULAR);
+        return testsGroupNodeBuilder.addExceptionTest(expectedException, description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
@@ -44,7 +44,7 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     @Override
     public <T extends Throwable> ThrowableExpectations<T> focusedTestExpectingException(
             Class<T> expectedException, String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addThrowTest(expectedException, description, testBody, TestCaseType.FOCUSED);
+        return testsGroupNodeBuilder.addExceptionTest(expectedException, description, testBody, TestCaseType.FOCUSED);
     }
 
     @Override
@@ -55,7 +55,7 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     @Override
     public <T extends Throwable> ThrowableExpectations<T> ignoredTestExpectingException(
             Class<T> expectedException, String description, TestClosure testBody) {
-        return testsGroupNodeBuilder.addThrowTest(expectedException, description, testBody, TestCaseType.IGNORED);
+        return testsGroupNodeBuilder.addExceptionTest(expectedException, description, testBody, TestCaseType.IGNORED);
     }
 
     @Override
