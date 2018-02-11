@@ -1,11 +1,8 @@
 package org.specnaz.params;
 
 import org.specnaz.TestSettings;
+import org.specnaz.params.impl.Conversions;
 import org.specnaz.params.impl.ParametrizedPositiveTest2;
-
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class ParamsExpected2<P1, P2> {
     private final ParametrizedPositiveTest2<P1, P2> parametrizedTest;
@@ -18,7 +15,7 @@ public final class ParamsExpected2<P1, P2> {
 
     @SafeVarargs
     public final TestSettings provided(Params2<P1, P2>... params) {
-        parametrizedTest.complete(Stream.of(params).map(p -> Arrays.asList(p._1, p._2)).collect(Collectors.toList()));
+        Conversions.complete2(parametrizedTest, params);
         return testSettings;
     }
 }

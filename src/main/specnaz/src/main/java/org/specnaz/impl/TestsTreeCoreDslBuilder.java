@@ -3,8 +3,11 @@ package org.specnaz.impl;
 import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpectedException1;
+import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.TestClosureParams1;
+import org.specnaz.params.TestClosureParams2;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -117,6 +120,18 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
             Class<T> expectedException, String description, TestClosureParams1<P> testBody) {
         return testsGroupNodeAccumulator.addParametrizedExceptionTest1(expectedException,
                 description, testBody, TestCaseType.IGNORED);
+    }
+
+    @Override
+    public <P1, P2> ParamsExpected2<P1, P2> parametrizedTest2(String description, TestClosureParams2<P1, P2> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest2(description, testBody, TestCaseType.REGULAR);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> parametrizedTestExpectingException2(
+            Class<T> expectedException, String description, TestClosureParams2<P1, P2> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest2(expectedException,
+                description, testBody, TestCaseType.REGULAR);
     }
 
     private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {

@@ -18,6 +18,6 @@ public abstract class AbstractParametrizedPositiveTest extends AbstractParametri
     @Override
     protected SingleTestCase testCase(List<?> params) {
         return new SinglePositiveTestCase(testSettings,
-                formatDesc(description, params), toTestClosure(params), testCaseType);
+                formatDesc(params), toTestClosure(params), testCaseType);
     }
 }

@@ -3,8 +3,11 @@ package org.specnaz.core;
 import org.specnaz.SpecBuilder;
 import org.specnaz.TestSettings;
 import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpectedException1;
+import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.TestClosureParams1;
+import org.specnaz.params.TestClosureParams2;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -208,4 +211,9 @@ public interface CoreDslBuilder {
 
     <T extends Throwable, P> ParamsExpectedException1<T, P> ignoredParametrizedTestExpectingException1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody);
+
+    <P1, P2> ParamsExpected2<P1, P2> parametrizedTest2(String description, TestClosureParams2<P1, P2> testBody);
+
+    <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> parametrizedTestExpectingException2(
+            Class<T> expectedException, String description, TestClosureParams2<P1, P2> testBody);
 }

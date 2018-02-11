@@ -19,6 +19,6 @@ public abstract class AbstractParametrizedExceptionTest<T extends Throwable> ext
     @Override
     protected SingleTestCase testCase(List<?> params) {
         return new SingleExceptionTestCase<>(throwableExpectations,
-                formatDesc(description, params), toTestClosure(params), testCaseType);
+                formatDesc(params), toTestClosure(params), testCaseType);
     }
 }

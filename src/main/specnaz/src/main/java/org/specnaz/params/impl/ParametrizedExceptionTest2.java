@@ -19,6 +19,6 @@ public final class ParametrizedExceptionTest2<T extends Throwable, P1, P2> exten
 
     @Override
     protected TestClosure toTestClosure(List<?> params) {
-        return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1));
+        return Conversions.toTestClosure2(testBody, params);
     }
 }

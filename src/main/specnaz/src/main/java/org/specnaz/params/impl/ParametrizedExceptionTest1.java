@@ -7,7 +7,8 @@ import org.specnaz.utils.ThrowableExpectations;
 
 import java.util.List;
 
-public final class ParametrizedExceptionTest1<T extends Throwable, P> extends AbstractParametrizedExceptionTest<T> {
+public final class ParametrizedExceptionTest1<T extends Throwable, P> extends
+        AbstractParametrizedExceptionTest<T> {
     private final TestClosureParams1<P> testBody;
 
     public ParametrizedExceptionTest1(ThrowableExpectations<T> throwableExpectations,
@@ -18,6 +19,6 @@ public final class ParametrizedExceptionTest1<T extends Throwable, P> extends Ab
 
     @Override
     protected TestClosure toTestClosure(List<?> params) {
-        return () -> testBody.invoke((P) params.get(0));
+        return Conversions.toTestClosure1(testBody, params);
     }
 }
