@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class AbstractParametrizedTest1<P> {
     protected final String description;
     private final TestClosureParams1<P> testBody;
-    protected final TestCaseType testCaseType;
+    public final TestCaseType testCaseType;
     private List<P> params;
 
     AbstractParametrizedTest1(String description, TestClosureParams1<P> testBody, TestCaseType testCaseType) {
