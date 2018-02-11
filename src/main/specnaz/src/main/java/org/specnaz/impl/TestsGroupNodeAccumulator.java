@@ -2,11 +2,16 @@ package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpectedException1;
+import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.TestClosureParams1;
-import org.specnaz.params.impl.AbstractParametrizedTest1;
+import org.specnaz.params.TestClosureParams2;
+import org.specnaz.params.impl.AbstractParametrizedTest;
+import org.specnaz.params.impl.ParametrizedExceptionTest2;
 import org.specnaz.params.impl.ParametrizedPositiveTest1;
 import org.specnaz.params.impl.ParametrizedExceptionTest1;
+import org.specnaz.params.impl.ParametrizedPositiveTest2;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -21,7 +26,7 @@ public final class TestsGroupNodeAccumulator {
                                     afters     = new LinkedList<>(),
                                     afterAlls  = new LinkedList<>();
     private final List<SingleTestCase> testCases  = new LinkedList<>();
-    private final List<AbstractParametrizedTest1<?>> parametrizedTests = new LinkedList<>();
+    private final List<AbstractParametrizedTest> parametrizedTests = new LinkedList<>();
     private final List<TreeNode<TestsGroup>> subgroups = new LinkedList<>();
     private boolean containsFocusedTests = false;
 
@@ -89,6 +94,24 @@ public final class TestsGroupNodeAccumulator {
         return new ParamsExpectedException1<>(parametrizedTest, throwableExpectations);
     }
 
+//    public <P1, P2> ParamsExpected2<P1, P2> addParametrizedPositiveTest2(String description,
+//            TestClosureParams2<P1, P2> testBody, TestCaseType testCaseType) {
+//        TestSettings testSettings = new TestSettings();
+//        ParametrizedPositiveTest2<P1, P2> parametrizedTest = new ParametrizedPositiveTest2<>(testSettings,
+//                description, testBody, descendantTestType(testCaseType));
+//        addParametrizedTest(parametrizedTest);
+//        return new ParamsExpected2<>(parametrizedTest, testSettings);
+//    }
+//
+//    public <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> addParametrizedExceptionTest2(
+//            Class<T> expectedException, String description, TestClosureParams2<P1, P2> testBody, TestCaseType testCaseType) {
+//        ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
+//        ParametrizedExceptionTest2<T, P1, P2> parametrizedTest = new ParametrizedExceptionTest2<>(throwableExpectations,
+//                description, testBody, descendantTestType(testCaseType));
+//        addParametrizedTest(parametrizedTest);
+//        return new ParamsExpectedException2<>(parametrizedTest, throwableExpectations);
+//    }
+
     public TreeNode<TestsGroup> build() {
         // count tests in subgroups
         int testsInSubgroups = subgroups.stream().mapToInt(node -> node.value.testsInTree).sum();
@@ -96,7 +119,7 @@ public final class TestsGroupNodeAccumulator {
         containsFocusedTests |= subgroups.stream().anyMatch(s -> s.value.containsFocusedTests);
 
         List<SingleTestCase> testCases = new LinkedList<>(this.testCases);
-        for (AbstractParametrizedTest1<?> parametrizedTest : parametrizedTests) {
+        for (AbstractParametrizedTest parametrizedTest : parametrizedTests) {
             testCases.addAll(parametrizedTest.testCases());
         }
 
@@ -127,7 +150,7 @@ public final class TestsGroupNodeAccumulator {
         testCases.add(testCase);
     }
 
-    private void addParametrizedTest(AbstractParametrizedTest1 parametrizedTest) {
+    private void addParametrizedTest(AbstractParametrizedTest parametrizedTest) {
         if (parametrizedTest.testCaseType == TestCaseType.FOCUSED)
             containsFocusedTests = true;
 

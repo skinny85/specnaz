@@ -1,23 +1,23 @@
 package org.specnaz.params.impl;
 
-import org.specnaz.impl.SingleExceptionTestCase;
-import org.specnaz.impl.SingleTestCase;
 import org.specnaz.impl.TestCaseType;
 import org.specnaz.params.TestClosureParams1;
+import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
-public final class ParametrizedExceptionTest1<T extends Throwable, P> extends AbstractParametrizedTest1<P> {
-    private final ThrowableExpectations<T> throwableExpectations;
+import java.util.List;
+
+public final class ParametrizedExceptionTest1<T extends Throwable, P> extends AbstractParametrizedExceptionTest<T> {
+    private final TestClosureParams1<P> testBody;
 
     public ParametrizedExceptionTest1(ThrowableExpectations<T> throwableExpectations,
             String description, TestClosureParams1<P> testBody, TestCaseType testCaseType) {
-        super(description, testBody, testCaseType);
-        this.throwableExpectations = throwableExpectations;
+        super(throwableExpectations, description, testCaseType);
+        this.testBody = testBody;
     }
 
     @Override
-    protected SingleTestCase testCase(P param) {
-        return new SingleExceptionTestCase<>(throwableExpectations,
-                formatDesc(description, param), toTestClosure(param), testCaseType);
+    protected TestClosure toTestClosure(List<?> params) {
+        return () -> testBody.invoke((P) params.get(0));
     }
 }
