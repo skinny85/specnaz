@@ -134,6 +134,30 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
                 description, testBody, TestCaseType.REGULAR);
     }
 
+    @Override
+    public <P1, P2> ParamsExpected2<P1, P2> focusedParametrizedTest2(String description, TestClosureParams2<P1, P2> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest2(description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> focusedParametrizedTestExpectingException2(
+            Class<T> expectedException, String description, TestClosureParams2<P1, P2> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest2(expectedException,
+                description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <P1, P2> ParamsExpected2<P1, P2> ignoredParametrizedTest2(String description, TestClosureParams2<P1, P2> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest2(description, testBody, TestCaseType.IGNORED);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> ignoredParametrizedTestExpectingException2(
+            Class<T> expectedException, String description, TestClosureParams2<P1, P2> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest2(expectedException,
+                description, testBody, TestCaseType.IGNORED);
+    }
+
     private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {
         TestsGroupNodeAccumulator previous = this.testsGroupNodeAccumulator;
         TestsGroupNodeAccumulator subgroupAccumulator = previous.subgroupAccumulator(description, testCaseType);

@@ -20,4 +20,14 @@ public interface ParamsSpecBuilder extends SpecBuilder {
     <P1, P2> ParamsExpected2<P1, P2> should(String description, TestClosureParams2<P1, P2> testBody);
     <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> shouldThrow(Class<T> expectedException,
             String description, TestClosureParams2<P1, P2> testBody);
+
+    @Deprecated
+    <P1, P2> ParamsExpected2<P1, P2> fshould(String description, TestClosureParams2<P1, P2> testBody);
+    @Deprecated
+    <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> fshouldThrow(Class<T> expectedException,
+            String description, TestClosureParams2<P1, P2> testBody);
+
+    <P1, P2> ParamsExpected2<P1, P2> xshould(String description, TestClosureParams2<P1, P2> testBody);
+    <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> xshouldThrow(Class<T> expectedException,
+            String description, TestClosureParams2<P1, P2> testBody);
 }
