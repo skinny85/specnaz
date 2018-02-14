@@ -8,7 +8,7 @@ import org.specnaz.utils.ThrowableExpectations;
 import java.util.List;
 
 public abstract class AbstractParametrizedExceptionTest<T extends Throwable> extends AbstractParametrizedTest {
-    private final ThrowableExpectations<T> throwableExpectations;
+    public final ThrowableExpectations<T> throwableExpectations;
 
     public AbstractParametrizedExceptionTest(ThrowableExpectations<T> throwableExpectations,
             String description, TestCaseType testCaseType) {

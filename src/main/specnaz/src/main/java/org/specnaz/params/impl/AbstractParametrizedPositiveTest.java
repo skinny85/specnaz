@@ -8,7 +8,7 @@ import org.specnaz.impl.TestCaseType;
 import java.util.List;
 
 public abstract class AbstractParametrizedPositiveTest extends AbstractParametrizedTest {
-    private final TestSettings testSettings;
+    public final TestSettings testSettings;
 
     AbstractParametrizedPositiveTest(TestSettings testSettings, String description, TestCaseType testCaseType) {
         super(description, testCaseType);

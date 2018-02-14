@@ -4,6 +4,8 @@ import org.specnaz.TestSettings;
 import org.specnaz.params.impl.Conversions;
 import org.specnaz.params.impl.ParametrizedPositiveTest1;
 
+import java.util.stream.Stream;
+
 /**
  * The class returned from {@link ParamsSpecBuilder#should(String, TestClosureParams1)}.
  * You need to call one of the {@code provided} methods on it,
@@ -13,11 +15,9 @@ import org.specnaz.params.impl.ParametrizedPositiveTest1;
  */
 public final class ParamsExpected1<P> {
     private final ParametrizedPositiveTest1<P> parametrizedTest;
-    private final TestSettings testSettings;
 
-    public ParamsExpected1(ParametrizedPositiveTest1<P> parametrizedTest, TestSettings testSettings) {
+    public ParamsExpected1(ParametrizedPositiveTest1<P> parametrizedTest) {
         this.parametrizedTest = parametrizedTest;
-        this.testSettings = testSettings;
     }
 
     /**
@@ -32,8 +32,7 @@ public final class ParamsExpected1<P> {
      */
     @SafeVarargs
     public final TestSettings provided(P... params) {
-        Conversions.complete1(parametrizedTest, params);
-        return testSettings;
+        return Conversions.complete1p(parametrizedTest, Stream.of(params));
     }
 
     /**
@@ -47,7 +46,6 @@ public final class ParamsExpected1<P> {
      *     {@link org.specnaz.SpecBuilder#should} method would
      */
     public final TestSettings provided(Iterable<? extends P> params) {
-        Conversions.complete1(parametrizedTest, params);
-        return testSettings;
+        return Conversions.complete1p(parametrizedTest, Conversions.iterable2stream(params));
     }
 }

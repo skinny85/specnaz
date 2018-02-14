@@ -78,38 +78,34 @@ public final class TestsGroupNodeAccumulator {
 
     public <P> ParamsExpected1<P> addParametrizedPositiveTest1(String description, TestClosureParams1<P> testBody,
             TestCaseType testCaseType) {
-        TestSettings testSettings = new TestSettings();
-        ParametrizedPositiveTest1<P> parametrizedTest = new ParametrizedPositiveTest1<>(testSettings,
-                description, testBody, descendantTestType(testCaseType));
+        ParametrizedPositiveTest1<P> parametrizedTest = new ParametrizedPositiveTest1<>(
+                new TestSettings(), description, testBody, descendantTestType(testCaseType));
         addParametrizedTest(parametrizedTest);
-        return new ParamsExpected1<>(parametrizedTest, testSettings);
+        return new ParamsExpected1<>(parametrizedTest);
     }
 
     public <T extends Throwable, P> ParamsExpectedException1<T, P> addParametrizedExceptionTest1(
             Class<T> expectedException, String description, TestClosureParams1<P> testBody, TestCaseType testCaseType) {
-        ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
-        ParametrizedExceptionTest1<T, P> parametrizedTest = new ParametrizedExceptionTest1<>(throwableExpectations,
-                description, testBody, descendantTestType(testCaseType));
+        ParametrizedExceptionTest1<T, P> parametrizedTest = new ParametrizedExceptionTest1<>(
+                new ThrowableExpectations<>(expectedException), description, testBody, descendantTestType(testCaseType));
         addParametrizedTest(parametrizedTest);
-        return new ParamsExpectedException1<>(parametrizedTest, throwableExpectations);
+        return new ParamsExpectedException1<>(parametrizedTest);
     }
 
     public <P1, P2> ParamsExpected2<P1, P2> addParametrizedPositiveTest2(String description,
             TestClosureParams2<P1, P2> testBody, TestCaseType testCaseType) {
-        TestSettings testSettings = new TestSettings();
-        ParametrizedPositiveTest2<P1, P2> parametrizedTest = new ParametrizedPositiveTest2<>(testSettings,
-                description, testBody, descendantTestType(testCaseType));
+        ParametrizedPositiveTest2<P1, P2> parametrizedTest = new ParametrizedPositiveTest2<>(
+                new TestSettings(), description, testBody, descendantTestType(testCaseType));
         addParametrizedTest(parametrizedTest);
-        return new ParamsExpected2<>(parametrizedTest, testSettings);
+        return new ParamsExpected2<>(parametrizedTest);
     }
 
     public <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> addParametrizedExceptionTest2(
             Class<T> expectedException, String description, TestClosureParams2<P1, P2> testBody, TestCaseType testCaseType) {
-        ThrowableExpectations<T> throwableExpectations = new ThrowableExpectations<>(expectedException);
-        ParametrizedExceptionTest2<T, P1, P2> parametrizedTest = new ParametrizedExceptionTest2<>(throwableExpectations,
-                description, testBody, descendantTestType(testCaseType));
+        ParametrizedExceptionTest2<T, P1, P2> parametrizedTest = new ParametrizedExceptionTest2<>(
+                new ThrowableExpectations<>(expectedException), description, testBody, descendantTestType(testCaseType));
         addParametrizedTest(parametrizedTest);
-        return new ParamsExpectedException2<>(parametrizedTest, throwableExpectations);
+        return new ParamsExpectedException2<>(parametrizedTest);
     }
 
     public TreeNode<TestsGroup> build() {

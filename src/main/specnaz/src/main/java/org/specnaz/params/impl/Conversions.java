@@ -1,9 +1,11 @@
 package org.specnaz.params.impl;
 
+import org.specnaz.TestSettings;
 import org.specnaz.params.Params2;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.utils.TestClosure;
+import org.specnaz.utils.ThrowableExpectations;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,28 +15,43 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public final class Conversions {
-    @SafeVarargs
-    public static <P> void complete1(AbstractParametrizedTest parametrizedTest, P... params) {
-        parametrizedTest.complete(Stream.of(params)
+    public static <E> Stream<E> iterable2stream(Iterable<E> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false);
+    }
+
+    public static <P> TestSettings complete1p(
+            AbstractParametrizedPositiveTest parametrizedTest, Stream<? extends P> params) {
+        complete1(parametrizedTest, params);
+        return parametrizedTest.testSettings;
+    }
+
+    public static <T extends Throwable, P> ThrowableExpectations<T> complete1e(
+            AbstractParametrizedExceptionTest<T> parametrizedTest, Stream<? extends P> params) {
+        complete1(parametrizedTest, params);
+        return parametrizedTest.throwableExpectations;
+    }
+
+    private static <P> void complete1(AbstractParametrizedTest parametrizedTest, Stream<? extends P> params) {
+        parametrizedTest.complete(params
                 .map(p -> Collections.singletonList(p))
                 .collect(Collectors.toList()));
     }
 
-    public static <P> void complete1(AbstractParametrizedTest parametrizedTest, Iterable<? extends P> params) {
-        parametrizedTest.complete(StreamSupport.stream(params.spliterator(), false)
-                .map(p -> Collections.singletonList(p))
-                .collect(Collectors.toList()));
+    public static <P1, P2> TestSettings complete2p(
+            AbstractParametrizedPositiveTest parametrizedTest, Stream<Params2<P1, P2>> params) {
+        complete2(parametrizedTest, params);
+        return parametrizedTest.testSettings;
     }
 
-    @SafeVarargs
-    public static <P1, P2> void complete2(AbstractParametrizedTest parametrizedTest, Params2<P1, P2>... params) {
-        parametrizedTest.complete(Stream.of(params)
-                .map(p -> Arrays.asList(p._1, p._2))
-                .collect(Collectors.toList()));
+    public static <T extends Throwable, P1, P2> ThrowableExpectations<T> complete2e(
+            AbstractParametrizedExceptionTest<T> parametrizedTest, Stream<Params2<P1, P2>> params) {
+        complete2(parametrizedTest, params);
+        return parametrizedTest.throwableExpectations;
     }
 
-    public static <P1, P2> void complete2(AbstractParametrizedTest parametrizedTest, Iterable<Params2<P1, P2>> params) {
-        parametrizedTest.complete(StreamSupport.stream(params.spliterator(), false)
+    private static <P1, P2> void complete2(
+            AbstractParametrizedTest parametrizedTest, Stream<Params2<P1, P2>> params) {
+        parametrizedTest.complete(params
                 .map(p -> Arrays.asList(p._1, p._2))
                 .collect(Collectors.toList()));
     }

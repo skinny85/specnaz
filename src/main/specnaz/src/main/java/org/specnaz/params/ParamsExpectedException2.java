@@ -4,6 +4,8 @@ import org.specnaz.params.impl.Conversions;
 import org.specnaz.params.impl.ParametrizedExceptionTest2;
 import org.specnaz.utils.ThrowableExpectations;
 
+import java.util.stream.Stream;
+
 /**
  * The class returned from {@link ParamsSpecBuilder#shouldThrow(Class, String, TestClosureParams2)}.
  * You need to call one of the {@code provided} methods on it,
@@ -13,12 +15,9 @@ import org.specnaz.utils.ThrowableExpectations;
  */
 public final class ParamsExpectedException2<T extends Throwable, P1, P2> {
     private final ParametrizedExceptionTest2<T, P1, P2> parametrizedTest;
-    private final ThrowableExpectations<T> throwableExpectations;
 
-    public ParamsExpectedException2(ParametrizedExceptionTest2<T, P1, P2> parametrizedTest,
-            ThrowableExpectations<T> throwableExpectations) {
+    public ParamsExpectedException2(ParametrizedExceptionTest2<T, P1, P2> parametrizedTest) {
         this.parametrizedTest = parametrizedTest;
-        this.throwableExpectations = throwableExpectations;
     }
 
     /**
@@ -33,8 +32,7 @@ public final class ParamsExpectedException2<T extends Throwable, P1, P2> {
      */
     @SafeVarargs
     public final ThrowableExpectations<T> provided(Params2<P1, P2>... params) {
-        Conversions.complete2(parametrizedTest, params);
-        return throwableExpectations;
+        return Conversions.complete2e(parametrizedTest, Stream.of(params));
     }
 
     /**
@@ -48,7 +46,6 @@ public final class ParamsExpectedException2<T extends Throwable, P1, P2> {
      *     {@link org.specnaz.SpecBuilder#shouldThrow} method would
      */
     public final ThrowableExpectations<T> provided(Iterable<Params2<P1, P2>> params) {
-        Conversions.complete2(parametrizedTest, params);
-        return throwableExpectations;
+        return Conversions.complete2e(parametrizedTest, Conversions.iterable2stream(params));
     }
 }
