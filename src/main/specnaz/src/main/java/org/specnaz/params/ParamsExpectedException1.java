@@ -12,6 +12,7 @@ import java.util.stream.Stream;
  * passing the parameters for the test to run with.
  *
  * @see #provided(P...)
+ * @see #provided(Iterable)
  */
 public final class ParamsExpectedException1<T extends Throwable, P> {
     private final ParametrizedExceptionTest1<T, P> parametrizedTest;

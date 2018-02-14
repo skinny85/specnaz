@@ -12,6 +12,7 @@ import java.util.stream.Stream;
  * passing the parameters for the test to run with.
  *
  * @see #provided(P...)
+ * @see #provided(Iterable)
  */
 public final class ParamsExpected1<P> {
     private final ParametrizedPositiveTest1<P> parametrizedTest;
