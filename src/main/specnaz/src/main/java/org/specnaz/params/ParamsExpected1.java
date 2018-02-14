@@ -35,4 +35,19 @@ public final class ParamsExpected1<P> {
         Conversions.complete1(parametrizedTest, params);
         return testSettings;
     }
+
+    /**
+     * Complete the parametrized test by providing the parameters
+     * it will run with.
+     *
+     * @param params
+     *     the parameters to run the test with
+     * @return
+     *     an instance of the {@link TestSettings} class, like a regular
+     *     {@link org.specnaz.SpecBuilder#should} method would
+     */
+    public final TestSettings provided(Iterable<? extends P> params) {
+        Conversions.complete1(parametrizedTest, params);
+        return testSettings;
+    }
 }

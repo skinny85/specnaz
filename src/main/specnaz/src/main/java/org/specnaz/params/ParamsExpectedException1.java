@@ -36,4 +36,19 @@ public final class ParamsExpectedException1<T extends Throwable, P> {
         Conversions.complete1(parametrizedTest, params);
         return throwableExpectations;
     }
+
+    /**
+     * Complete the parametrized test by providing the parameters
+     * it will run with.
+     *
+     * @param params
+     *     the parameters to run the test with
+     * @return
+     *     an instance of the {@link ThrowableExpectations} class, like a regular
+     *     {@link org.specnaz.SpecBuilder#shouldThrow} method would
+     */
+    public final ThrowableExpectations<T> provided(Iterable<? extends P> params) {
+        Conversions.complete1(parametrizedTest, params);
+        return throwableExpectations;
+    }
 }
