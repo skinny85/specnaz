@@ -49,9 +49,9 @@ open class KotlinSpecBuilder(
     /**
      * The equivalent of [SpecBuilder.should] for Kotlin.
      */
-    fun should(description: String, testBody: (Nothing?) -> Unit): TestSettings {
+    fun should(description: String, testBody: () -> Unit): TestSettings {
         @Suppress("DEPRECATION")
-        return specBuilder.should(description, { testBody.invoke(null) })
+        return specBuilder.should(description, testBody)
     }
 
     /**
@@ -66,10 +66,10 @@ open class KotlinSpecBuilder(
      * }
      * ```
      */
-    inline fun <reified E : Throwable> shouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
+    inline fun <reified E : Throwable> shouldThrow(description: String, crossinline testBody: () -> Unit):
             ThrowableExpectations<E> {
         @Suppress("DEPRECATION")
-        return specBuilder.shouldThrow(E::class.java, description, { testBody.invoke(null) })
+        return specBuilder.shouldThrow(E::class.java, description, { testBody.invoke() })
     }
 
     /**
@@ -100,19 +100,19 @@ open class KotlinSpecBuilder(
      * The equivalent of [SpecBuilder.fshould] for Kotlin.
      */
     @Deprecated("Deprecated for the same reason SpecBuilder#fshould is")
-    fun fshould(description: String, testBody: (Nothing?) -> Unit): TestSettings {
+    fun fshould(description: String, testBody: () -> Unit): TestSettings {
         @Suppress("DEPRECATION")
-        return specBuilder.fshould(description, { testBody.invoke(null) })
+        return specBuilder.fshould(description, testBody)
     }
 
     /**
      * The equivalent of [SpecBuilder.fshouldThrow] for Kotlin.
      */
     @Deprecated("Deprecated for the same reason SpecBuilder#fshouldThrow is")
-    inline fun <reified E : Throwable> fshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
+    inline fun <reified E : Throwable> fshouldThrow(description: String, crossinline testBody: () -> Unit):
             ThrowableExpectations<E> {
         @Suppress("DEPRECATION")
-        return specBuilder.fshouldThrow(E::class.java, description, { testBody.invoke(null) })
+        return specBuilder.fshouldThrow(E::class.java, description, { testBody.invoke() })
     }
 
     /**
@@ -127,18 +127,18 @@ open class KotlinSpecBuilder(
     /**
      * The equivalent of [SpecBuilder.xshould] for Kotlin.
      */
-    fun xshould(description: String, testBody: (Nothing?) -> Unit): TestSettings {
+    fun xshould(description: String, testBody: () -> Unit): TestSettings {
         @Suppress("DEPRECATION")
-        return specBuilder.xshould(description, { testBody.invoke(null) })
+        return specBuilder.xshould(description, testBody)
     }
 
     /**
      * The equivalent of [SpecBuilder.xshouldThrow] for Kotlin.
      */
-    inline fun <reified E : Throwable> xshouldThrow(description: String, crossinline testBody: (Nothing?) -> Unit):
+    inline fun <reified E : Throwable> xshouldThrow(description: String, crossinline testBody: () -> Unit):
             ThrowableExpectations<E> {
         @Suppress("DEPRECATION")
-        return specBuilder.xshouldThrow(E::class.java, description, { testBody.invoke(null) })
+        return specBuilder.xshouldThrow(E::class.java, description, { testBody.invoke() })
     }
 
     /**
