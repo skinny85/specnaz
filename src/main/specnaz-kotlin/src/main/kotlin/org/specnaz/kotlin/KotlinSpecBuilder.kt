@@ -27,8 +27,9 @@ import org.specnaz.utils.ThrowableExpectations
  * @see xshouldThrow
  * @see xdescribes
  */
-class KotlinSpecBuilder(@Deprecated("Only public because shouldThrow uses a reified type parameter and needs to be inline. Do not use!")
-                        val specBuilder: SpecBuilder) {
+open class KotlinSpecBuilder(
+        @Deprecated("Only public because shouldThrow uses a reified type parameter and needs to be inline. Do not use!")
+        val specBuilder: SpecBuilder) {
     /**
      * The equivalent of [SpecBuilder.beginsAll] for Kotlin.
      */
