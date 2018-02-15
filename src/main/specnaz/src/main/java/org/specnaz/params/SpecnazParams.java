@@ -1,5 +1,6 @@
 package org.specnaz.params;
 
+import org.specnaz.SpecBuilder;
 import org.specnaz.Specnaz;
 import org.specnaz.impl.SpecsRegistry;
 import org.specnaz.impl.SpecsRegistryViolation;
@@ -13,7 +14,7 @@ import java.util.function.Consumer;
  * <p>
  * It works the same as {@link Specnaz}, except the parameter
  * of the lambda expression passed in {@link #describes} is of type
- * {@link ParamsSpecBuilder} instead of {@link org.specnaz.SpecBuilder}.
+ * {@link ParamsSpecBuilder} instead of {@link SpecBuilder}.
  * {@link #describes} also obeys the same contract as {@link Specnaz#describes}
  * (must be called in the public, no-argument constructor of the test class exactly once).
  *
