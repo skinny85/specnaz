@@ -4,11 +4,14 @@ import org.specnaz.SpecBuilder;
 import org.specnaz.TestSettings;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
+import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
+import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsSpecBuilder;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
+import org.specnaz.params.TestClosureParams3;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -316,7 +319,7 @@ public interface CoreDslBuilder {
      *     the body of the test case
      * @return an instance of the {@link ParamsExpected2} class
      */
-    <P1, P2> ParamsExpected2<P1,P2> focusedParametrizedTest2(String description, TestClosureParams2<P1, P2> testBody);
+    <P1, P2> ParamsExpected2<P1, P2> focusedParametrizedTest2(String description, TestClosureParams2<P1, P2> testBody);
 
     /**
      * The core equivalent of {@link ParamsSpecBuilder#fshouldThrow(Class, String, TestClosureParams2)}
@@ -343,7 +346,7 @@ public interface CoreDslBuilder {
      *     the body of the test case
      * @return an instance of the {@link ParamsExpected2} class
      */
-    <P1, P2> ParamsExpected2<P1,P2> ignoredParametrizedTest2(String description, TestClosureParams2<P1, P2> testBody);
+    <P1, P2> ParamsExpected2<P1, P2> ignoredParametrizedTest2(String description, TestClosureParams2<P1, P2> testBody);
 
     /**
      * The core equivalent of {@link ParamsSpecBuilder#xshouldThrow(Class, String, TestClosureParams2)}
@@ -355,8 +358,92 @@ public interface CoreDslBuilder {
      *     the description of the test case
      * @param testBody
      *     the body of the test case
-     * @return an instance of the {@link ParamsExpected2} class
+     * @return an instance of the {@link ParamsExpectedException2} class
      */
     <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> ignoredParametrizedTestExpectingException2(
             Class<T> expectedException, String description, TestClosureParams2<P1, P2> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#should(String, TestClosureParams3)}
+     * (a parametrized test with 3 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected3} class
+     */
+    <P1, P2, P3> ParamsExpected3<P1, P2, P3> parametrizedTest3(
+            String description, TestClosureParams3<P1, P2, P3> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#shouldThrow(Class, String, TestClosureParams3)}
+     * (a parametrized test with 3 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException3} class
+     */
+    <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> parametrizedTestExpectingException3(
+            Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshould(String, TestClosureParams3)}
+     * (a parametrized test with 3 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected3} class
+     */
+    <P1, P2, P3> ParamsExpected3<P1, P2, P3> focusedParametrizedTest3(
+            String description, TestClosureParams3<P1, P2, P3> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshouldThrow(Class, String, TestClosureParams3)}
+     * (a parametrized test with 3 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException3} class
+     */
+    <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> focusedParametrizedTestExpectingException3(
+            Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshould(String, TestClosureParams3)}
+     * (a parametrized test with 3 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected3} class
+     */
+    <P1, P2, P3> ParamsExpected3<P1, P2, P3> ignoredParametrizedTest3(
+            String description, TestClosureParams3<P1, P2, P3> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshouldThrow(Class, String, TestClosureParams3)}
+     * (a parametrized test with 3 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException3} class
+     */
+    <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> ignoredParametrizedTestExpectingException3(
+            Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody);
 }

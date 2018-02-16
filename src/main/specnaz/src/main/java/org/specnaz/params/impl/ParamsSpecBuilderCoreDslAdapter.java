@@ -4,11 +4,14 @@ import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.impl.SpecBuilderCoreDslAdapter;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
+import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
+import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsSpecBuilder;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
+import org.specnaz.params.TestClosureParams3;
 
 public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAdapter
         implements ParamsSpecBuilder {
@@ -85,6 +88,42 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     public <T extends Throwable, P1, P2> ParamsExpectedException2<T, P1, P2> xshouldThrow(Class<T> expectedException,
             String description, TestClosureParams2<P1, P2> testBody) {
         return coreDslBuilder.ignoredParametrizedTestExpectingException2(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3> ParamsExpected3<P1, P2, P3> should(String description, TestClosureParams3<P1, P2, P3> testBody) {
+        return coreDslBuilder.parametrizedTest3(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> shouldThrow(
+            Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody) {
+        return coreDslBuilder.parametrizedTestExpectingException3(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3> ParamsExpected3<P1, P2, P3> fshould(String description, TestClosureParams3<P1, P2, P3> testBody) {
+        return coreDslBuilder.focusedParametrizedTest3(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> fshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody) {
+        return coreDslBuilder.focusedParametrizedTestExpectingException3(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3> ParamsExpected3<P1, P2, P3> xshould(String description, TestClosureParams3<P1, P2, P3> testBody) {
+        return coreDslBuilder.ignoredParametrizedTest3(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> xshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody) {
+        return coreDslBuilder.ignoredParametrizedTestExpectingException3(expectedException,
                 shouldThrowDescription(expectedException, description), testBody);
     }
 }

@@ -2,8 +2,10 @@ package org.specnaz.params.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.params.Params2;
+import org.specnaz.params.Params3;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
+import org.specnaz.params.TestClosureParams3;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -56,11 +58,34 @@ public final class Conversions {
                 .collect(Collectors.toList()));
     }
 
+    public static <P1, P2, P3> TestSettings complete3p(AbstractParametrizedPositiveTest parametrizedTest,
+            Stream<Params3<P1, P2, P3>> params) {
+        complete3(parametrizedTest, params);
+        return parametrizedTest.testSettings;
+    }
+
+    public static <T extends Throwable, P1, P2, P3> ThrowableExpectations<T> complete3e(
+            AbstractParametrizedExceptionTest<T> parametrizedTest, Stream<Params3<P1, P2, P3>> params) {
+        complete3(parametrizedTest, params);
+        return parametrizedTest.throwableExpectations;
+    }
+
+    private static <P1, P2, P3> void complete3(
+            AbstractParametrizedTest parametrizedTest, Stream<Params3<P1, P2, P3>> params) {
+        parametrizedTest.complete(params
+                .map(p -> Arrays.asList(p._1, p._2, p._3))
+                .collect(Collectors.toList()));
+    }
+
     public static <P> TestClosure toTestClosure1(TestClosureParams1<P> testBody, List<?> params) {
         return () -> testBody.invoke((P) params.get(0));
     }
 
     public static <P1, P2> TestClosure toTestClosure2(TestClosureParams2<P1, P2> testBody, List<?> params) {
         return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1));
+    }
+
+    public static <P1, P2, P3> TestClosure toTestClosure3(TestClosureParams3<P1, P2, P3> testBody, List<?> params) {
+        return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2));
     }
 }
