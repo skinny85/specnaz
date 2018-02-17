@@ -18,7 +18,7 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
     }
 
     fun <P1, P2> should(description: String, testBody: (P1, P2) -> Unit): ParamsExpected2<P1, P2> {
-        return paramsSpecBuilder.should(description, { p1, p2 -> testBody.invoke(p1, p2) })
+        return paramsSpecBuilder.should(description, testBody)
     }
 
     inline fun <reified T : Throwable, P1, P2> shouldThrow(

@@ -111,7 +111,7 @@ public final class TestsGroupNodeAccumulator {
                 new TestSettings(), description, testBody, descendantTestType(testCaseType))));
     }
 
-    public <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T,P1,P2,P3> addParametrizedExceptionTest3(
+    public <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> addParametrizedExceptionTest3(
             Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody, TestCaseType testCaseType) {
         return new ParamsExpectedException3<>(addParametrizedTest(new ParametrizedExceptionTest3<>(
                 new ThrowableExpectations<>(expectedException), description, testBody, descendantTestType(testCaseType))));
