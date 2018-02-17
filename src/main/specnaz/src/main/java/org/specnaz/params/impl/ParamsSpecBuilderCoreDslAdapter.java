@@ -2,12 +2,14 @@ package org.specnaz.params.impl;
 
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.impl.SpecBuilderCoreDslAdapter;
+import org.specnaz.params.ConsumerParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
+import org.specnaz.params.ParamsExpectedSubgroup;
 import org.specnaz.params.ParamsSpecBuilder;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
@@ -125,5 +127,10 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
             Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody) {
         return coreDslBuilder.ignoredParametrizedTestExpectingException3(expectedException,
                 shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <P> ParamsExpectedSubgroup<P> describes(String description, ConsumerParams1<P> specClosure) {
+        return coreDslBuilder.parametrizedSubSpecification1(description, specClosure);
     }
 }

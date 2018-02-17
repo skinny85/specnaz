@@ -2,12 +2,14 @@ package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
+import org.specnaz.params.ConsumerParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
+import org.specnaz.params.ParamsExpectedSubgroup;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -200,7 +202,12 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
                 description, testBody, TestCaseType.IGNORED);
     }
 
-    private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {
+    @Override
+    public <P> ParamsExpectedSubgroup<P> parametrizedSubSpecification1(String description, ConsumerParams1<P> specClosure) {
+        return new ParamsExpectedSubgroup<>(description, specClosure, TestCaseType.REGULAR, this);
+    }
+
+    public void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {
         TestsGroupNodeAccumulator previous = this.testsGroupNodeAccumulator;
         TestsGroupNodeAccumulator subgroupAccumulator = previous.subgroupAccumulator(description, testCaseType);
         this.testsGroupNodeAccumulator = subgroupAccumulator;
