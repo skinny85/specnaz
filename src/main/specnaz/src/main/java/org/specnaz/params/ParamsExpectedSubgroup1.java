@@ -5,11 +5,11 @@ import org.specnaz.impl.TestsTreeCoreDslBuilder;
 
 public final class ParamsExpectedSubgroup1<P> {
     private final String description;
-    private final ConsumerParams1<P> specClosure;
+    private final RunnableParams1<P> specClosure;
     private final TestCaseType testCaseType;
     private final TestsTreeCoreDslBuilder testsTreeCoreDslBuilder;
 
-    public ParamsExpectedSubgroup1(String description, ConsumerParams1<P> specClosure, TestCaseType testCaseType,
+    public ParamsExpectedSubgroup1(String description, RunnableParams1<P> specClosure, TestCaseType testCaseType,
             TestsTreeCoreDslBuilder testsTreeCoreDslBuilder) {
         this.description = description;
         this.specClosure = specClosure;

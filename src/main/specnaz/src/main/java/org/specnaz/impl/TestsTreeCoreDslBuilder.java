@@ -2,7 +2,7 @@ package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
-import org.specnaz.params.ConsumerParams1;
+import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpected3;
@@ -203,7 +203,7 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description, ConsumerParams1<P> specClosure) {
+    public <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description, RunnableParams1<P> specClosure) {
         return new ParamsExpectedSubgroup1<>(description, specClosure, TestCaseType.REGULAR, this);
     }
 

@@ -2,7 +2,7 @@ package org.specnaz.params.impl;
 
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.impl.SpecBuilderCoreDslAdapter;
-import org.specnaz.params.ConsumerParams1;
+import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpected3;
@@ -130,7 +130,7 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     }
 
     @Override
-    public <P> ParamsExpectedSubgroup1<P> describes(String description, ConsumerParams1<P> specClosure) {
+    public <P> ParamsExpectedSubgroup1<P> describes(String description, RunnableParams1<P> specClosure) {
         return coreDslBuilder.parametrizedSubSpecification1(description, specClosure);
     }
 }
