@@ -9,7 +9,7 @@ import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
-import org.specnaz.params.ParamsExpectedSubgroup;
+import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsSpecBuilder;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
@@ -449,5 +449,5 @@ public interface CoreDslBuilder {
     <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> ignoredParametrizedTestExpectingException3(
             Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody);
 
-    <P> ParamsExpectedSubgroup<P> parametrizedSubSpecification1(String description, ConsumerParams1<P> specClosure);
+    <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description, ConsumerParams1<P> specClosure);
 }

@@ -321,5 +321,5 @@ public interface ParamsSpecBuilder extends SpecBuilder {
     <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> xshouldThrow(Class<T> expectedException,
             String description, TestClosureParams3<P1, P2, P3> testBody);
 
-    <P> ParamsExpectedSubgroup<P> describes(String description, ConsumerParams1<P> specClosure);
+    <P> ParamsExpectedSubgroup1<P> describes(String description, ConsumerParams1<P> specClosure);
 }
