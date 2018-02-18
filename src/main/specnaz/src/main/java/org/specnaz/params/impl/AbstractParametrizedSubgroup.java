@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.lang.String.format;
+
 public abstract class AbstractParametrizedSubgroup {
     private final String description;
     private final TestCaseType testCaseType;
@@ -20,8 +22,11 @@ public abstract class AbstractParametrizedSubgroup {
         this.params = params;
     }
 
-    public Collection<ParametrizedSubgroupInstance> instances() {
-        // ToDO if params == null throw here
+    public final Collection<ParametrizedSubgroupInstance> instances() {
+        if (params == null)
+            throw new RuntimeException(format(
+                    "Unfinished parametrized sub-group '%s'. " +
+                            "You need to call the `provided` method on the object returned from `describes`", description));
 
         List<ParametrizedSubgroupInstance> ret = new LinkedList<>();
         for (List<?> paramsSet : params) {

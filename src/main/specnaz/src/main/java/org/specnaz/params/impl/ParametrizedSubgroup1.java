@@ -5,7 +5,7 @@ import org.specnaz.params.RunnableParams1;
 
 import java.util.List;
 
-public class ParametrizedSubgroup1<P> extends AbstractParametrizedSubgroup {
+public final class ParametrizedSubgroup1<P> extends AbstractParametrizedSubgroup {
     private final RunnableParams1<P> specClosure;
 
     public ParametrizedSubgroup1(String description, RunnableParams1<P> specClosure, TestCaseType testCaseType) {
