@@ -220,7 +220,6 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     public TreeNode<TestsGroup> spec() {
         for (AbstractParametrizedSubgroup parametrizedSubgroup : parametrizedSubgroups) {
             for (ParametrizedSubgroupInstance instance : parametrizedSubgroup.instances()) {
-                // ToDO figure out how testCaseType works here
                 handleSubSpecification(instance.description, instance.specClosure, instance.testCaseType);
             }
         }

@@ -19,4 +19,6 @@ public final class ParamsExpectedSubgroup1<P> {
                 .map(p -> Collections.singletonList(p))
                 .collect(Collectors.toList()));
     }
+
+    // ToDO add the Iterable<? extends P> overload
 }
