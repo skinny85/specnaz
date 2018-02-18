@@ -88,4 +88,21 @@ public final class Conversions {
     public static <P1, P2, P3> TestClosure toTestClosure3(TestClosureParams3<P1, P2, P3> testBody, List<?> params) {
         return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2));
     }
+
+    public static String formatParamsDesc(String description, List<?> params) {
+        if (!description.contains("%"))
+            return description;
+
+        String ret = description;
+        int size = params.size();
+        // we do it in reverse, so that '%10' gets processed
+        // before '%1' - not that we support '%10' now anyway,
+        // but it's probably better to be aware of this issue
+        // sooner rather than later :)
+        for (int i = size; i > 0; i--) {
+            ret = ret.replaceAll("%" + i, String.valueOf(params.get(i - 1)));
+        }
+
+        return ret;
+    }
 }
