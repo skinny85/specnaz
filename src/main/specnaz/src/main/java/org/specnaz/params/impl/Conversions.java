@@ -3,6 +3,7 @@ package org.specnaz.params.impl;
 import org.specnaz.TestSettings;
 import org.specnaz.params.Params2;
 import org.specnaz.params.Params3;
+import org.specnaz.params.Params4;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -100,6 +101,17 @@ public final class Conversions {
     private static <P1, P2, P3> List<List<?>> paramsToLists3(Stream<Params3<P1, P2, P3>> params) {
         return params
                 .map(p -> Arrays.asList(p._1, p._2, p._3))
+                .collect(Collectors.toList());
+    }
+
+    public static <P1, P2, P3, P4> void complete4d(AbstractParametrizedSubgroup parametrizedSubgroup,
+            Stream<Params4<P1, P2, P3, P4>> params) {
+        parametrizedSubgroup.complete(paramsToLists4(params));
+    }
+
+    private static <P1, P2, P3, P4> List<List<?>> paramsToLists4(Stream<Params4<P1, P2, P3, P4>> params) {
+        return params
+                .map(p -> Arrays.asList(p._1, p._2, p._3, p._4))
                 .collect(Collectors.toList());
     }
 

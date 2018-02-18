@@ -4,6 +4,7 @@ import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
+import org.specnaz.params.ParamsExpectedSubgroup4;
 import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
@@ -14,6 +15,7 @@ import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.RunnableParams2;
 import org.specnaz.params.RunnableParams3;
+import org.specnaz.params.RunnableParams4;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -21,6 +23,7 @@ import org.specnaz.params.impl.AbstractParametrizedSubgroup;
 import org.specnaz.params.impl.ParametrizedSubgroup1;
 import org.specnaz.params.impl.ParametrizedSubgroup2;
 import org.specnaz.params.impl.ParametrizedSubgroup3;
+import org.specnaz.params.impl.ParametrizedSubgroup4;
 import org.specnaz.params.impl.ParametrizedSubgroupInstance;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
@@ -277,6 +280,27 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
             RunnableParams3<P1, P2, P3> specClosure) {
         return new ParamsExpectedSubgroup3<>(addParametrizedSubgroup(
                 new ParametrizedSubgroup3<>(description, specClosure, TestCaseType.IGNORED)));
+    }
+
+    @Override
+    public <P1, P2, P3, P4> ParamsExpectedSubgroup4<P1, P2, P3, P4> parametrizedSubSpecification4(String description,
+            RunnableParams4<P1, P2, P3, P4> specClosure) {
+        return new ParamsExpectedSubgroup4<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup4<>(description, specClosure, TestCaseType.REGULAR)));
+    }
+
+    @Override
+    public <P1, P2, P3, P4> ParamsExpectedSubgroup4<P1, P2, P3, P4> focusedParametrizedSubSpecification4(String description,
+            RunnableParams4<P1, P2, P3, P4> specClosure) {
+        return new ParamsExpectedSubgroup4<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup4<>(description, specClosure, TestCaseType.FOCUSED)));
+    }
+
+    @Override
+    public <P1, P2, P3, P4> ParamsExpectedSubgroup4<P1, P2, P3, P4> ignoredParametrizedSubSpecification4(String description,
+            RunnableParams4<P1, P2, P3, P4> specClosure) {
+        return new ParamsExpectedSubgroup4<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup4<>(description, specClosure, TestCaseType.IGNORED)));
     }
 
     public TreeNode<TestsGroup> spec() {

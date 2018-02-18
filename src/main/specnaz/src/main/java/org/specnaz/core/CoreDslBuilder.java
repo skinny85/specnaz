@@ -4,6 +4,7 @@ import org.specnaz.SpecBuilder;
 import org.specnaz.TestSettings;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
+import org.specnaz.params.ParamsExpectedSubgroup4;
 import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
@@ -15,6 +16,7 @@ import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsSpecBuilder;
 import org.specnaz.params.RunnableParams2;
 import org.specnaz.params.RunnableParams3;
+import org.specnaz.params.RunnableParams4;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -569,4 +571,43 @@ public interface CoreDslBuilder {
      */
     <P1, P2, P3> ParamsExpectedSubgroup3<P1, P2, P3> ignoredParametrizedSubSpecification3(String description,
             RunnableParams3<P1, P2, P3> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams4)}
+     * (a parametrized sub-specification with 4 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup4} class
+     */
+    <P1, P2, P3, P4> ParamsExpectedSubgroup4<P1, P2, P3, P4> parametrizedSubSpecification4(String description,
+            RunnableParams4<P1, P2, P3, P4> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fdescribes(String, RunnableParams4)}
+     * (a parametrized sub-specification with 4 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup4} class
+     */
+    <P1, P2, P3, P4> ParamsExpectedSubgroup4<P1, P2, P3, P4> focusedParametrizedSubSpecification4(String description,
+            RunnableParams4<P1, P2, P3, P4> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xdescribes(String, RunnableParams4)}
+     * (a parametrized sub-specification with 4 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup4} class
+     */
+    <P1, P2, P3, P4> ParamsExpectedSubgroup4<P1, P2, P3, P4> ignoredParametrizedSubSpecification4(String description,
+            RunnableParams4<P1, P2, P3, P4> specClosure);
 }
