@@ -1,26 +1,22 @@
 package org.specnaz.params;
 
-import org.specnaz.impl.TestCaseType;
-import org.specnaz.impl.TestsTreeCoreDslBuilder;
+import org.specnaz.params.impl.ParametrizedSubgroup1;
+
+import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class ParamsExpectedSubgroup1<P> {
-    private final String description;
-    private final RunnableParams1<P> specClosure;
-    private final TestCaseType testCaseType;
-    private final TestsTreeCoreDslBuilder testsTreeCoreDslBuilder;
+    private final ParametrizedSubgroup1<P> parametrizedSubgroup;
 
-    public ParamsExpectedSubgroup1(String description, RunnableParams1<P> specClosure, TestCaseType testCaseType,
-            TestsTreeCoreDslBuilder testsTreeCoreDslBuilder) {
-        this.description = description;
-        this.specClosure = specClosure;
-        this.testCaseType = testCaseType;
-        this.testsTreeCoreDslBuilder = testsTreeCoreDslBuilder;
+    public ParamsExpectedSubgroup1(ParametrizedSubgroup1<P> parametrizedSubgroup) {
+        this.parametrizedSubgroup = parametrizedSubgroup;
     }
 
     @SafeVarargs
     public final void provided(P... params) {
-        for (P param : params) {
-            testsTreeCoreDslBuilder.handleSubSpecification(description, () -> specClosure.invoke(param), testCaseType);
-        }
+        parametrizedSubgroup.complete(Stream.of(params)
+                .map(p -> Collections.singletonList(p))
+                .collect(Collectors.toList()));
     }
 }

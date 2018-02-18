@@ -13,14 +13,22 @@ import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
+import org.specnaz.params.impl.AbstractParametrizedSubgroup;
+import org.specnaz.params.impl.ParametrizedSubgroup1;
+import org.specnaz.params.impl.ParametrizedSubgroupInstance;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     private TestsGroupNodeAccumulator testsGroupNodeAccumulator;
+    private List<AbstractParametrizedSubgroup> parametrizedSubgroups;
 
     public TestsTreeCoreDslBuilder(String description, TestCaseType testCaseType) {
         testsGroupNodeAccumulator = new TestsGroupNodeAccumulator(description, testCaseType);
+        parametrizedSubgroups = new LinkedList<>();
     }
 
     @Override
@@ -203,20 +211,43 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description, RunnableParams1<P> specClosure) {
-        return new ParamsExpectedSubgroup1<>(description, specClosure, TestCaseType.REGULAR, this);
-    }
-
-    public void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {
-        TestsGroupNodeAccumulator previous = this.testsGroupNodeAccumulator;
-        TestsGroupNodeAccumulator subgroupAccumulator = previous.subgroupAccumulator(description, testCaseType);
-        this.testsGroupNodeAccumulator = subgroupAccumulator;
-        specClosure.run();
-        previous.addSubgroup(subgroupAccumulator.build());
-        this.testsGroupNodeAccumulator = previous;
+    public <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description,
+            RunnableParams1<P> specClosure) {
+        return new ParamsExpectedSubgroup1<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup1<>(description, specClosure, TestCaseType.REGULAR)));
     }
 
     public TreeNode<TestsGroup> spec() {
+        for (AbstractParametrizedSubgroup parametrizedSubgroup : parametrizedSubgroups) {
+            for (ParametrizedSubgroupInstance instance : parametrizedSubgroup.instances()) {
+                // ToDO figure out how testCaseType works here
+                handleSubSpecification(instance.description, instance.specClosure, instance.testCaseType);
+            }
+        }
+
         return testsGroupNodeAccumulator.build();
+    }
+
+    private void handleSubSpecification(String description, Runnable specClosure, TestCaseType testCaseType) {
+        TestsGroupNodeAccumulator previousAccumulator = this.testsGroupNodeAccumulator;
+        List<AbstractParametrizedSubgroup> previousParametrizedSubgroups = this.parametrizedSubgroups;
+
+        TestsGroupNodeAccumulator subgroupAccumulator = previousAccumulator.subgroupAccumulator(description, testCaseType);
+        List<AbstractParametrizedSubgroup> subgroupParametrizedSubgroups = new LinkedList<>();
+
+        this.testsGroupNodeAccumulator = subgroupAccumulator;
+        this.parametrizedSubgroups = subgroupParametrizedSubgroups;
+
+        specClosure.run();
+
+        previousAccumulator.addSubgroup(spec());
+
+        this.testsGroupNodeAccumulator = previousAccumulator;
+        this.parametrizedSubgroups = previousParametrizedSubgroups;
+    }
+
+    private <T extends AbstractParametrizedSubgroup> T addParametrizedSubgroup(T parametrizedSubgroup) {
+        parametrizedSubgroups.add(parametrizedSubgroup);
+        return parametrizedSubgroup;
     }
 }
