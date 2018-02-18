@@ -2,6 +2,7 @@ package org.specnaz.core;
 
 import org.specnaz.SpecBuilder;
 import org.specnaz.TestSettings;
+import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
@@ -11,6 +12,7 @@ import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsSpecBuilder;
+import org.specnaz.params.RunnableParams2;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -487,4 +489,43 @@ public interface CoreDslBuilder {
      */
     <P> ParamsExpectedSubgroup1<P> ignoredParametrizedSubSpecification1(String description,
             RunnableParams1<P> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams2)}
+     * (a parametrized sub-specification with 2 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup2} class
+     */
+    <P1, P2> ParamsExpectedSubgroup2<P1, P2> parametrizedSubSpecification2(String description,
+            RunnableParams2<P1, P2> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fdescribes(String, RunnableParams2)}
+     * (a parametrized sub-specification with 2 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup2} class
+     */
+    <P1, P2> ParamsExpectedSubgroup2<P1, P2> focusedParametrizedSubSpecification2(String description,
+            RunnableParams2<P1, P2> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xdescribes(String, RunnableParams2)}
+     * (a parametrized sub-specification with 2 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup2} class
+     */
+    <P1, P2> ParamsExpectedSubgroup2<P1, P2> ignoredParametrizedSubSpecification2(String description,
+            RunnableParams2<P1, P2> specClosure);
 }

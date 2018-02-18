@@ -59,11 +59,20 @@ public final class Conversions {
         return parametrizedTest.throwableExpectations;
     }
 
+    public static <P1, P2> void complete2d(AbstractParametrizedSubgroup parametrizedSubgroup,
+            Stream<Params2<P1, P2>> params) {
+        parametrizedSubgroup.complete(paramsToLists2(params));
+    }
+
     private static <P1, P2> void complete2(
             AbstractParametrizedTest parametrizedTest, Stream<Params2<P1, P2>> params) {
-        parametrizedTest.complete(params
+        parametrizedTest.complete(paramsToLists2(params));
+    }
+
+    private static <P1, P2> List<List<?>> paramsToLists2(Stream<Params2<P1, P2>> params) {
+        return params
                 .map(p -> Arrays.asList(p._1, p._2))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     public static <P1, P2, P3> TestSettings complete3p(AbstractParametrizedPositiveTest parametrizedTest,

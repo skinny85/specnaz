@@ -2,6 +2,7 @@ package org.specnaz.params.impl;
 
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.impl.SpecBuilderCoreDslAdapter;
+import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
@@ -11,6 +12,7 @@ import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsSpecBuilder;
+import org.specnaz.params.RunnableParams2;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -142,5 +144,23 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     @Override
     public <P> ParamsExpectedSubgroup1<P> xdescribes(String description, RunnableParams1<P> specClosure) {
         return coreDslBuilder.ignoredParametrizedSubSpecification1(description, specClosure);
+    }
+
+    @Override
+    public <P1, P2> ParamsExpectedSubgroup2<P1, P2> describes(String description,
+            RunnableParams2<P1, P2> specClosure) {
+        return coreDslBuilder.parametrizedSubSpecification2(description, specClosure);
+    }
+
+    @Override
+    public <P1, P2> ParamsExpectedSubgroup2<P1, P2> fdescribes(String description,
+            RunnableParams2<P1, P2> specClosure) {
+        return coreDslBuilder.focusedParametrizedSubSpecification2(description, specClosure);
+    }
+
+    @Override
+    public <P1, P2> ParamsExpectedSubgroup2<P1, P2> xdescribes(String description,
+            RunnableParams2<P1, P2> specClosure) {
+        return coreDslBuilder.ignoredParametrizedSubSpecification2(description, specClosure);
     }
 }
