@@ -5,6 +5,7 @@ import org.specnaz.params.ParamsExpected1
 import org.specnaz.params.ParamsExpected2
 import org.specnaz.params.ParamsExpectedException1
 import org.specnaz.params.ParamsExpectedException2
+import org.specnaz.params.ParamsExpectedSubgroup1
 import org.specnaz.params.ParamsSpecBuilder
 
 class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : KotlinSpecBuilder(paramsSpecBuilder) {
@@ -24,5 +25,9 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
     inline fun <reified T : Throwable, P1, P2> shouldThrow(
             description: String, crossinline testBody: (P1, P2) -> Unit): ParamsExpectedException2<T, P1, P2> {
         return paramsSpecBuilder.shouldThrow(T::class.java, description, { p1, p2 -> testBody.invoke(p1, p2) })
+    }
+
+    fun <P> describes(description: String, specClosure: (P) -> Unit): ParamsExpectedSubgroup1<P> {
+        return paramsSpecBuilder.describes(description, specClosure)
     }
 }
