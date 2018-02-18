@@ -217,6 +217,20 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
                 new ParametrizedSubgroup1<>(description, specClosure, TestCaseType.REGULAR)));
     }
 
+    @Override
+    public <P> ParamsExpectedSubgroup1<P> focusedParametrizedSubSpecification1(String description,
+            RunnableParams1<P> specClosure) {
+        return new ParamsExpectedSubgroup1<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup1<>(description, specClosure, TestCaseType.FOCUSED)));
+    }
+
+    @Override
+    public <P> ParamsExpectedSubgroup1<P> ignoredParametrizedSubSpecification1(String description,
+            RunnableParams1<P> specClosure) {
+        return new ParamsExpectedSubgroup1<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup1<>(description, specClosure, TestCaseType.IGNORED)));
+    }
+
     public TreeNode<TestsGroup> spec() {
         for (AbstractParametrizedSubgroup parametrizedSubgroup : parametrizedSubgroups) {
             for (ParametrizedSubgroupInstance instance : parametrizedSubgroup.instances()) {

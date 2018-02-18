@@ -459,5 +459,32 @@ public interface CoreDslBuilder {
      *     the callback used to define the new test group
      * @return an instance of the {@link ParamsExpectedSubgroup1} class
      */
-    <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description, RunnableParams1<P> specClosure);
+    <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description,
+            RunnableParams1<P> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fdescribes(String, RunnableParams1)}
+     * (a parametrized sub-specification with a single parameter).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup1} class
+     */
+    <P> ParamsExpectedSubgroup1<P> focusedParametrizedSubSpecification1(String description,
+            RunnableParams1<P> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xdescribes(String, RunnableParams1)}
+     * (a parametrized sub-specification with a single parameter).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup1} class
+     */
+    <P> ParamsExpectedSubgroup1<P> ignoredParametrizedSubSpecification1(String description,
+            RunnableParams1<P> specClosure);
 }

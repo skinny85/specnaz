@@ -329,6 +329,42 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @param specClosure
      *    the callback used to define the new test group
      * @return an instance of the {@link ParamsExpectedSubgroup1} class
+     *
+     * @see SpecBuilder#describes
+     * @see #fdescribes(String, RunnableParams1)
+     * @see #xdescribes(String, RunnableParams1)
      */
     <P> ParamsExpectedSubgroup1<P> describes(String description, RunnableParams1<P> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#fdescribes} that takes a single parameter.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup1} class
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
+     *
+     * @see SpecBuilder#fdescribes
+     * @see #describes(String, RunnableParams1)
+     * @see #xdescribes(String, RunnableParams1)
+     */
+    @Deprecated
+    <P> ParamsExpectedSubgroup1<P> fdescribes(String description, RunnableParams1<P> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xdescribes} that takes a single parameter.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup1} class
+     *
+     * @see SpecBuilder#xdescribes
+     * @see #describes(String, RunnableParams1)
+     * @see #fdescribes(String, RunnableParams1)
+     */
+    <P> ParamsExpectedSubgroup1<P> xdescribes(String description, RunnableParams1<P> specClosure);
 }

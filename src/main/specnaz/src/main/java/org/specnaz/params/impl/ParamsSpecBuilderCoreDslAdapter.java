@@ -133,4 +133,14 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     public <P> ParamsExpectedSubgroup1<P> describes(String description, RunnableParams1<P> specClosure) {
         return coreDslBuilder.parametrizedSubSpecification1(description, specClosure);
     }
+
+    @Override
+    public <P> ParamsExpectedSubgroup1<P> fdescribes(String description, RunnableParams1<P> specClosure) {
+        return coreDslBuilder.focusedParametrizedSubSpecification1(description, specClosure);
+    }
+
+    @Override
+    public <P> ParamsExpectedSubgroup1<P> xdescribes(String description, RunnableParams1<P> specClosure) {
+        return coreDslBuilder.ignoredParametrizedSubSpecification1(description, specClosure);
+    }
 }
