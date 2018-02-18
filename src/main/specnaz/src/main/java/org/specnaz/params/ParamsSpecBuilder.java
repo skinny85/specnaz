@@ -553,4 +553,52 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      */
     <P1, P2, P3, P4, P5> ParamsExpectedSubgroup5<P1, P2, P3, P4, P5> xdescribes(String description,
             RunnableParams5<P1, P2, P3, P4, P5> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#describes} that takes 6 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup6} class
+     *
+     * @see SpecBuilder#describes
+     * @see #fdescribes(String, RunnableParams6)
+     * @see #xdescribes(String, RunnableParams6)
+     */
+    <P1, P2, P3, P4, P5, P6> ParamsExpectedSubgroup6<P1, P2, P3, P4, P5, P6> describes(String description,
+            RunnableParams6<P1, P2, P3, P4, P5, P6> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#fdescribes} that takes 6 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup6} class
+     *
+     * @see SpecBuilder#fdescribes
+     * @see #describes(String, RunnableParams6)
+     * @see #xdescribes(String, RunnableParams6)
+     */
+    <P1, P2, P3, P4, P5, P6> ParamsExpectedSubgroup6<P1, P2, P3, P4, P5, P6> fdescribes(String description,
+            RunnableParams6<P1, P2, P3, P4, P5, P6> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xdescribes} that takes 6 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup6} class
+     *
+     * @see SpecBuilder#xdescribes
+     * @see #describes(String, RunnableParams6)
+     * @see #fdescribes(String, RunnableParams6)
+     */
+    <P1, P2, P3, P4, P5, P6> ParamsExpectedSubgroup6<P1, P2, P3, P4, P5, P6> xdescribes(String description,
+            RunnableParams6<P1, P2, P3, P4, P5, P6> specClosure);
 }
