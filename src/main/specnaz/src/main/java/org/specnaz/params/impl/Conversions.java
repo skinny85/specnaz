@@ -87,11 +87,20 @@ public final class Conversions {
         return parametrizedTest.throwableExpectations;
     }
 
+    public static <P1, P2, P3> void complete3d(AbstractParametrizedSubgroup parametrizedSubgroup,
+            Stream<Params3<P1, P2, P3>> params) {
+        parametrizedSubgroup.complete(paramsToLists3(params));
+    }
+
     private static <P1, P2, P3> void complete3(
             AbstractParametrizedTest parametrizedTest, Stream<Params3<P1, P2, P3>> params) {
-        parametrizedTest.complete(params
+        parametrizedTest.complete(paramsToLists3(params));
+    }
+
+    private static <P1, P2, P3> List<List<?>> paramsToLists3(Stream<Params3<P1, P2, P3>> params) {
+        return params
                 .map(p -> Arrays.asList(p._1, p._2, p._3))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     public static <P> TestClosure toTestClosure1(TestClosureParams1<P> testBody, List<?> params) {

@@ -412,4 +412,49 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see #fdescribes(String, RunnableParams2)
      */
     <P1, P2> ParamsExpectedSubgroup2<P1, P2> xdescribes(String description, RunnableParams2<P1, P2> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#describes} that takes 3 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup3} class
+     *
+     * @see SpecBuilder#describes
+     * @see #fdescribes(String, RunnableParams3)
+     * @see #xdescribes(String, RunnableParams3)
+     */
+    <P1, P2, P3> ParamsExpectedSubgroup3<P1, P2, P3> describes(String description, RunnableParams3<P1, P2, P3> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#fdescribes} that takes 3 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup3} class
+     *
+     * @see SpecBuilder#fdescribes
+     * @see #describes(String, RunnableParams3)
+     * @see #xdescribes(String, RunnableParams3)
+     */
+    <P1, P2, P3> ParamsExpectedSubgroup3<P1, P2, P3> fdescribes(String description, RunnableParams3<P1, P2, P3> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xdescribes} that takes 3 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup3} class
+     *
+     * @see SpecBuilder#xdescribes
+     * @see #describes(String, RunnableParams3)
+     * @see #fdescribes(String, RunnableParams3)
+     */
+    <P1, P2, P3> ParamsExpectedSubgroup3<P1, P2, P3> xdescribes(String description, RunnableParams3<P1, P2, P3> specClosure);
 }
