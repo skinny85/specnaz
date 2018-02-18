@@ -1,9 +1,8 @@
 package org.specnaz.params;
 
+import org.specnaz.params.impl.Conversions;
 import org.specnaz.params.impl.ParametrizedSubgroup1;
 
-import java.util.Collections;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class ParamsExpectedSubgroup1<P> {
@@ -15,10 +14,10 @@ public final class ParamsExpectedSubgroup1<P> {
 
     @SafeVarargs
     public final void provided(P... params) {
-        parametrizedSubgroup.complete(Stream.of(params)
-                .map(p -> Collections.singletonList(p))
-                .collect(Collectors.toList()));
+        Conversions.complete1d(parametrizedSubgroup, Stream.of(params));
     }
 
-    // ToDO add the Iterable<? extends P> overload
+    public void provided(Iterable<? extends P> params) {
+        Conversions.complete1d(parametrizedSubgroup, Conversions.iterable2stream(params));
+    }
 }

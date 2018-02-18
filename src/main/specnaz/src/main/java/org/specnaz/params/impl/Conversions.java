@@ -33,10 +33,18 @@ public final class Conversions {
         return parametrizedTest.throwableExpectations;
     }
 
+    public static <P> void complete1d(AbstractParametrizedSubgroup parametrizedSubgroup, Stream<? extends P> params) {
+        parametrizedSubgroup.complete(paramsToLists1(params));
+    }
+
     private static <P> void complete1(AbstractParametrizedTest parametrizedTest, Stream<? extends P> params) {
-        parametrizedTest.complete(params
+        parametrizedTest.complete(paramsToLists1(params));
+    }
+
+    private static <P> List<List<?>> paramsToLists1(Stream<? extends P> params) {
+        return params
                 .map(p -> Collections.singletonList(p))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     public static <P1, P2> TestSettings complete2p(
