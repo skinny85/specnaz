@@ -449,5 +449,15 @@ public interface CoreDslBuilder {
     <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> ignoredParametrizedTestExpectingException3(
             Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody);
 
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams1)}
+     * (a parametrized sub-specification with a single parameter).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup1} class
+     */
     <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description, RunnableParams1<P> specClosure);
 }

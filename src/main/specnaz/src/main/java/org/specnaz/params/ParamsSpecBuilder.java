@@ -321,5 +321,14 @@ public interface ParamsSpecBuilder extends SpecBuilder {
     <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> xshouldThrow(Class<T> expectedException,
             String description, TestClosureParams3<P1, P2, P3> testBody);
 
+    /**
+     * The parametrized version of {@link SpecBuilder#describes} that takes a single parameter.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup1} class
+     */
     <P> ParamsExpectedSubgroup1<P> describes(String description, RunnableParams1<P> specClosure);
 }
