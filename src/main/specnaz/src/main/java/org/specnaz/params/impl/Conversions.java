@@ -10,6 +10,7 @@ import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
 import org.specnaz.params.TestClosureParams4;
+import org.specnaz.params.TestClosureParams5;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -135,9 +136,26 @@ public final class Conversions {
                 .collect(Collectors.toList());
     }
 
+    public static <P1, P2, P3, P4, P5> TestSettings complete5p(AbstractParametrizedPositiveTest parametrizedTest,
+            Stream<Params5<P1, P2, P3, P4, P5>> params) {
+        complete5(parametrizedTest, params);
+        return parametrizedTest.testSettings;
+    }
+
+    public static <T extends Throwable, P1, P2, P3, P4, P5> ThrowableExpectations<T> complete5e(
+            AbstractParametrizedExceptionTest<T> parametrizedTest, Stream<Params5<P1, P2, P3, P4, P5>> params) {
+        complete5(parametrizedTest, params);
+        return parametrizedTest.throwableExpectations;
+    }
+
     public static <P1, P2, P3, P4, P5> void complete5d(AbstractParametrizedSubgroup parametrizedSubgroup,
             Stream<Params5<P1, P2, P3, P4, P5>> params) {
         parametrizedSubgroup.complete(paramsToLists5(params));
+    }
+
+    private static <T extends Throwable, P1, P2, P3, P4, P5> void complete5(
+            AbstractParametrizedTest parametrizedTest, Stream<Params5<P1, P2, P3, P4, P5>> params) {
+        parametrizedTest.complete(paramsToLists5(params));
     }
 
     private static <P1, P2, P3, P4, P5> List<List<?>> paramsToLists5(Stream<Params5<P1, P2, P3, P4, P5>> params) {
@@ -171,6 +189,11 @@ public final class Conversions {
 
     public static <P1, P2, P3, P4> TestClosure toTestClosure4(TestClosureParams4<P1, P2, P3, P4> testBody, List<?> params) {
         return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3));
+    }
+
+    public static <P1, P2, P3, P4, P5> TestClosure toTestClosure5(TestClosureParams5<P1, P2, P3, P4, P5> testBody, List<?> params) {
+        return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3),
+                (P5) params.get(4));
     }
 
     public static String formatParamsDesc(String description, List<?> params) {
