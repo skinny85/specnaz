@@ -2,24 +2,26 @@ package org.specnaz.params.impl;
 
 import org.specnaz.core.CoreDslBuilder;
 import org.specnaz.impl.SpecBuilderCoreDslAdapter;
+import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.ParamsExpected2;
+import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpected4;
 import org.specnaz.params.ParamsExpected5;
+import org.specnaz.params.ParamsExpected6;
+import org.specnaz.params.ParamsExpectedException1;
+import org.specnaz.params.ParamsExpectedException2;
+import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.ParamsExpectedException5;
+import org.specnaz.params.ParamsExpectedException6;
+import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
 import org.specnaz.params.ParamsExpectedSubgroup4;
 import org.specnaz.params.ParamsExpectedSubgroup5;
 import org.specnaz.params.ParamsExpectedSubgroup6;
-import org.specnaz.params.RunnableParams1;
-import org.specnaz.params.ParamsExpected1;
-import org.specnaz.params.ParamsExpected2;
-import org.specnaz.params.ParamsExpected3;
-import org.specnaz.params.ParamsExpectedException1;
-import org.specnaz.params.ParamsExpectedException2;
-import org.specnaz.params.ParamsExpectedException3;
-import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsSpecBuilder;
+import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.RunnableParams2;
 import org.specnaz.params.RunnableParams3;
 import org.specnaz.params.RunnableParams4;
@@ -30,6 +32,7 @@ import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
 import org.specnaz.params.TestClosureParams4;
 import org.specnaz.params.TestClosureParams5;
+import org.specnaz.params.TestClosureParams6;
 
 public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAdapter
         implements ParamsSpecBuilder {
@@ -220,6 +223,45 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     public <T extends Throwable, P1, P2, P3, P4, P5> ParamsExpectedException5<T, P1, P2, P3, P4, P5> xshouldThrow(
             Class<T> expectedException, String description, TestClosureParams5<P1, P2, P3, P4, P5> testBody) {
         return coreDslBuilder.ignoredParametrizedTestExpectingException5(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6> ParamsExpected6<P1, P2, P3, P4, P5, P6> should(String description,
+            TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody) {
+        return coreDslBuilder.parametrizedTest6(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6> ParamsExpected6<P1, P2, P3, P4, P5, P6> fshould(String description,
+            TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody) {
+        return coreDslBuilder.focusedParametrizedTest6(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6> ParamsExpected6<P1, P2, P3, P4, P5, P6> xshould(String description,
+            TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody) {
+        return coreDslBuilder.ignoredParametrizedTest6(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6> ParamsExpectedException6<T, P1, P2, P3, P4, P5, P6> shouldThrow(
+            Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody) {
+        return coreDslBuilder.parametrizedTestExpectingException6(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6> ParamsExpectedException6<T, P1, P2, P3, P4, P5, P6> fshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody) {
+        return coreDslBuilder.focusedParametrizedTestExpectingException6(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6> ParamsExpectedException6<T, P1, P2, P3, P4, P5, P6> xshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody) {
+        return coreDslBuilder.ignoredParametrizedTestExpectingException6(expectedException,
                 shouldThrowDescription(expectedException, description), testBody);
     }
 

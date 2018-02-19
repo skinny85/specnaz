@@ -11,6 +11,7 @@ import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
 import org.specnaz.params.TestClosureParams4;
 import org.specnaz.params.TestClosureParams5;
+import org.specnaz.params.TestClosureParams6;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -164,9 +165,26 @@ public final class Conversions {
                 .collect(Collectors.toList());
     }
 
+    public static <P1, P2, P3, P4, P5, P6> TestSettings complete6p(AbstractParametrizedPositiveTest parametrizedTest,
+            Stream<Params6<P1, P2, P3, P4, P5, P6>> params) {
+        complete6(parametrizedTest, params);
+        return parametrizedTest.testSettings;
+    }
+
+    public static <T extends Throwable, P1, P2, P3, P4, P5, P6> ThrowableExpectations<T> complete6e(
+            AbstractParametrizedExceptionTest<T> parametrizedTest, Stream<Params6<P1, P2, P3, P4, P5, P6>> params) {
+        complete6(parametrizedTest, params);
+        return parametrizedTest.throwableExpectations;
+    }
+
     public static <P1, P2, P3, P4, P5, P6> void complete6d(AbstractParametrizedSubgroup parametrizedSubgroup,
             Stream<Params6<P1, P2, P3, P4, P5, P6>> params) {
         parametrizedSubgroup.complete(paramsToLists6(params));
+    }
+
+    private static <P1, P2, P3, P4, P5, P6> void complete6(AbstractParametrizedTest parametrizedTest,
+            Stream<Params6<P1, P2, P3, P4, P5, P6>> params) {
+        parametrizedTest.complete(paramsToLists6(params));
     }
 
     private static <P1, P2, P3, P4, P5, P6> List<List<?>> paramsToLists6(Stream<Params6<P1, P2, P3, P4, P5, P6>> params) {
@@ -194,6 +212,12 @@ public final class Conversions {
     public static <P1, P2, P3, P4, P5> TestClosure toTestClosure5(TestClosureParams5<P1, P2, P3, P4, P5> testBody, List<?> params) {
         return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3),
                 (P5) params.get(4));
+    }
+
+    public static <P1, P2, P3, P4, P5, P6> TestClosure toTestClosure6(TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody,
+            List<?> params) {
+        return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3),
+                (P5) params.get(4), (P6) params.get(5));
     }
 
     public static String formatParamsDesc(String description, List<?> params) {

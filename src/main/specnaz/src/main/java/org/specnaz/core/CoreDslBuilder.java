@@ -2,24 +2,26 @@ package org.specnaz.core;
 
 import org.specnaz.SpecBuilder;
 import org.specnaz.TestSettings;
+import org.specnaz.params.ParamsExpected1;
+import org.specnaz.params.ParamsExpected2;
+import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpected4;
 import org.specnaz.params.ParamsExpected5;
+import org.specnaz.params.ParamsExpected6;
+import org.specnaz.params.ParamsExpectedException1;
+import org.specnaz.params.ParamsExpectedException2;
+import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.ParamsExpectedException5;
+import org.specnaz.params.ParamsExpectedException6;
+import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
 import org.specnaz.params.ParamsExpectedSubgroup4;
 import org.specnaz.params.ParamsExpectedSubgroup5;
 import org.specnaz.params.ParamsExpectedSubgroup6;
-import org.specnaz.params.RunnableParams1;
-import org.specnaz.params.ParamsExpected1;
-import org.specnaz.params.ParamsExpected2;
-import org.specnaz.params.ParamsExpected3;
-import org.specnaz.params.ParamsExpectedException1;
-import org.specnaz.params.ParamsExpectedException2;
-import org.specnaz.params.ParamsExpectedException3;
-import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsSpecBuilder;
+import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.RunnableParams2;
 import org.specnaz.params.RunnableParams3;
 import org.specnaz.params.RunnableParams4;
@@ -30,6 +32,7 @@ import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
 import org.specnaz.params.TestClosureParams4;
 import org.specnaz.params.TestClosureParams5;
+import org.specnaz.params.TestClosureParams6;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -632,6 +635,90 @@ public interface CoreDslBuilder {
      */
     <T extends Throwable, P1, P2, P3, P4, P5> ParamsExpectedException5<T, P1, P2, P3, P4, P5> ignoredParametrizedTestExpectingException5(
             Class<T> expectedException, String description, TestClosureParams5<P1, P2, P3, P4, P5> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#should(String, TestClosureParams6)}
+     * (a parametrized test with 6 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected6} class
+     */
+    <P1, P2, P3, P4, P5, P6> ParamsExpected6<P1, P2, P3, P4, P5, P6> parametrizedTest6(String description,
+            TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshould(String, TestClosureParams6)}
+     * (a parametrized test with 6 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected6} class
+     */
+    <P1, P2, P3, P4, P5, P6> ParamsExpected6<P1, P2, P3, P4, P5, P6> focusedParametrizedTest6(String description,
+            TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshould(String, TestClosureParams6)}
+     * (a parametrized test with 6 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected6} class
+     */
+    <P1, P2, P3, P4, P5, P6> ParamsExpected6<P1, P2, P3, P4, P5, P6> ignoredParametrizedTest6(String description,
+            TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#shouldThrow(Class, String, TestClosureParams6)}
+     * (a parametrized test with 6 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException6} class
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6> ParamsExpectedException6<T, P1, P2, P3, P4, P5, P6> parametrizedTestExpectingException6(
+            Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshouldThrow(Class, String, TestClosureParams6)}
+     * (a parametrized test with 6 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException6} class
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6> ParamsExpectedException6<T, P1, P2, P3, P4, P5, P6> focusedParametrizedTestExpectingException6(
+            Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshouldThrow(Class, String, TestClosureParams6)}
+     * (a parametrized test with 6 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException6} class
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6> ParamsExpectedException6<T, P1, P2, P3, P4, P5, P6> ignoredParametrizedTestExpectingException6(
+            Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody);
 
     /**
      * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams1)}
