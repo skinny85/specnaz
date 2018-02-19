@@ -2,6 +2,8 @@ package org.specnaz.impl;
 
 import org.specnaz.TestSettings;
 import org.specnaz.core.CoreDslBuilder;
+import org.specnaz.params.ParamsExpected4;
+import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
 import org.specnaz.params.ParamsExpectedSubgroup4;
@@ -23,6 +25,7 @@ import org.specnaz.params.RunnableParams6;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
+import org.specnaz.params.TestClosureParams4;
 import org.specnaz.params.impl.AbstractParametrizedSubgroup;
 import org.specnaz.params.impl.ParametrizedSubgroup1;
 import org.specnaz.params.impl.ParametrizedSubgroup2;
@@ -222,6 +225,45 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     public <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> ignoredParametrizedTestExpectingException3(
             Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody) {
         return testsGroupNodeAccumulator.addParametrizedExceptionTest3(expectedException,
+                description, testBody, TestCaseType.IGNORED);
+    }
+
+    @Override
+    public <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> parametrizedTest4(
+            String description, TestClosureParams4<P1, P2, P3, P4> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest4(description, testBody, TestCaseType.REGULAR);
+    }
+
+    @Override
+    public <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> focusedParametrizedTest4(
+            String description, TestClosureParams4<P1, P2, P3, P4> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest4(description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> ignoredParametrizedTest4(
+            String description, TestClosureParams4<P1, P2, P3, P4> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest4(description, testBody, TestCaseType.IGNORED);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> parametrizedTestExpectingException4(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest4(expectedException,
+                description, testBody, TestCaseType.REGULAR);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> focusedParametrizedTestExpectingException4(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest4(expectedException,
+                description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> ignoredParametrizedTestExpectingException4(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest4(expectedException,
                 description, testBody, TestCaseType.IGNORED);
     }
 

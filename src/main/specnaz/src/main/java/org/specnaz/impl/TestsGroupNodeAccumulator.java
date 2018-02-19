@@ -4,19 +4,24 @@ import org.specnaz.TestSettings;
 import org.specnaz.params.ParamsExpected1;
 import org.specnaz.params.ParamsExpected2;
 import org.specnaz.params.ParamsExpected3;
+import org.specnaz.params.ParamsExpected4;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
+import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
+import org.specnaz.params.TestClosureParams4;
 import org.specnaz.params.impl.AbstractParametrizedTest;
 import org.specnaz.params.impl.ParametrizedExceptionTest2;
 import org.specnaz.params.impl.ParametrizedExceptionTest3;
+import org.specnaz.params.impl.ParametrizedExceptionTest4;
 import org.specnaz.params.impl.ParametrizedPositiveTest1;
 import org.specnaz.params.impl.ParametrizedExceptionTest1;
 import org.specnaz.params.impl.ParametrizedPositiveTest2;
 import org.specnaz.params.impl.ParametrizedPositiveTest3;
+import org.specnaz.params.impl.ParametrizedPositiveTest4;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -114,6 +119,18 @@ public final class TestsGroupNodeAccumulator {
     public <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> addParametrizedExceptionTest3(
             Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody, TestCaseType testCaseType) {
         return new ParamsExpectedException3<>(addParametrizedTest(new ParametrizedExceptionTest3<>(
+                new ThrowableExpectations<>(expectedException), description, testBody, descendantTestType(testCaseType))));
+    }
+
+    public <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> addParametrizedPositiveTest4(String description,
+            TestClosureParams4<P1, P2, P3, P4> testBody, TestCaseType testCaseType) {
+        return new ParamsExpected4<>(addParametrizedTest(new ParametrizedPositiveTest4<>(
+                new TestSettings(), description, testBody, descendantTestType(testCaseType))));
+    }
+
+    public <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> addParametrizedExceptionTest4(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody, TestCaseType testCaseType) {
+        return new ParamsExpectedException4<>(addParametrizedTest(new ParametrizedExceptionTest4<>(
                 new ThrowableExpectations<>(expectedException), description, testBody, descendantTestType(testCaseType))));
     }
 

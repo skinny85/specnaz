@@ -322,6 +322,108 @@ public interface ParamsSpecBuilder extends SpecBuilder {
             String description, TestClosureParams3<P1, P2, P3> testBody);
 
     /**
+     * The parametrized version of {@link SpecBuilder#should} that takes 4 parameters.
+     *
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected4} class
+     *
+     * @see SpecBuilder#should
+     * @see #fshould(String, TestClosureParams4)
+     * @see #xshould(String, TestClosureParams4)
+     */
+    <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> should(String description,
+            TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#fshould} that takes 4 parameters.
+     *
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected4} class
+     *
+     * @see SpecBuilder#fshould
+     * @see #should(String, TestClosureParams4)
+     * @see #xshould(String, TestClosureParams4)
+     */
+    <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> fshould(String description,
+            TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xshould} that takes 4 parameters.
+     *
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected4} class
+     *
+     * @see SpecBuilder#xshould
+     * @see #should(String, TestClosureParams4)
+     * @see #fshould(String, TestClosureParams4)
+     */
+    <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> xshould(String description,
+            TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#shouldThrow} that takes 4 parameters.
+     *
+     * @param expectedException
+     *     the type of Exception expected by the test
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException4} class
+     *
+     * @see SpecBuilder#shouldThrow
+     * @see #fshouldThrow(Class, String, TestClosureParams4)
+     * @see #xshouldThrow(Class, String, TestClosureParams4)
+     */
+    <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> shouldThrow(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#fshouldThrow} that takes 4 parameters.
+     *
+     * @param expectedException
+     *     the type of Exception expected by the test
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException4} class
+     *
+     * @see SpecBuilder#fshouldThrow
+     * @see #shouldThrow(Class, String, TestClosureParams4)
+     * @see #xshouldThrow(Class, String, TestClosureParams4)
+     */
+    <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> fshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xshouldThrow} that takes 4 parameters.
+     *
+     * @param expectedException
+     *     the type of Exception expected by the test
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException4} class
+     *
+     * @see SpecBuilder#xshouldThrow
+     * @see #shouldThrow(Class, String, TestClosureParams4)
+     * @see #fshouldThrow(Class, String, TestClosureParams4)
+     */
+    <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> xshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
      * The parametrized version of {@link SpecBuilder#describes} that takes a single parameter.
      *
      * @param description

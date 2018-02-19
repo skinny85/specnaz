@@ -1,23 +1,23 @@
 package org.specnaz.params;
 
 import org.specnaz.params.impl.Conversions;
-import org.specnaz.params.impl.ParametrizedExceptionTest3;
+import org.specnaz.params.impl.ParametrizedExceptionTest4;
 import org.specnaz.utils.ThrowableExpectations;
 
 import java.util.stream.Stream;
 
 /**
- * The class returned from {@link ParamsSpecBuilder#shouldThrow(Class, String, TestClosureParams3)}.
+ * The class returned from {@link ParamsSpecBuilder#shouldThrow(Class, String, TestClosureParams4)}.
  * You need to call one of the {@code provided} methods on it,
  * passing the parameters for the test to run with.
  *
- * @see #provided(Params3...)
+ * @see #provided(Params4...)
  * @see #provided(Iterable)
  */
-public final class ParamsExpectedException3<T extends Throwable, P1, P2, P3> {
-    private final ParametrizedExceptionTest3<T, P1, P2, P3> parametrizedTest;
+public final class ParamsExpectedException4<T extends Throwable, P1, P2, P3, P4> {
+    private final ParametrizedExceptionTest4<T, P1, P2, P3, P4> parametrizedTest;
 
-    public ParamsExpectedException3(ParametrizedExceptionTest3<T, P1, P2, P3> parametrizedTest) {
+    public ParamsExpectedException4(ParametrizedExceptionTest4<T, P1, P2, P3, P4> parametrizedTest) {
         this.parametrizedTest = parametrizedTest;
     }
 
@@ -32,8 +32,8 @@ public final class ParamsExpectedException3<T extends Throwable, P1, P2, P3> {
      *     {@link org.specnaz.SpecBuilder#shouldThrow} method would
      */
     @SafeVarargs
-    public final ThrowableExpectations<T> provided(Params3<P1, P2, P3>... params) {
-        return Conversions.complete3e(parametrizedTest, Stream.of(params));
+    public final ThrowableExpectations<T> provided(Params4<P1, P2, P3, P4>... params) {
+        return Conversions.complete4e(parametrizedTest, Stream.of(params));
     }
 
     /**
@@ -46,7 +46,7 @@ public final class ParamsExpectedException3<T extends Throwable, P1, P2, P3> {
      *     an instance of the {@link ThrowableExpectations} class, like a regular
      *     {@link org.specnaz.SpecBuilder#shouldThrow} method would
      */
-    public ThrowableExpectations<T> provided(Iterable<Params3<P1, P2, P3>> params) {
-        return Conversions.complete3e(parametrizedTest, Conversions.iterable2stream(params));
+    public ThrowableExpectations<T> provided(Iterable<Params4<P1, P2, P3, P4>> params) {
+        return Conversions.complete4e(parametrizedTest, Conversions.iterable2stream(params));
     }
 }

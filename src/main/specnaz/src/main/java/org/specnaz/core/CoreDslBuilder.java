@@ -2,6 +2,8 @@ package org.specnaz.core;
 
 import org.specnaz.SpecBuilder;
 import org.specnaz.TestSettings;
+import org.specnaz.params.ParamsExpected4;
+import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
 import org.specnaz.params.ParamsExpectedSubgroup4;
@@ -24,6 +26,7 @@ import org.specnaz.params.RunnableParams6;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
+import org.specnaz.params.TestClosureParams4;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -458,6 +461,90 @@ public interface CoreDslBuilder {
      */
     <T extends Throwable, P1, P2, P3> ParamsExpectedException3<T, P1, P2, P3> ignoredParametrizedTestExpectingException3(
             Class<T> expectedException, String description, TestClosureParams3<P1, P2, P3> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#should(String, TestClosureParams4)}
+     * (a parametrized test with 4 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected4} class
+     */
+    <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> parametrizedTest4(String description,
+            TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshould(String, TestClosureParams4)}
+     * (a parametrized test with 4 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected4} class
+     */
+    <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> focusedParametrizedTest4(String description,
+            TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshould(String, TestClosureParams4)}
+     * (a parametrized test with 4 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected4} class
+     */
+    <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> ignoredParametrizedTest4(String description,
+            TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#shouldThrow(Class, String, TestClosureParams4)}
+     * (a parametrized test with 4 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException4} class
+     */
+    <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> parametrizedTestExpectingException4(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshouldThrow(Class, String, TestClosureParams4)}
+     * (a parametrized test with 4 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException4} class
+     */
+    <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> focusedParametrizedTestExpectingException4(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshouldThrow(Class, String, TestClosureParams4)}
+     * (a parametrized test with 4 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException4} class
+     */
+    <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> ignoredParametrizedTestExpectingException4(
+            Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody);
 
     /**
      * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams1)}

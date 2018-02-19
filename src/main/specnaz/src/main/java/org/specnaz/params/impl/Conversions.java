@@ -9,6 +9,7 @@ import org.specnaz.params.Params6;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
+import org.specnaz.params.TestClosureParams4;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -106,9 +107,26 @@ public final class Conversions {
                 .collect(Collectors.toList());
     }
 
+    public static <P1, P2, P3, P4> TestSettings complete4p(AbstractParametrizedPositiveTest parametrizedTest,
+            Stream<Params4<P1, P2, P3, P4>> params) {
+        complete4(parametrizedTest, params);
+        return parametrizedTest.testSettings;
+    }
+
+    public static <T extends Throwable, P1, P2, P3, P4> ThrowableExpectations<T> complete4e(
+            AbstractParametrizedExceptionTest<T> parametrizedTest, Stream<Params4<P1, P2, P3, P4>> params) {
+        complete4(parametrizedTest, params);
+        return parametrizedTest.throwableExpectations;
+    }
+
     public static <P1, P2, P3, P4> void complete4d(AbstractParametrizedSubgroup parametrizedSubgroup,
             Stream<Params4<P1, P2, P3, P4>> params) {
         parametrizedSubgroup.complete(paramsToLists4(params));
+    }
+
+    private static <P1, P2, P3, P4> void complete4(AbstractParametrizedTest parametrizedTest,
+            Stream<Params4<P1, P2, P3, P4>> params) {
+        parametrizedTest.complete(paramsToLists4(params));
     }
 
     private static <P1, P2, P3, P4> List<List<?>> paramsToLists4(Stream<Params4<P1, P2, P3, P4>> params) {
@@ -149,6 +167,10 @@ public final class Conversions {
 
     public static <P1, P2, P3> TestClosure toTestClosure3(TestClosureParams3<P1, P2, P3> testBody, List<?> params) {
         return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2));
+    }
+
+    public static <P1, P2, P3, P4> TestClosure toTestClosure4(TestClosureParams4<P1, P2, P3, P4> testBody, List<?> params) {
+        return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3));
     }
 
     public static String formatParamsDesc(String description, List<?> params) {
