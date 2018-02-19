@@ -349,7 +349,9 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see SpecBuilder#fshould
      * @see #should(String, TestClosureParams4)
      * @see #xshould(String, TestClosureParams4)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
      */
+    @Deprecated
     <P1, P2, P3, P4> ParamsExpected4<P1, P2, P3, P4> fshould(String description,
             TestClosureParams4<P1, P2, P3, P4> testBody);
 
@@ -401,7 +403,9 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see SpecBuilder#fshouldThrow
      * @see #shouldThrow(Class, String, TestClosureParams4)
      * @see #xshouldThrow(Class, String, TestClosureParams4)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
      */
+    @Deprecated
     <T extends Throwable, P1, P2, P3, P4> ParamsExpectedException4<T, P1, P2, P3, P4> fshouldThrow(
             Class<T> expectedException, String description, TestClosureParams4<P1, P2, P3, P4> testBody);
 
@@ -497,7 +501,9 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see SpecBuilder#fdescribes
      * @see #describes(String, RunnableParams2)
      * @see #xdescribes(String, RunnableParams2)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
      */
+    @Deprecated
     <P1, P2> ParamsExpectedSubgroup2<P1, P2> fdescribes(String description, RunnableParams2<P1, P2> specClosure);
 
     /**
@@ -542,7 +548,9 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see SpecBuilder#fdescribes
      * @see #describes(String, RunnableParams3)
      * @see #xdescribes(String, RunnableParams3)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
      */
+    @Deprecated
     <P1, P2, P3> ParamsExpectedSubgroup3<P1, P2, P3> fdescribes(String description, RunnableParams3<P1, P2, P3> specClosure);
 
     /**
@@ -588,7 +596,9 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see SpecBuilder#fdescribes
      * @see #describes(String, RunnableParams4)
      * @see #xdescribes(String, RunnableParams4)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
      */
+    @Deprecated
     <P1, P2, P3, P4> ParamsExpectedSubgroup4<P1, P2, P3, P4> fdescribes(String description,
             RunnableParams4<P1, P2, P3, P4> specClosure);
 
@@ -636,7 +646,9 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see SpecBuilder#fdescribes
      * @see #describes(String, RunnableParams5)
      * @see #xdescribes(String, RunnableParams5)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
      */
+    @Deprecated
     <P1, P2, P3, P4, P5> ParamsExpectedSubgroup5<P1, P2, P3, P4, P5> fdescribes(String description,
             RunnableParams5<P1, P2, P3, P4, P5> specClosure);
 
@@ -684,7 +696,9 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      * @see SpecBuilder#fdescribes
      * @see #describes(String, RunnableParams6)
      * @see #xdescribes(String, RunnableParams6)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
      */
+    @Deprecated
     <P1, P2, P3, P4, P5, P6> ParamsExpectedSubgroup6<P1, P2, P3, P4, P5, P6> fdescribes(String description,
             RunnableParams6<P1, P2, P3, P4, P5, P6> specClosure);
 
