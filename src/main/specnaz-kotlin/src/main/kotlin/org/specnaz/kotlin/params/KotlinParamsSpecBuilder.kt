@@ -3,9 +3,12 @@ package org.specnaz.kotlin.params
 import org.specnaz.kotlin.KotlinSpecBuilder
 import org.specnaz.params.ParamsExpected1
 import org.specnaz.params.ParamsExpected2
+import org.specnaz.params.ParamsExpected3
 import org.specnaz.params.ParamsExpectedException1
 import org.specnaz.params.ParamsExpectedException2
+import org.specnaz.params.ParamsExpectedException3
 import org.specnaz.params.ParamsExpectedSubgroup1
+import org.specnaz.params.ParamsExpectedSubgroup2
 import org.specnaz.params.ParamsSpecBuilder
 
 class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : KotlinSpecBuilder(paramsSpecBuilder) {
@@ -27,7 +30,20 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
         return paramsSpecBuilder.shouldThrow(T::class.java, description, { p1, p2 -> testBody.invoke(p1, p2) })
     }
 
+    fun <P1, P2, P3> should(description: String, testBody: (P1, P2, P3) -> Unit): ParamsExpected3<P1, P2, P3> {
+        return paramsSpecBuilder.should(description, testBody)
+    }
+
+    inline fun <reified T : Throwable, P1, P2, P3> shouldThrow(
+            description: String, crossinline testBody: (P1, P2, P3) -> Unit): ParamsExpectedException3<T, P1, P2, P3> {
+        return paramsSpecBuilder.shouldThrow(T::class.java, description, { p1, p2, p3 -> testBody.invoke(p1, p2, p3) })
+    }
+
     fun <P> describes(description: String, specClosure: (P) -> Unit): ParamsExpectedSubgroup1<P> {
+        return paramsSpecBuilder.describes(description, specClosure)
+    }
+
+    fun <P1, P2> describes(description: String, specClosure: (P1, P2) -> Unit): ParamsExpectedSubgroup2<P1, P2> {
         return paramsSpecBuilder.describes(description, specClosure)
     }
 }
