@@ -16,7 +16,7 @@ public final class Params5<P1, P2, P3, P4, P5> {
      * @param param5 fifth parameter
      * @return a new instance of the {@link Params5} class
      */
-    public static <P1, P2, P3, P4, P5> Params5<P1, P2, P3, P4, P5> p5(P1 param1, P2 param2, P3 param3, P4 param4,
+    public static <P1, P2, P3, P4, P5> Params5<P1, P2, P3, P4, P5> p(P1 param1, P2 param2, P3 param3, P4 param4,
             P5 param5) {
         return new Params5<>(param1, param2, param3, param4, param5);
     }

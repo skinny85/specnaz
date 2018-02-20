@@ -13,7 +13,7 @@ public final class Params2<P1, P2> {
      * @param param2 second parameter
      * @return a new instance of the {@link Params2} class
      */
-    public static <P1, P2> Params2<P1, P2> p2(P1 param1, P2 param2) {
+    public static <P1, P2> Params2<P1, P2> p(P1 param1, P2 param2) {
         return new Params2<>(param1, param2);
     }
 
