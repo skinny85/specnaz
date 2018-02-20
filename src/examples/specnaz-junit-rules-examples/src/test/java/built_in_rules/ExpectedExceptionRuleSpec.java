@@ -21,7 +21,7 @@ public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
             });
 
             it.should("correctly re-set the Rule after the first test", () -> {
-                expectedException.r().handleAssertionErrors();
+                expectedException.r().reportMissingExceptionWithMessage("");
             });
         });
     }
