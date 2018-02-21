@@ -8,6 +8,7 @@ import org.specnaz.junit.SpecnazJUnitRunner
 import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner
 import org.specnaz.junit.utils.Utils
 import org.specnaz.kotlin.SpecnazKotlin
+import org.specnaz.kotlin.params.SpecnazKotlinParams
 
 /**
  * The equivalent of [SpecnazJUnitRunner] for Kotlin -
@@ -25,17 +26,20 @@ import org.specnaz.kotlin.SpecnazKotlin
  *     }
  * }
  * ```
+ *
+ * This Runner also handles parametrized tests implementing the [SpecnazKotlinParams] interface.
  */
 class SpecnazKotlinJUnitRunner(classs: Class<*>) : Runner() {
     private val coreDslRunner: SpecnazCoreDslJUnitRunner
 
     init {
+        val targetInterface = determineTargetInterface(classs)
         try {
             coreDslRunner = SpecnazCoreDslJUnitRunner(classs,
-                    Utils.instantiateTestClass(classs, SpecnazKotlin::class.java))
+                    Utils.instantiateTestClass(classs, targetInterface))
         } catch (e: IllegalStateException) {
             throw IllegalStateException(
-                    "SpecnazKotlin.describes() was never called in the no-argument constructor of ${classs.simpleName}")
+                    "${targetInterface.simpleName}.describes() was never called in the no-argument constructor of ${classs.simpleName}")
         }
     }
 
@@ -43,5 +47,12 @@ class SpecnazKotlinJUnitRunner(classs: Class<*>) : Runner() {
 
     override fun run(runNotifier: RunNotifier) {
         coreDslRunner.run(runNotifier)
+    }
+
+    private fun determineTargetInterface(classs: Class<*>): Class<*> {
+        return if (SpecnazKotlinParams::class.java.isAssignableFrom(classs))
+            SpecnazKotlinParams::class.java
+        else
+            SpecnazKotlin::class.java
     }
 }

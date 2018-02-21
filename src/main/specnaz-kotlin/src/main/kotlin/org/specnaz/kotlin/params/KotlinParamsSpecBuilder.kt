@@ -21,10 +21,16 @@ import org.specnaz.params.ParamsExpectedSubgroup5
 import org.specnaz.params.ParamsExpectedSubgroup6
 import org.specnaz.params.ParamsSpecBuilder
 
+/**
+ * The equivalent of [ParamsSpecBuilder] for Kotlin,
+ * and the parametrized extension of [KotlinSpecBuilder].
+ * An instance of this class is passed to the lambda expression
+ * given in [SpecnazKotlinParams.describes].
+ */
 class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : KotlinSpecBuilder(paramsSpecBuilder) {
     /**
      * The parametrized equivalent of [org.specnaz.SpecBuilder.should],
-     * taking one parameter, for Kotlin.
+     * taking a single parameter, for Kotlin.
      */
     fun <P> should(description: String, testBody: (P) -> Unit): ParamsExpected1<P> {
         return paramsSpecBuilder.should(description, testBody)
@@ -32,7 +38,7 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
 
     /**
      * The parametrized equivalent of [org.specnaz.SpecBuilder.fshould],
-     * taking one parameter, for Kotlin.
+     * taking a single parameter, for Kotlin.
      */
     @Deprecated("Deprecated for the same reason SpecBuilder#fshould is")
     fun <P> fshould(description: String, testBody: (P) -> Unit): ParamsExpected1<P> {
@@ -42,7 +48,7 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
 
     /**
      * The parametrized equivalent of [org.specnaz.SpecBuilder.xshould],
-     * taking one parameter, for Kotlin.
+     * taking a single parameter, for Kotlin.
      */
     fun <P> xshould(description: String, testBody: (P) -> Unit): ParamsExpected1<P> {
         return paramsSpecBuilder.xshould(description, testBody)
@@ -50,7 +56,7 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
 
     /**
      * The parametrized equivalent of [org.specnaz.SpecBuilder.shouldThrow],
-     * taking one parameter, for Kotlin.
+     * taking a single parameter, for Kotlin.
      */
     inline fun <reified T : Throwable, P> shouldThrow(
             description: String, crossinline testBody: (P) -> Unit): ParamsExpectedException1<T, P> {
@@ -59,7 +65,7 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
 
     /**
      * The parametrized equivalent of [org.specnaz.SpecBuilder.fshouldThrow],
-     * taking one parameter, for Kotlin.
+     * taking a single parameter, for Kotlin.
      */
     @Deprecated("Deprecated for the same reason SpecBuilder#fshould is")
     inline fun <reified T : Throwable, P> fshouldThrow(
@@ -70,7 +76,7 @@ class KotlinParamsSpecBuilder(val paramsSpecBuilder: ParamsSpecBuilder) : Kotlin
 
     /**
      * The parametrized equivalent of [org.specnaz.SpecBuilder.xshouldThrow],
-     * taking one parameter, for Kotlin.
+     * taking a single parameter, for Kotlin.
      */
     inline fun <reified T : Throwable, P> xshouldThrow(
             description: String, crossinline testBody: (P) -> Unit): ParamsExpectedException1<T, P> {

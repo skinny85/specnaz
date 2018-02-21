@@ -25,7 +25,7 @@ class KotlinParametrizedSpec : SpecnazKotlinParamsJUnit("A parametrized spec", {
             assertThat(Integer.parseInt(str, radix)).isEqualTo(result)
         }.provided(16)
     }.provided(
-                    p2("cafe", 51966),
-                    p2("BABE", 47806)
-            )
+            p2("cafe", 51966),
+            p2("BABE", 47806)
+    )
 })

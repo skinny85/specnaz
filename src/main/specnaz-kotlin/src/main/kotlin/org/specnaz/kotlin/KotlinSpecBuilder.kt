@@ -8,7 +8,7 @@ import org.specnaz.utils.ThrowableExpectations
  * The equivalent of [SpecBuilder] for Kotlin.
  *
  * The main difference is that all of the lifecycle callback methods
- * (`before`/`after`) and the test bodies take `Nothing?`
+ * ([beginsEach], [beginsAll], [endsEach] and [endsAll]) take `Nothing?`
  * (the equivalent of [Void] in Java) as a first parameter,
  * which allows for a little better auto-completion experience
  * when using the default anonymous function parameter (`it`) in Kotlin.
