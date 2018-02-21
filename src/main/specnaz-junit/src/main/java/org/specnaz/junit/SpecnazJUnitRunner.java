@@ -7,6 +7,9 @@ import org.junit.runner.notification.RunNotifier;
 import org.specnaz.Specnaz;
 import org.specnaz.junit.core.SpecnazCoreDslJUnitRunner;
 import org.specnaz.junit.utils.Utils;
+import org.specnaz.params.SpecnazParams;
+
+import static java.lang.String.format;
 
 /**
  * The JUnit {@link Runner} used for running {@link Specnaz} specifications.
@@ -24,6 +27,9 @@ import org.specnaz.junit.utils.Utils;
  *     }}
  * </code>
  * </pre>
+ *
+ * This Runner also supports parametrized tests, for classes implementing
+ * {@link SpecnazParams} instead of {@link Specnaz}.
  */
 public final class SpecnazJUnitRunner extends Runner {
     private final SpecnazCoreDslJUnitRunner coreDslRunner;
@@ -34,15 +40,21 @@ public final class SpecnazJUnitRunner extends Runner {
      * @param classs
      *     the class of the tests currently being run.
      *     It must implement and obey the contract of the
-     *     {@link Specnaz} interface
+     *     {@link Specnaz} interface (or its parametrized equivalent,
+     *     {@link SpecnazParams})
+     * @throws IllegalStateException
+     *     if the {@link Specnaz#describes} method was never called
+     *     in the no-argument constructor of {@code classs}
      */
     public SpecnazJUnitRunner(Class<?> classs) throws IllegalStateException {
+        Class<?> targetInterface = establishTargetInterface(classs);
         try {
             this.coreDslRunner = new SpecnazCoreDslJUnitRunner(classs,
-                    Utils.instantiateTestClass(classs, Specnaz.class));
+                    Utils.instantiateTestClass(classs, targetInterface));
         } catch (IllegalStateException e) {
-            throw new IllegalStateException("Specnaz.describes() was never called in the no-argument constructor of " +
-                    classs.getSimpleName());
+            throw new IllegalStateException(
+                    format("%s.describes() was never called in the no-argument constructor of %s",
+                            targetInterface.getSimpleName(), classs.getSimpleName()));
         }
     }
 
@@ -54,5 +66,11 @@ public final class SpecnazJUnitRunner extends Runner {
     @Override
     public void run(RunNotifier runNotifier) {
         coreDslRunner.run(runNotifier);
+    }
+
+    private Class<?> establishTargetInterface(Class<?> classs) {
+        return SpecnazParams.class.isAssignableFrom(classs)
+                ? SpecnazParams.class
+                : Specnaz.class;
     }
 }

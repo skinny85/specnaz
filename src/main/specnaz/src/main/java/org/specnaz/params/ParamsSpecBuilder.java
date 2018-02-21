@@ -6,8 +6,9 @@ import org.specnaz.SpecBuilder;
  * The parametrized equivalent of {@link SpecBuilder}.
  * An instance of this class is passed to the main lambda expression
  * given in {@link SpecnazParams#describes}.
- * It contains parametrized versions of the {@link SpecBuilder#should} and
- * {@link SpecBuilder#shouldThrow} (plus its focused and ignored variants) methods.
+ * It contains parametrized versions of the {@link SpecBuilder#should},
+ * {@link SpecBuilder#shouldThrow} and {@link SpecBuilder#describes} methods,
+ * plus their focused and ignored variants.
  *
  * @see SpecBuilder
  */

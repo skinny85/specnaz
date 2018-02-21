@@ -46,7 +46,7 @@ public interface SpecnazParams {
     }
 
     /**
-     * Allows you to ignore an entire spec defined in this class.
+     * Allows you to ignore an entire parametrized spec defined in this class.
      *
      * @param description
      *     the top-level description of the spec
