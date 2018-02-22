@@ -35,6 +35,8 @@ Table of Contents
       * [xshouldThrow](#xshouldthrow)
       * [xdescribes](#xdescribes)
     * [Using Boxes](#using-boxes)
+    * [Parametrized test support](#parametrized-test-support)
+      * [Parametrized sub-specifications](#parametrized-sub-specifications)
     * [Using Specnaz in other JVM languages](#using-specnaz-in-other-jvm-languages)
       * [Kotlin](#kotlin)
         * [Using native Java classes](#using-native-java-classes)
@@ -789,6 +791,129 @@ methods, `emptyBox` and `boxWith`.
 
 There are also equivalent classes for boxing primitive values
 (`int`, `bool`, `long` etc.), named `IntBox`, `BoolBox`, `LongBox` etc.
+
+## Parametrized test support
+
+Specnaz has built-in support for writing parametrized tests.
+
+In order to get access to the parametrized tests capabilities,
+you need to implement the `org.specnaz.params.SpecnazParams`
+interface in your test class instead of the regular `Specnaz` one.
+You can implement it directly, or you can extend a helper class,
+`org.specnaz.params.junit.SpecnazParamsJUnit`,
+which is analogous to the regular `SpecnazJUnit` helper.
+If you're implementing the interface directly,
+you provide the same Runner with the `@RunWith` annotation,
+`org.specnaz.junit.SpecnazJUnitRunner`, as you would for regular (non-parametrized) tests.
+
+The `SpecnazParams` interface is pretty much the same as `Specnaz`,
+except the parameter of the lambda passed to the `describes` method
+(the one named `it` by convention) is of a different type -
+`ParamsSpecBuilder` instead of`SpecBuilder`.
+
+The way you define parametrized tests is very similar to regular, non-parametrized ones.
+The difference is that instead of passing a no-argument lambda
+as the body of the test to a `should` or `shouldThrow` method,
+you instead pass a lambda expecting between one and nine arguments.
+You use these arguments in your test case as parameters,
+and then call the `provided` method on the object `should` or `shouldThrow` returns.
+
+The `provided` method is used to specify with what parameters should the tests run.
+The parameters are provided by passing instances of the `ParamsX` class,
+where `X` is the arity of the lambda passed to `should` or `shouldThrow` -
+so, if you passed a two-argument lambda, you need to provide instances of the `Params2` class.
+
+Each of the `ParamsX` classes contains a static factory method named `pX`
+used for constructing instances of it (so, `Params2` has `p2`, `Params3` - `p3`, etc.).
+You can provide the instances directly, using variadic arguments,
+or through a Collection of the appropriate `ParamsX` type.
+Each instance of a `ParamsX` class you provide will result in a separate test being executed and reported.
+
+Example:
+
+```java
+import org.specnaz.params.junit.SpecnazParamsJUnit;
+import static org.specnaz.params.Params3.p3;
+
+public class ParametrizedSpec extends SpecnazParamsJUnit {{
+    describes("A parametrized spec", it -> {
+        it.should("confirm that %1 + %2 = %3", (Integer a, Integer b, Integer c) -> {
+            assertThat(a + b).isEqualTo(c);
+        }).provided(
+                p3(1, 2, 3),
+                p3(4, 4, 8),
+                p3(-3, 3, 0),
+                p3(Integer.MAX_VALUE, 1, Integer.MIN_VALUE)
+        );
+    });
+}}
+``` 
+
+Because we gave a 3-parameter lambda to `should`,
+we need to call `provided` with instances of `Params3`.
+As we gave four instances in the call,
+this will result in 4 tests being executed.
+
+We also used the special placeholders in the description string: `%1`, `%2` etc.
+These will be expanded at runtime by the library with the values
+of the parameters at the appropriate index (starting at 1) -
+so, the first test will be reported as `should confirm that 1 + 2 = 3`.
+
+There is a slight difference when the lambda you provided to `should` or `shouldThrow`
+takes only one argument
+(in other words, for a parametrized test with a single parameter).
+In that case, there is no `Params1` class -
+you just provide the values directly, either as variadic arguments,
+or as a Collection.
+
+Example:
+
+```java
+it.shouldThrow(NumberFormatException.class, "when trying to parse '%1' as an Int", (String str) -> {
+    Integer.parseInt(str);
+}).provided("a", "b");
+```
+
+The `provided` methods return objects of the same type that regular,
+non-parametrized tests would - so, `TestSettings` for `should`,
+and `ThrowableExpectations` for `shouldThrow`.
+Which means we could have expanded the above example with some additional
+assertions on the thrown Exception as follows:
+
+```java
+it.shouldThrow(NumberFormatException.class, "when trying to parse '%1' as an Int", (String str) -> {
+    Integer.parseInt(str);
+}).provided("a", "b").withoutCause();
+```
+
+The `TestSettings` and `ThrowableExpectations` objects returned by `provided`
+are shared between all instances of the tests when they are expanded with parameters.
+
+### Parametrized sub-specifications
+
+You can also provide a lambda with arguments to the `describes` method,
+in that way creating a parametrized sub-specification.
+It behaves exactly like you would expect:
+you need to call the `provided` method on the object the parametrized `describes` returns,
+exactly like for parametrized `should` and `shouldThrow`,
+and there will be a separate sub-specification created for each instance of the appropriate `ParamsX`
+class that you provide in that call.
+
+**Note**: you can use the `String.format` method to dynamically set the descriptions of the tests
+inside the sub-specification, depending on the value(s) of the parameters.
+But if you want to combine that with the placeholders Specnaz expands,
+remember that you need to escape the `%` character in the call to `format`
+by writing a double percent. So, the placeholder would look something like `%%1` in that case.
+
+Example:
+
+```java
+it.describes("with a parametrized subgroup", (String str) -> {
+    it.should(format("correctly parse '%s' as an integer in the radix %%1", str), (Integer radix) -> {
+        Integer.parseInt(str, radix);
+    }).provided(16, 17);
+}).provided("a", "b");
+```
 
 ## Using Specnaz in other JVM languages
 
