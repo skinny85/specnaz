@@ -799,17 +799,31 @@ Specnaz has built-in support for writing parametrized tests.
 In order to get access to the parametrized tests capabilities,
 you need to implement the `org.specnaz.params.SpecnazParams`
 interface in your test class instead of the regular `Specnaz` one.
-You can implement it directly, or you can extend a helper class,
-`org.specnaz.params.junit.SpecnazParamsJUnit`,
-which is analogous to the regular `SpecnazJUnit` helper.
+There is a helper class, `org.specnaz.params.junit.SpecnazParamsJUnit`,
+which is analogous to the regular `SpecnazJUnit` helper, that you can extend:
+
+```java
+import org.specnaz.params.junit.SpecnazParamsJUnit;
+
+public class MyParametrizedSpec extends SpecnazParamsJUnit {
+    // body of the spec here...   
+}
+```
+
 If you're implementing the interface directly,
 you provide the same Runner with the `@RunWith` annotation,
-`org.specnaz.junit.SpecnazJUnitRunner`, as you would for regular (non-parametrized) tests.
+`SpecnazJUnitRunner`, as you would for regular (non-parametrized) tests:
 
-The `SpecnazParams` interface is pretty much the same as `Specnaz`,
-except the parameter of the lambda passed to the `describes` method
-(the one named `it` by convention) is of a different type -
-`ParamsSpecBuilder` instead of`SpecBuilder`.
+```java
+import org.junit.runner.RunWith;
+import org.specnaz.junit.SpecnazJUnitRunner;
+import org.specnaz.params.SpecnazParams;
+
+@RunWith(SpecnazJUnitRunner.class)
+public class MyParametrizedSpec extends MyParent implements SpecnazParams {
+    // body of the spec here...
+}
+```
 
 The way you define parametrized tests is very similar to regular, non-parametrized ones.
 The difference is that instead of passing a no-argument lambda
@@ -819,7 +833,7 @@ You use these arguments in your test case as parameters,
 and then call the `provided` method on the object `should` or `shouldThrow` returns.
 
 The `provided` method is used to specify with what parameters should the tests run.
-The parameters are provided by passing instances of the `ParamsX` class,
+The parameters are given by passing instances of the `ParamsX` class,
 where `X` is the arity of the lambda passed to `should` or `shouldThrow` -
 so, if you passed a two-argument lambda, you need to provide instances of the `Params2` class.
 
@@ -847,17 +861,19 @@ public class ParametrizedSpec extends SpecnazParamsJUnit {{
         );
     });
 }}
-``` 
+```
 
 Because we gave a 3-parameter lambda to `should`,
 we need to call `provided` with instances of `Params3`.
 As we gave four instances in the call,
 this will result in 4 tests being executed.
 
-We also used the special placeholders in the description string: `%1`, `%2` etc.
+We also used the special placeholders in the description string: `%1`, `%2`, etc.
 These will be expanded at runtime by the library with the values
-of the parameters at the appropriate index (starting at 1) -
-so, the first test will be reported as `should confirm that 1 + 2 = 3`.
+of the parameters at the appropriate index, counting from 1.
+So, the spec above will look like this when executed:
+
+![parametrized add spec result](img/parametrized-add-spec-result.png)
 
 There is a slight difference when the lambda you provided to `should` or `shouldThrow`
 takes only one argument
@@ -905,7 +921,7 @@ But if you want to combine that with the placeholders Specnaz expands,
 remember that you need to escape the `%` character in the call to `format`
 by writing a double percent. So, the placeholder would look something like `%%1` in that case.
 
-Example:
+For example, this specification:
 
 ```java
 it.describes("with a parametrized subgroup", (String str) -> {
@@ -914,6 +930,10 @@ it.describes("with a parametrized subgroup", (String str) -> {
     }).provided(16, 17);
 }).provided("a", "b");
 ```
+
+will result in the following tests tree:
+
+![parametrized sub-specification result](img/parametrized-sub-specification-result.png)
 
 ## Using Specnaz in other JVM languages
 
