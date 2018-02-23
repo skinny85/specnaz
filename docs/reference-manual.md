@@ -43,6 +43,7 @@ Table of Contents
         * [Using the Kotlin bindings](#using-the-kotlin-bindings)
           * [Ignoring specs inheriting from SpecnazKotlinJUnit](#ignoring-specs-inheriting-from-specnazkotlinjunit)
         * [The Deferred helper](#the-deferred-helper)
+        * [Parametrized tests in Kotlin](#parametrized-tests-in-kotlin)
       * [Groovy](#groovy)
     * [Framework extensions](#framework-extensions)
       * [JUnit Rules](#junit-rules)
@@ -1036,15 +1037,15 @@ defines its own versions of all of the spec building methods like `should`,
 `beginsEach`, `describes` etc., with signatures using the Kotlin function types.
 This is better in 2 ways:
     * the IDE support is better (for example, Intellij lists each
-    method of the `SpecBuilder` twice in the auto-completion menu,
-    once with the lambda function and once with the `TestClosure` instance,
+    method of the `SpecBuilder` twice in the auto-completion menu when using it from Kotlin,
+    once with the Kotlin function signature and once with the `TestClosure` signature,
     which is irritating)
-    * you get better type-safety, as all of the redefined functions
-    (except `describes`) take a `Nothing?` (Kotlin's equivalent of Java's
-    `Void`) as their first argument, which means that if you didn't override
-    the default name of the lambda parameter (`it`), the type system will
-    not allow you to do illegal things when building the spec
-    (like nesting `should` calls).
+    * you get better type-safety, as all of the redefined fixture functions
+    (`beginsAll` / `each`, `endsAll` / `each`) take a `Nothing?`
+    (Kotlin's equivalent of Java's `Void`) as their first argument,
+    which means that if you didn't override the default name of lambda parameter (`it`),
+    the type system will not allow you to do illegal things when building the spec
+    (like calling `should` from inside a `beginsEach`).
 
 If your test class has to extend a particular class, you can still get
 the last two benefits by using the `org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner`
@@ -1139,6 +1140,48 @@ class KotlinSpec : SpecnazKotlinJUnit("A spec", {
         Assert.assertTrue(someDomainClass.something()); // notice no '.v'
     }
 })
+```
+
+#### Parametrized tests in Kotlin
+
+Kotlin also has its own version of the parametrized Specnaz interface, `SpecnazParams`:
+`org.specnaz.kotlin.params.SpecnazKotlinParams`.
+You can implement it directly, or inherit from a helper,
+`org.specnaz.kotlin.params.junit.SpecnazKotlinParamsJUnit`.
+There's also `xSpecnazKotlinParamsJUnit` in the same package if you need to ignore an
+entire parametrized specification.
+
+Other than that, parametrized tests in Kotlin are basically the same as in Java:
+pass a lambda expression with up to nine arguments to `should`,
+use them inside the test, and then call `provided` on the object returned from `should`.
+Example:
+
+```kotlin
+class KotlinParametrizedSpec : SpecnazKotlinParamsJUnit("A parametrized spec", {
+    it.should("confirm that %1 + %2 = %3", { a: Int, b: Int, c: Int ->
+        assertThat(a + b).isEqualTo(c)
+    }).provided(
+            p3(1, 2, 3),
+            p3(4, 4, 8),
+            p3(-3, 3, 0),
+            p3(Int.MAX_VALUE, 1, Int.MIN_VALUE)
+    )
+})
+```
+
+The one difference can be when writing parametrized `shouldThrow` tests.
+Because in the Kotlin version of that method,
+you specify the expected Exception as a type parameter,
+and not an instance of the `Class` type,
+you also have to specify the types of the parameters
+of the lambda you passed as the test body.
+Because of that, you don't have to repeat the types in the lambda itself.
+Like this:
+
+```kotlin
+it.shouldThrow<NumberFormatException, String>("when parsing '%1' as an Int") { str ->
+    Integer.parseInt(str)
+}.provided("b", "c")
 ```
 
 ### Groovy
