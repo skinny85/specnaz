@@ -641,6 +641,22 @@ public interface ParamsSpecBuilder extends SpecBuilder {
             Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody);
 
     /**
+     * The parametrized version of {@link SpecBuilder#should} that takes 7 parameters.
+     *
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected7} class
+     *
+     * @see SpecBuilder#should
+     * @see #fshould(String, TestClosureParams7)
+     * @see #xshould(String, TestClosureParams7)
+     */
+    <P1, P2, P3, P4, P5, P6, P7> ParamsExpected7<P1, P2, P3, P4, P5, P6, P7> should(String description,
+            TestClosureParams7<P1, P2, P3, P4, P5, P6, P7> testBody);
+
+    /**
      * The parametrized version of {@link SpecBuilder#describes} that takes a single parameter.
      *
      * @param description

@@ -8,6 +8,7 @@ import org.specnaz.params.ParamsExpected3;
 import org.specnaz.params.ParamsExpected4;
 import org.specnaz.params.ParamsExpected5;
 import org.specnaz.params.ParamsExpected6;
+import org.specnaz.params.ParamsExpected7;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
@@ -33,6 +34,7 @@ import org.specnaz.params.TestClosureParams3;
 import org.specnaz.params.TestClosureParams4;
 import org.specnaz.params.TestClosureParams5;
 import org.specnaz.params.TestClosureParams6;
+import org.specnaz.params.TestClosureParams7;
 
 public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAdapter
         implements ParamsSpecBuilder {
@@ -263,6 +265,12 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
             Class<T> expectedException, String description, TestClosureParams6<P1, P2, P3, P4, P5, P6> testBody) {
         return coreDslBuilder.ignoredParametrizedTestExpectingException6(expectedException,
                 shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7> ParamsExpected7<P1, P2, P3, P4, P5, P6, P7> should(
+            String description, TestClosureParams7<P1, P2, P3, P4, P5, P6, P7> testBody) {
+        return coreDslBuilder.focusedParametrizedTest7(shouldDescription(description), testBody);
     }
 
     @Override

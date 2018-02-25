@@ -6,12 +6,14 @@ import org.specnaz.params.Params3;
 import org.specnaz.params.Params4;
 import org.specnaz.params.Params5;
 import org.specnaz.params.Params6;
+import org.specnaz.params.Params7;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
 import org.specnaz.params.TestClosureParams4;
 import org.specnaz.params.TestClosureParams5;
 import org.specnaz.params.TestClosureParams6;
+import org.specnaz.params.TestClosureParams7;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -193,6 +195,23 @@ public final class Conversions {
                 .collect(Collectors.toList());
     }
 
+    public static <P1, P2, P3, P4, P5, P6, P7> TestSettings complete7p(
+            AbstractParametrizedPositiveTest parametrizedTest, Stream<Params7<P1, P2, P3, P4, P5, P6, P7>> params) {
+        complete7(parametrizedTest, params);
+        return parametrizedTest.testSettings;
+    }
+
+    private static <P1, P2, P3, P4, P5, P6, P7> void complete7(AbstractParametrizedTest parametrizedTest,
+            Stream<Params7<P1, P2, P3, P4, P5, P6, P7>> params) {
+        parametrizedTest.complete(paramsToLists7(params));
+    }
+
+    private static <P1, P2, P3, P4, P5, P6, P7> List<List<?>> paramsToLists7(Stream<Params7<P1, P2, P3, P4, P5, P6, P7>> params) {
+        return params
+                .map(p -> Arrays.asList(p._1, p._2, p._3, p._4, p._5, p._6, p._7))
+                .collect(Collectors.toList());
+    }
+
     public static <P> TestClosure toTestClosure1(TestClosureParams1<P> testBody, List<?> params) {
         return () -> testBody.invoke((P) params.get(0));
     }
@@ -218,6 +237,12 @@ public final class Conversions {
             List<?> params) {
         return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3),
                 (P5) params.get(4), (P6) params.get(5));
+    }
+
+    public static <P1, P2, P3, P4, P5, P6, P7> TestClosure toTestClosure7(
+            TestClosureParams7<P1, P2, P3, P4, P5, P6, P7> testBody, List<?> params) {
+        return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3),
+                (P5) params.get(4), (P6) params.get(5), (P7) params.get(6));
     }
 
     public static String formatParamsDesc(String description, List<?> params) {
