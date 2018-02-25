@@ -15,6 +15,7 @@ import org.specnaz.params.ParamsExpectedException3;
 import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.ParamsExpectedException5;
 import org.specnaz.params.ParamsExpectedException6;
+import org.specnaz.params.ParamsExpectedException7;
 import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
@@ -369,6 +370,12 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     public <P1, P2, P3, P4, P5, P6, P7> ParamsExpected7<P1, P2, P3, P4, P5, P6, P7> ignoredParametrizedTest7(
             String description, TestClosureParams7<P1, P2, P3, P4, P5, P6, P7> testBody) {
         return testsGroupNodeAccumulator.addParametrizedPositiveTest7(description, testBody, TestCaseType.IGNORED);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7> ParamsExpectedException7<T, P1, P2, P3, P4, P5, P6, P7> parametrizedTestExpectingException7(Class<T> expectedException, String description, TestClosureParams7<P1, P2, P3, P4, P5, P6, P7> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest7(expectedException,
+                description, testBody, TestCaseType.REGULAR);
     }
 
     @Override
