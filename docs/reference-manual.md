@@ -1158,9 +1158,9 @@ Example:
 
 ```kotlin
 class KotlinParametrizedSpec : SpecnazKotlinParamsJUnit("A parametrized spec", {
-    it.should("confirm that %1 + %2 = %3", { a: Int, b: Int, c: Int ->
+    it.should("confirm that %1 + %2 = %3") { a: Int, b: Int, c: Int ->
         assertThat(a + b).isEqualTo(c)
-    }).provided(
+    }.provided(
             p3(1, 2, 3),
             p3(4, 4, 8),
             p3(-3, 3, 0),
