@@ -371,8 +371,23 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     }
 
     @Override
-    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> shouldThrow(Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> shouldThrow(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
         return coreDslBuilder.parametrizedTestExpectingException9(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> fshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+        return coreDslBuilder.focusedParametrizedTestExpectingException9(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> xshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+        return coreDslBuilder.ignoredParametrizedTestExpectingException9(expectedException,
                 shouldThrowDescription(expectedException, description), testBody);
     }
 

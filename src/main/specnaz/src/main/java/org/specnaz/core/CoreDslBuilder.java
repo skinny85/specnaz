@@ -948,7 +948,38 @@ public interface CoreDslBuilder {
      *     the body of the test case
      * @return an instance of the {@link ParamsExpectedException9} class
      */
-    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T,P1,P2,P3,P4,P5,P6,P7,P8,P9> parametrizedTestExpectingException9(Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody);
+    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> parametrizedTestExpectingException9(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshouldThrow(Class, String, TestClosureParams9)}
+     * (a parametrized test with 9 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException9} class
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> focusedParametrizedTestExpectingException9(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshouldThrow(Class, String, TestClosureParams9)}
+     * (a parametrized test with 9 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException9} class
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> ignoredParametrizedTestExpectingException9(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody);
 
     /**
      * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams1)}

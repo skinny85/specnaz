@@ -920,6 +920,44 @@ public interface ParamsSpecBuilder extends SpecBuilder {
             Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody);
 
     /**
+     * The parametrized version of {@link SpecBuilder#fshouldThrow} that takes 9 parameters.
+     *
+     * @param expectedException
+     *     the type of Exception expected by the test
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException9} class
+     *
+     * @see SpecBuilder#fshouldThrow
+     * @see #shouldThrow(Class, String, TestClosureParams9)
+     * @see #xshouldThrow(Class, String, TestClosureParams9)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
+     */
+    @Deprecated
+    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> fshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xshouldThrow} that takes 9 parameters.
+     *
+     * @param expectedException
+     *     the type of Exception expected by the test
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException9} class
+     *
+     * @see SpecBuilder#xshouldThrow
+     * @see #shouldThrow(Class, String, TestClosureParams9)
+     * @see #fshouldThrow(Class, String, TestClosureParams9)
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> xshouldThrow(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody);
+
+    /**
      * The parametrized version of {@link SpecBuilder#describes} that takes a single parameter.
      *
      * @param description

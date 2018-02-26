@@ -464,6 +464,20 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> focusedParametrizedTestExpectingException9(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest9(expectedException,
+                description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> ignoredParametrizedTestExpectingException9(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest9(expectedException,
+                description, testBody, TestCaseType.IGNORED);
+    }
+
+    @Override
     public <P> ParamsExpectedSubgroup1<P> parametrizedSubSpecification1(String description,
             RunnableParams1<P> specClosure) {
         return new ParamsExpectedSubgroup1<>(addParametrizedSubgroup(
