@@ -438,8 +438,21 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpected9<P1, P2, P3, P4, P5, P6, P7, P8, P9> parametrizedTest9(String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+    public <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpected9<P1, P2, P3, P4, P5, P6, P7, P8, P9> parametrizedTest9(
+            String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
         return testsGroupNodeAccumulator.addParametrizedPositiveTest9(description, testBody, TestCaseType.REGULAR);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpected9<P1, P2, P3, P4, P5, P6, P7, P8, P9> focusedParametrizedTest9(
+            String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest9(description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpected9<P1, P2, P3, P4, P5, P6, P7, P8, P9> ignoredParametrizedTest9(
+            String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedPositiveTest9(description, testBody, TestCaseType.IGNORED);
     }
 
     @Override
