@@ -18,6 +18,7 @@ import org.specnaz.params.ParamsExpectedException5;
 import org.specnaz.params.ParamsExpectedException6;
 import org.specnaz.params.ParamsExpectedException7;
 import org.specnaz.params.ParamsExpectedException8;
+import org.specnaz.params.ParamsExpectedException9;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -36,6 +37,7 @@ import org.specnaz.params.impl.ParametrizedExceptionTest5;
 import org.specnaz.params.impl.ParametrizedExceptionTest6;
 import org.specnaz.params.impl.ParametrizedExceptionTest7;
 import org.specnaz.params.impl.ParametrizedExceptionTest8;
+import org.specnaz.params.impl.ParametrizedExceptionTest9;
 import org.specnaz.params.impl.ParametrizedPositiveTest1;
 import org.specnaz.params.impl.ParametrizedPositiveTest2;
 import org.specnaz.params.impl.ParametrizedPositiveTest3;
@@ -209,6 +211,12 @@ public final class TestsGroupNodeAccumulator {
             String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody, TestCaseType testCaseType) {
         return new ParamsExpected9<>(addParametrizedTest(new ParametrizedPositiveTest9<>(
                 new TestSettings(), description, testBody, descendantTestType(testCaseType))));
+    }
+
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedException9<T, P1, P2, P3, P4, P5, P6, P7, P8, P9> addParametrizedExceptionTest9(
+            Class<T> expectedException, String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody, TestCaseType testCaseType) {
+        return new ParamsExpectedException9<>(addParametrizedTest(new ParametrizedExceptionTest9<>(
+                new ThrowableExpectations<>(expectedException), description, testBody, descendantTestType(testCaseType))));
     }
 
     public TreeNode<TestsGroup> build() {
