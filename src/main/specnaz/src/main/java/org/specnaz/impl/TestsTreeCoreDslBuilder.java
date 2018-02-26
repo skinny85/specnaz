@@ -415,9 +415,24 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedException8<T, P1, P2, P3, P4, P5, P6, P7, P8> parametrizedTestExpectingException8(Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedException8<T, P1, P2, P3, P4, P5, P6, P7, P8> parametrizedTestExpectingException8(
+            Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
         return testsGroupNodeAccumulator.addParametrizedExceptionTest8(expectedException,
                 description, testBody, TestCaseType.REGULAR);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedException8<T, P1, P2, P3, P4, P5, P6, P7, P8> focusedParametrizedTestExpectingException8(
+            Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest8(expectedException,
+                description, testBody, TestCaseType.FOCUSED);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedException8<T, P1, P2, P3, P4, P5, P6, P7, P8> ignoredParametrizedTestExpectingException8(
+            Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
+        return testsGroupNodeAccumulator.addParametrizedExceptionTest8(expectedException,
+                description, testBody, TestCaseType.IGNORED);
     }
 
     @Override
