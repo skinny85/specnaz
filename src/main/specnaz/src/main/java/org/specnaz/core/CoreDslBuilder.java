@@ -819,7 +819,34 @@ public interface CoreDslBuilder {
      *     the body of the test case
      * @return an instance of the {@link ParamsExpected8} class
      */
-    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1,P2,P3,P4,P5,P6,P7,P8> parametrizedTest8(String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> parametrizedTest8(
+            String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fshould(String, TestClosureParams8)}
+     * (a parametrized test with 8 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected8} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> focusedParametrizedTest8(
+            String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xshould(String, TestClosureParams8)}
+     * (a parametrized test with 8 parameters).
+     *
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected8} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> ignoredParametrizedTest8(
+            String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
 
     /**
      * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams1)}

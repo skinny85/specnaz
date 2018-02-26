@@ -315,6 +315,16 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     }
 
     @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> fshould(String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
+        return coreDslBuilder.focusedParametrizedTest8(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> xshould(String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
+        return coreDslBuilder.ignoredParametrizedTest8(shouldDescription(description), testBody);
+    }
+
+    @Override
     public <P> ParamsExpectedSubgroup1<P> describes(String description, RunnableParams1<P> specClosure) {
         return coreDslBuilder.parametrizedSubSpecification1(description, specClosure);
     }

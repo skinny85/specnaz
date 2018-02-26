@@ -762,6 +762,40 @@ public interface ParamsSpecBuilder extends SpecBuilder {
             TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
 
     /**
+     * The parametrized version of {@link SpecBuilder#fshould} that takes 8 parameters.
+     *
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected8} class
+     *
+     * @see SpecBuilder#fshould
+     * @see #should(String, TestClosureParams8)
+     * @see #xshould(String, TestClosureParams8)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
+     */
+    @Deprecated
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> fshould(String description,
+            TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xshould} that takes 8 parameters.
+     *
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpected8} class
+     *
+     * @see SpecBuilder#xshould
+     * @see #should(String, TestClosureParams8)
+     * @see #fshould(String, TestClosureParams8)
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> xshould(String description,
+            TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
+
+    /**
      * The parametrized version of {@link SpecBuilder#describes} that takes a single parameter.
      *
      * @param description
