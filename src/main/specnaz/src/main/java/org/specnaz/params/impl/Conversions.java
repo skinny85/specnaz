@@ -226,6 +226,12 @@ public final class Conversions {
         return parametrizedTest.testSettings;
     }
 
+    public static <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ThrowableExpectations<T> complete8e(
+            AbstractParametrizedExceptionTest<T> parametrizedTest, Stream<Params8<P1, P2, P3, P4, P5, P6, P7, P8>> params) {
+        complete8(parametrizedTest, params);
+        return parametrizedTest.throwableExpectations;
+    }
+
     private static <P1, P2, P3, P4, P5, P6, P7, P8> void complete8(AbstractParametrizedTest parametrizedTest,
             Stream<Params8<P1, P2, P3, P4, P5, P6, P7, P8>> params) {
         parametrizedTest.complete(paramsToLists8(params));

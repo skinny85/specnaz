@@ -795,6 +795,25 @@ public interface ParamsSpecBuilder extends SpecBuilder {
     <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> xshould(String description,
             TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
 
+
+    /**
+     * The parametrized version of {@link SpecBuilder#shouldThrow} that takes 8 parameters.
+     *
+     * @param expectedException
+     *     the type of Exception expected by the test
+     * @param description
+     *     the description of the test
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException8} class
+     *
+     * @see SpecBuilder#shouldThrow
+     * @see #fshouldThrow(Class, String, TestClosureParams8)
+     * @see #xshouldThrow(Class, String, TestClosureParams8)
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedException8<T, P1, P2, P3, P4, P5, P6, P7, P8> shouldThrow(
+            Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
+
     /**
      * The parametrized version of {@link SpecBuilder#describes} that takes a single parameter.
      *

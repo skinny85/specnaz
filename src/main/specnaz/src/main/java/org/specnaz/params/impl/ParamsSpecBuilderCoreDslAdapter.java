@@ -17,6 +17,7 @@ import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.ParamsExpectedException5;
 import org.specnaz.params.ParamsExpectedException6;
 import org.specnaz.params.ParamsExpectedException7;
+import org.specnaz.params.ParamsExpectedException8;
 import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
@@ -322,6 +323,12 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     @Override
     public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> xshould(String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
         return coreDslBuilder.ignoredParametrizedTest8(shouldDescription(description), testBody);
+    }
+
+    @Override
+    public <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedException8<T, P1, P2, P3, P4, P5, P6, P7, P8> shouldThrow(Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody) {
+        return coreDslBuilder.parametrizedTestExpectingException8(expectedException,
+                shouldThrowDescription(expectedException, description), testBody);
     }
 
     @Override

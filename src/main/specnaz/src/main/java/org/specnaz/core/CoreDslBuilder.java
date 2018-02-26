@@ -17,6 +17,7 @@ import org.specnaz.params.ParamsExpectedException4;
 import org.specnaz.params.ParamsExpectedException5;
 import org.specnaz.params.ParamsExpectedException6;
 import org.specnaz.params.ParamsExpectedException7;
+import org.specnaz.params.ParamsExpectedException8;
 import org.specnaz.params.ParamsExpectedSubgroup1;
 import org.specnaz.params.ParamsExpectedSubgroup2;
 import org.specnaz.params.ParamsExpectedSubgroup3;
@@ -847,6 +848,20 @@ public interface CoreDslBuilder {
      */
     <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpected8<P1, P2, P3, P4, P5, P6, P7, P8> ignoredParametrizedTest8(
             String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#shouldThrow(Class, String, TestClosureParams8)}
+     * (a parametrized test with 8 parameters).
+     *
+     * @param expectedException
+     *     the class of the Exception we expect in this test
+     * @param description
+     *     the description of the test case
+     * @param testBody
+     *     the body of the test case
+     * @return an instance of the {@link ParamsExpectedException8} class
+     */
+    <T extends Throwable, P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedException8<T,P1,P2,P3,P4,P5,P6,P7,P8> parametrizedTestExpectingException8(Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody);
 
     /**
      * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams1)}
