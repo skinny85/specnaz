@@ -8,6 +8,7 @@ import org.specnaz.params.Params5;
 import org.specnaz.params.Params6;
 import org.specnaz.params.Params7;
 import org.specnaz.params.Params8;
+import org.specnaz.params.Params9;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -16,6 +17,7 @@ import org.specnaz.params.TestClosureParams5;
 import org.specnaz.params.TestClosureParams6;
 import org.specnaz.params.TestClosureParams7;
 import org.specnaz.params.TestClosureParams8;
+import org.specnaz.params.TestClosureParams9;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -244,6 +246,24 @@ public final class Conversions {
                 .collect(Collectors.toList());
     }
 
+    public static <P1, P2, P3, P4, P5, P6, P7, P8, P9> TestSettings complete9p(
+            AbstractParametrizedPositiveTest parametrizedTest, Stream<Params9<P1, P2, P3, P4, P5, P6, P7, P8, P9>> params) {
+        complete9(parametrizedTest, params);
+        return parametrizedTest.testSettings;
+    }
+
+    private static <P1, P2, P3, P4, P5, P6, P7, P8, P9> void complete9(AbstractParametrizedTest parametrizedTest,
+            Stream<Params9<P1, P2, P3, P4, P5, P6, P7, P8, P9>> params) {
+        parametrizedTest.complete(paramsToLists9(params));
+    }
+
+    private static <P1, P2, P3, P4, P5, P6, P7, P8, P9> List<List<?>> paramsToLists9(
+            Stream<Params9<P1, P2, P3, P4, P5, P6, P7, P8, P9>> params) {
+        return params
+                .map(p -> Arrays.asList(p._1, p._2, p._3, p._4, p._5, p._6, p._7, p._8, p._9))
+                .collect(Collectors.toList());
+    }
+
     public static <P> TestClosure toTestClosure1(TestClosureParams1<P> testBody, List<?> params) {
         return () -> testBody.invoke((P) params.get(0));
     }
@@ -281,6 +301,12 @@ public final class Conversions {
             TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody, List<?> params) {
         return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3),
                 (P5) params.get(4), (P6) params.get(5), (P7) params.get(6), (P8) params.get(7));
+    }
+
+    public static <P1, P2, P3, P4, P5, P6, P7, P8, P9> TestClosure toTestClosure9(
+            TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody, List<?> params) {
+        return () -> testBody.invoke((P1) params.get(0), (P2) params.get(1), (P3) params.get(2), (P4) params.get(3),
+                (P5) params.get(4), (P6) params.get(5), (P7) params.get(6), (P8) params.get(7), (P9) params.get(8));
     }
 
     public static String formatParamsDesc(String description, List<?> params) {

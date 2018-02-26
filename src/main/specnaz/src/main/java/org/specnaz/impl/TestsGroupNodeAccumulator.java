@@ -9,6 +9,7 @@ import org.specnaz.params.ParamsExpected5;
 import org.specnaz.params.ParamsExpected6;
 import org.specnaz.params.ParamsExpected7;
 import org.specnaz.params.ParamsExpected8;
+import org.specnaz.params.ParamsExpected9;
 import org.specnaz.params.ParamsExpectedException1;
 import org.specnaz.params.ParamsExpectedException2;
 import org.specnaz.params.ParamsExpectedException3;
@@ -25,6 +26,7 @@ import org.specnaz.params.TestClosureParams5;
 import org.specnaz.params.TestClosureParams6;
 import org.specnaz.params.TestClosureParams7;
 import org.specnaz.params.TestClosureParams8;
+import org.specnaz.params.TestClosureParams9;
 import org.specnaz.params.impl.AbstractParametrizedTest;
 import org.specnaz.params.impl.ParametrizedExceptionTest1;
 import org.specnaz.params.impl.ParametrizedExceptionTest2;
@@ -42,6 +44,7 @@ import org.specnaz.params.impl.ParametrizedPositiveTest5;
 import org.specnaz.params.impl.ParametrizedPositiveTest6;
 import org.specnaz.params.impl.ParametrizedPositiveTest7;
 import org.specnaz.params.impl.ParametrizedPositiveTest8;
+import org.specnaz.params.impl.ParametrizedPositiveTest9;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
 
@@ -200,6 +203,12 @@ public final class TestsGroupNodeAccumulator {
             Class<T> expectedException, String description, TestClosureParams8<P1, P2, P3, P4, P5, P6, P7, P8> testBody, TestCaseType testCaseType) {
         return new ParamsExpectedException8<>(addParametrizedTest(new ParametrizedExceptionTest8<>(
                 new ThrowableExpectations<>(expectedException), description, testBody, descendantTestType(testCaseType))));
+    }
+
+    public <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpected9<P1, P2, P3, P4, P5, P6, P7, P8, P9> addParametrizedPositiveTest9(
+            String description, TestClosureParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> testBody, TestCaseType testCaseType) {
+        return new ParamsExpected9<>(addParametrizedTest(new ParametrizedPositiveTest9<>(
+                new TestSettings(), description, testBody, descendantTestType(testCaseType))));
     }
 
     public TreeNode<TestsGroup> build() {
