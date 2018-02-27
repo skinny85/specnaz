@@ -1297,4 +1297,20 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      */
     <P1, P2, P3, P4, P5, P6, P7> ParamsExpectedSubgroup7<P1, P2, P3, P4, P5, P6, P7> xdescribes(String description,
             RunnableParams7<P1, P2, P3, P4, P5, P6, P7> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#describes} that takes 8 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup8} class
+     *
+     * @see SpecBuilder#describes
+     * @see #fdescribes(String, RunnableParams8)
+     * @see #xdescribes(String, RunnableParams8)
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> describes(String description,
+            RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
 }

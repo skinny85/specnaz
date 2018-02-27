@@ -239,6 +239,11 @@ public final class Conversions {
         return parametrizedTest.throwableExpectations;
     }
 
+    public static <P1, P2, P3, P4, P5, P6, P7, P8> void complete8d(AbstractParametrizedSubgroup parametrizedSubgroup,
+            Stream<Params8<P1, P2, P3, P4, P5, P6, P7, P8>> params) {
+        parametrizedSubgroup.complete(paramsToLists8(params));
+    }
+
     private static <P1, P2, P3, P4, P5, P6, P7, P8> void complete8(AbstractParametrizedTest parametrizedTest,
             Stream<Params8<P1, P2, P3, P4, P5, P6, P7, P8>> params) {
         parametrizedTest.complete(paramsToLists8(params));
