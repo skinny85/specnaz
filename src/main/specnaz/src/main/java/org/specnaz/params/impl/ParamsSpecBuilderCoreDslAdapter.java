@@ -519,7 +519,20 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
     }
 
     @Override
-    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> describes(String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> describes(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
         return coreDslBuilder.parametrizedSubSpecification8(description, specClosure);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> fdescribes(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
+        return coreDslBuilder.focusedParametrizedSubSpecification8(description, specClosure);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> xdescribes(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
+        return coreDslBuilder.ignoredParametrizedSubSpecification8(description, specClosure);
     }
 }

@@ -631,9 +631,24 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
     }
 
     @Override
-    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> parametrizedSubSpecification8(String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> parametrizedSubSpecification8(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
         return new ParamsExpectedSubgroup8<>(addParametrizedSubgroup(
                 new ParametrizedSubgroup8<>(description, specClosure, TestCaseType.REGULAR)));
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> focusedParametrizedSubSpecification8(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
+        return new ParamsExpectedSubgroup8<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup8<>(description, specClosure, TestCaseType.FOCUSED)));
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> ignoredParametrizedSubSpecification8(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure) {
+        return new ParamsExpectedSubgroup8<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup8<>(description, specClosure, TestCaseType.IGNORED)));
     }
 
     public TreeNode<TestsGroup> spec() {

@@ -1268,5 +1268,32 @@ public interface CoreDslBuilder {
      *     the callback used to define the new test group
      * @return an instance of the {@link ParamsExpectedSubgroup8} class
      */
-    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1,P2,P3,P4,P5,P6,P7,P8> parametrizedSubSpecification8(String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> parametrizedSubSpecification8(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fdescribes(String, RunnableParams8)}
+     * (a parametrized sub-specification with 8 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup8} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> focusedParametrizedSubSpecification8(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xdescribes(String, RunnableParams8)}
+     * (a parametrized sub-specification with 8 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup8} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> ignoredParametrizedSubSpecification8(
+            String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
 }

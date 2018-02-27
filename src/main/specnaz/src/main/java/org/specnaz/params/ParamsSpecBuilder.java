@@ -1313,4 +1313,38 @@ public interface ParamsSpecBuilder extends SpecBuilder {
      */
     <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> describes(String description,
             RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#fdescribes} that takes 8 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup8} class
+     *
+     * @see SpecBuilder#fdescribes
+     * @see #describes(String, RunnableParams8)
+     * @see #xdescribes(String, RunnableParams8)
+     * @deprecated for the same reasons {@link SpecBuilder#fshould} is
+     */
+    @Deprecated
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> fdescribes(String description,
+            RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
+
+    /**
+     * The parametrized version of {@link SpecBuilder#xdescribes} that takes 8 parameters.
+     *
+     * @param description
+     *    the description of the new test group
+     * @param specClosure
+     *    the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup8} class
+     *
+     * @see SpecBuilder#xdescribes
+     * @see #describes(String, RunnableParams8)
+     * @see #fdescribes(String, RunnableParams8)
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> xdescribes(String description,
+            RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
 }
