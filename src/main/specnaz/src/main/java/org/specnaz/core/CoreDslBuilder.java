@@ -26,6 +26,7 @@ import org.specnaz.params.ParamsExpectedSubgroup3;
 import org.specnaz.params.ParamsExpectedSubgroup4;
 import org.specnaz.params.ParamsExpectedSubgroup5;
 import org.specnaz.params.ParamsExpectedSubgroup6;
+import org.specnaz.params.ParamsExpectedSubgroup7;
 import org.specnaz.params.ParamsSpecBuilder;
 import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.RunnableParams2;
@@ -33,6 +34,7 @@ import org.specnaz.params.RunnableParams3;
 import org.specnaz.params.RunnableParams4;
 import org.specnaz.params.RunnableParams5;
 import org.specnaz.params.RunnableParams6;
+import org.specnaz.params.RunnableParams7;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -1214,4 +1216,16 @@ public interface CoreDslBuilder {
      */
     <P1, P2, P3, P4, P5, P6> ParamsExpectedSubgroup6<P1, P2, P3, P4, P5, P6> ignoredParametrizedSubSpecification6(
             String description, RunnableParams6<P1, P2, P3, P4, P5, P6> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams7)}
+     * (a parametrized sub-specification with 7 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup7} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7> ParamsExpectedSubgroup7<P1,P2,P3,P4,P5,P6,P7> parametrizedSubSpecification7(String description, RunnableParams7<P1, P2, P3, P4, P5, P6, P7> specClosure);
 }

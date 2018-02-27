@@ -26,12 +26,14 @@ import org.specnaz.params.ParamsExpectedSubgroup3;
 import org.specnaz.params.ParamsExpectedSubgroup4;
 import org.specnaz.params.ParamsExpectedSubgroup5;
 import org.specnaz.params.ParamsExpectedSubgroup6;
+import org.specnaz.params.ParamsExpectedSubgroup7;
 import org.specnaz.params.RunnableParams1;
 import org.specnaz.params.RunnableParams2;
 import org.specnaz.params.RunnableParams3;
 import org.specnaz.params.RunnableParams4;
 import org.specnaz.params.RunnableParams5;
 import org.specnaz.params.RunnableParams6;
+import org.specnaz.params.RunnableParams7;
 import org.specnaz.params.TestClosureParams1;
 import org.specnaz.params.TestClosureParams2;
 import org.specnaz.params.TestClosureParams3;
@@ -48,6 +50,7 @@ import org.specnaz.params.impl.ParametrizedSubgroup3;
 import org.specnaz.params.impl.ParametrizedSubgroup4;
 import org.specnaz.params.impl.ParametrizedSubgroup5;
 import org.specnaz.params.impl.ParametrizedSubgroup6;
+import org.specnaz.params.impl.ParametrizedSubgroup7;
 import org.specnaz.params.impl.ParametrizedSubgroupInstance;
 import org.specnaz.utils.TestClosure;
 import org.specnaz.utils.ThrowableExpectations;
@@ -601,6 +604,12 @@ public final class TestsTreeCoreDslBuilder implements CoreDslBuilder {
             String description, RunnableParams6<P1, P2, P3, P4, P5, P6> specClosure) {
         return new ParamsExpectedSubgroup6<>(addParametrizedSubgroup(
                 new ParametrizedSubgroup6<>(description, specClosure, TestCaseType.IGNORED)));
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7> ParamsExpectedSubgroup7<P1, P2, P3, P4, P5, P6, P7> parametrizedSubSpecification7(String description, RunnableParams7<P1, P2, P3, P4, P5, P6, P7> specClosure) {
+        return new ParamsExpectedSubgroup7<>(addParametrizedSubgroup(
+                new ParametrizedSubgroup7<>(description, specClosure, TestCaseType.REGULAR)));
     }
 
     public TreeNode<TestsGroup> spec() {
