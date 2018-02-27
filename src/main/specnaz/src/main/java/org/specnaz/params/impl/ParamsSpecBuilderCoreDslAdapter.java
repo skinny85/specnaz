@@ -503,4 +503,16 @@ public final class ParamsSpecBuilderCoreDslAdapter extends SpecBuilderCoreDslAda
             String description, RunnableParams7<P1, P2, P3, P4, P5, P6, P7> specClosure) {
         return coreDslBuilder.parametrizedSubSpecification7(description, specClosure);
     }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7> ParamsExpectedSubgroup7<P1, P2, P3, P4, P5, P6, P7> fdescribes(
+            String description, RunnableParams7<P1, P2, P3, P4, P5, P6, P7> specClosure) {
+        return coreDslBuilder.focusedParametrizedSubSpecification7(description, specClosure);
+    }
+
+    @Override
+    public <P1, P2, P3, P4, P5, P6, P7> ParamsExpectedSubgroup7<P1, P2, P3, P4, P5, P6, P7> xdescribes(
+            String description, RunnableParams7<P1, P2, P3, P4, P5, P6, P7> specClosure) {
+        return coreDslBuilder.ignoredParametrizedSubSpecification7(description, specClosure);
+    }
 }
