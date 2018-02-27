@@ -1299,5 +1299,42 @@ public interface CoreDslBuilder {
     <P1, P2, P3, P4, P5, P6, P7, P8> ParamsExpectedSubgroup8<P1, P2, P3, P4, P5, P6, P7, P8> ignoredParametrizedSubSpecification8(
             String description, RunnableParams8<P1, P2, P3, P4, P5, P6, P7, P8> specClosure);
 
-    <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedSubgroup9<P1,P2,P3,P4,P5,P6,P7,P8,P9> parametrizedSubSpecification9(String description, RunnableParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> specClosure);
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#describes(String, RunnableParams9)}
+     * (a parametrized sub-specification with 9 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup9} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedSubgroup9<P1, P2, P3, P4, P5, P6, P7, P8, P9> parametrizedSubSpecification9(
+            String description, RunnableParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#fdescribes(String, RunnableParams9)}
+     * (a parametrized sub-specification with 9 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup9} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedSubgroup9<P1, P2, P3, P4, P5, P6, P7, P8, P9> focusedParametrizedSubSpecification9(
+            String description, RunnableParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> specClosure);
+
+    /**
+     * The core equivalent of {@link ParamsSpecBuilder#xdescribes(String, RunnableParams9)}
+     * (a parametrized sub-specification with 9 parameters).
+     *
+     * @param description
+     *     the description of the new test group
+     * @param specClosure
+     *     the callback used to define the new test group
+     * @return an instance of the {@link ParamsExpectedSubgroup9} class
+     */
+    <P1, P2, P3, P4, P5, P6, P7, P8, P9> ParamsExpectedSubgroup9<P1, P2, P3, P4, P5, P6, P7, P8, P9> ignoredParametrizedSubSpecification9(
+            String description, RunnableParams9<P1, P2, P3, P4, P5, P6, P7, P8, P9> specClosure);
 }
