@@ -1,7 +1,8 @@
 # Specnaz
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[ ![Download](https://api.bintray.com/packages/skinny85/maven-repo/Specnaz/images/download.svg) ](https://bintray.com/skinny85/maven-repo/Specnaz/_latestVersion)
+[![Download](https://api.bintray.com/packages/skinny85/maven-repo/Specnaz/images/download.svg)](https://bintray.com/skinny85/maven-repo/Specnaz/_latestVersion)
+[![Build Status](https://travis-ci.org/skinny85/specnaz.svg?branch=develop)](https://travis-ci.org/skinny85/specnaz)
 
 ![Specnaz logo](docs/img/specnaz-logo.png)
 
