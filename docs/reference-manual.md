@@ -1,7 +1,7 @@
 ![specnaz logo](img/specnaz-logo.png)
 
-RSpec and Jasmine-inspired, extensible test and specification library for Java and Kotlin
--------------------------------------------------------------------------------
+Library for writing beautiful, [RSpec](http://rspec.info/)/[Jasmine](http://jasmine.github.io/)/[Mocha](https://mochajs.org/)/[Jest](https://facebook.github.io/jest/)-style specifications in Java, [Kotlin](https://kotlinlang.org/) and [Groovy](http://www.groovy-lang.org/)
+-----------------------------------------------------------
 
 This is the reference documentation for the Specnaz library.
 For a quick introduction to Specnaz, check out the main
@@ -957,7 +957,7 @@ will result in the following tests tree:
 
 You can also [focus](#fshould) and [ignore](#xshould) parametrized tests and sub-specifications.
 It works exactly like for non-parametrized tests -
-simply add an `f` or an `x` in front of a call to define a parametrized testor sub-specification,
+simply add an `f` or an `x` in front of a call to define a parametrized test or sub-specification,
 and all tests that will be executed as a result of it will be focused or ignored.
 
 ## Using Specnaz in other JVM languages
