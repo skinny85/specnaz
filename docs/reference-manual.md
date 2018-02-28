@@ -37,6 +37,7 @@ Table of Contents
     * [Using Boxes](#using-boxes)
     * [Parametrized test support](#parametrized-test-support)
       * [Parametrized sub-specifications](#parametrized-sub-specifications)
+      * [Focusing and ignoring parametrized tests](#focusing-and-ignoring-parametrized-tests)
     * [Using Specnaz in other JVM languages](#using-specnaz-in-other-jvm-languages)
       * [Kotlin](#kotlin)
         * [Using native Java classes](#using-native-java-classes)
@@ -199,6 +200,12 @@ public class StackSpec extends SpecnazJUnit {{
     });
 }}
 ```
+
+**Note**: Specnaz does not impose any ordering between tests in one group
+(unlike with `begins` / `ends` methods,
+which always execute in the same order they were defined in a group) -
+in particular, they might *not* execute in the same order as they were written.
+You should not write your tests in a way that makes them dependent on their relative order.
 
 The descriptions you give as the first argument will become the test
 names in the report - except they will have the word "should" prepended
@@ -500,6 +507,12 @@ The first, obvious rule, is that child groups have no influence on the
 execution of parent groups.
 So, the outer group will execute as follows:
 
+**Note**: Specnaz does not impose any ordering between tests in the same group
+(unlike with `begins` / `ends` methods in the same group,
+which always execute in the same order they were defined).
+In the below examples, we assume they will execute in the same order as they were written.
+However, that's not guaranteed by the framework, and you shouldn't rely on it in your tests.
+
 * outer group beginsAll
 * outer group beginsEach
 * outer group test 1
@@ -650,6 +663,10 @@ and they won't have access to the variables of the closure.
 
 For these reasons, Specnaz changes the traditional behavior of the
 `beginsAll` and `endsAll` fixtures.
+
+If you need to perform some setup and/or teardown that should happen once per class
+(and not once per group), you can achieve that using the [JUnit Class Rules API](#class-junit-rules)
+that Specnaz supports natively.
 
 ### fshould
 
@@ -892,8 +909,8 @@ it.shouldThrow(NumberFormatException.class, "when trying to parse '%1' as an Int
 ```
 
 The `provided` methods return objects of the same type that regular,
-non-parametrized tests would - so, `TestSettings` for `should`,
-and `ThrowableExpectations` for `shouldThrow`.
+non-parametrized tests would - so, [`TestSettings`](#setting-the-test-method) for `should`,
+and [`ThrowableExpectations`](#shouldthrow) for `shouldThrow`.
 Which means we could have expanded the above example with some additional
 assertions on the thrown Exception as follows:
 
@@ -935,6 +952,13 @@ it.describes("with a parametrized subgroup", (String str) -> {
 will result in the following tests tree:
 
 ![parametrized sub-specification result](img/parametrized-sub-specification-result.png)
+
+### Focusing and ignoring parametrized tests
+
+You can also [focus](#fshould) and [ignore](#xshould) parametrized tests and sub-specifications.
+It works exactly like for non-parametrized tests -
+simply add an `f` or an `x` in front of a call to define a parametrized testor sub-specification,
+and all tests that will be executed as a result of it will be focused or ignored.
 
 ## Using Specnaz in other JVM languages
 
@@ -1241,7 +1265,10 @@ it wraps the execution of the entire test class
 (that is, it's executed even before any `beginsAll` methods).
 Because of that, it's a good place to put any setup or cleanup
 that you want to be executed exactly once for the whole class
-(and not, like `beginsAll` methods, for every nested subgroup).
+(and not, like `beginsAll` / `endsAll` methods, for every nested subgroup).
+Probably the easiest way to do that is to extend the
+[ExternalResource](https://junit.org/junit4/javadoc/4.12/org/junit/rules/ExternalResource.html)
+Rule that ships with JUnit.
 
 Example:
 
@@ -1273,7 +1300,7 @@ public class SomeSpec extends SpecnazJUnit {
 If you want to have multiple class Rules in the same class,
 it's important to know that the order in which they will be chained is unspecified -
 it won't necessarily be the same order that they were declared in in source code.
-If you need to control that ordering, you should use the `org.junit.rules.RuleChain` class
+If you need to control that ordering, you should use the [RuleChain](https://junit.org/junit4/javadoc/4.12/org/junit/rules/RuleChain.html) class
 that ships with JUnit.
 
 #### Instance JUnit Rules
@@ -1320,7 +1347,7 @@ public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
 
 The same remark about multiple class Rules applies to instance Rules as well -
 if you need control over the order in which multiple instance Rules in the same class are applied,
-use the `org.junit.rules.RuleChain` class that ships with JUnit.
+use the [RuleChain](https://junit.org/junit4/javadoc/4.12/org/junit/rules/RuleChain.html) class that ships with JUnit.
 
 #### Setting the test method
 
@@ -1371,6 +1398,7 @@ you have to use `should` and some alternative mechanism of specifying the except
   you have [a lot of options](http://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#exception-assertion)
 * The [ExpectedException](http://junit.org/junit4/javadoc/4.12/org/junit/rules/ExpectedException.html)
   Rule that ships with JUnit
+* You can always use an explicit `try`-`catch` inside the `should` test
 
 #### JUnit Rules examples
 
