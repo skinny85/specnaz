@@ -1,3 +1,8 @@
+Version 1.3 (2018-02-27)
+------------------------
+- added support for JUnit Rules ([Issue #1](https://github.com/skinny85/specnaz/issues/1))
+- added support for writing parametrized tests
+
 Version 1.2 (2017-12-25)
 ------------------------
 - added the capability to focus tests with `fshould`, `fshouldThrow` and `fdescribes`
