@@ -1338,6 +1338,7 @@ public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
           describes("Using the ExpectedException JUnit Rule in Specnaz", it -> {
               it.should("correctly set the expected Exception", () -> {
                   expectedException.r().expect(IllegalArgumentException.class);
+
                   throw new IllegalArgumentException();
               });
           });
