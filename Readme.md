@@ -181,7 +181,7 @@ demonstrating how you can structure your tests with Specnaz.
 
 ### Getting Specnaz
 
-Specnaz is available from the [Bintray](https://bintray.com/) Maven repository.
+Specnaz is available from the [JCenter](https://bintray.com/bintray/jcenter) Maven repository.
 
 * Group ID: `org.specnaz`
 * Latest version: `1.3`
@@ -194,8 +194,6 @@ The Artifact ID depends on the language and testing framework you want to use
 | Java                 | JUnit             | `specnaz-junit`        |
 | Kotlin               | JUnit             | `specnaz-kotlin-junit` |
 
-The repository URL is: `http://dl.bintray.com/skinny85/maven-repo`.
-
 ###### Example Maven settings
 
 ```xml
@@ -204,9 +202,9 @@ The repository URL is: `http://dl.bintray.com/skinny85/maven-repo`.
         <snapshots>
             <enabled>false</enabled>
         </snapshots>
-        <id>bintray-specnaz</id>
-        <name>bintray-specnaz</name>
-        <url>http://dl.bintray.com/skinny85/maven-repo</url>
+        <id>jcenter</id>
+        <name>jcenter</name>
+        <url>http://jcenter.bintray.com</url>
     </repository>
 </repositories>
 
@@ -226,9 +224,7 @@ The repository URL is: `http://dl.bintray.com/skinny85/maven-repo`.
 
 ```groovy
 repositories {
-    maven {
-        url 'http://dl.bintray.com/skinny85/maven-repo'
-    }
+    jcenter()
 }
 
 dependencies {
