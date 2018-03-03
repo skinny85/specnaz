@@ -184,7 +184,7 @@ demonstrating how you can structure your tests with Specnaz.
 Specnaz is available from the [Bintray](https://bintray.com/) Maven repository.
 
 * Group ID: `org.specnaz`
-* Latest version: `1.2`
+* Latest version: `1.3`
 
 The Artifact ID depends on the language and testing framework you want to use
 (Specnaz currently supports only JUnit, but there are plans to add support for others in the future):
@@ -216,7 +216,7 @@ The repository URL is: `http://dl.bintray.com/skinny85/maven-repo`.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
-        <version>1.2</version>
+        <version>1.3</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -233,7 +233,7 @@ repositories {
 
 dependencies {
     // ...
-    testCompile "org.specnaz:specnaz-kotlin-junit:1.2"
+    testCompile "org.specnaz:specnaz-kotlin-junit:1.3"
 }
 ```
 
