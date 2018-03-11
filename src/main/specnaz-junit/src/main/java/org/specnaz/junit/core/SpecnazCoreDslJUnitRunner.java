@@ -1,7 +1,7 @@
 package org.specnaz.junit.core;
 
-import org.junit.AssumptionViolatedException;
 import org.junit.ClassRule;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
