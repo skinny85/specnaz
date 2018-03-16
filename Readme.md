@@ -210,7 +210,7 @@ The Artifact ID depends on the language and testing framework you want to use
 
 <!-- ... -->
 
-<dependenies>
+<dependencies>
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
