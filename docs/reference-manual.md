@@ -58,7 +58,7 @@ Table of Contents
 
 ## Using dependency managers (Maven, Gradle etc.)
 
-Specnaz is available through the Bintray Maven repository.
+Specnaz is available through the [JCenter](https://bintray.com/bintray/jcenter) Maven repository.
 Take a look at the [main Readme file](../Readme.md#getting-specnaz) on how to get it using
 build tools that also do dependency management
 (Maven, Gradle, SBT, Ivy etc.).
