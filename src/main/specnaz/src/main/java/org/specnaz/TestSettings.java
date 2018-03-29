@@ -1,5 +1,6 @@
 package org.specnaz;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -43,6 +44,13 @@ public final class TestSettings {
 
         public Method method() {
             return inner.method;
+        }
+
+        public Annotation[] annotations() {
+            Method method = method();
+            return method == null
+                    ? new Annotation[]{}
+                    : method.getAnnotations();
         }
     }
 }

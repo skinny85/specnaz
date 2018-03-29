@@ -17,8 +17,8 @@ import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TestsGroupNodeExecutor;
 import org.specnaz.impl.TreeNode;
 import org.specnaz.junit.impl.JUnitDescUtils;
-import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.impl.JUnitFrameworkMethod;
+import org.specnaz.junit.impl.JUnitNotifier;
 import org.specnaz.junit.impl.TestCases2DescriptionsMap;
 import org.specnaz.junit.rules.Rule;
 import org.specnaz.junit.utils.Utils;
@@ -260,7 +260,8 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
             TestCases2DescriptionsMap.Builder testCases2DescriptionsMapBuilder) {
         List<SingleTestCase> testCases = testsGroupNode.value.testCases;
         for (SingleTestCase testCase : testCases) {
-            Description description = JUnitDescUtils.makeTestDesc(testCase.description, parentDescription);
+            Description description = JUnitDescUtils.makeTestDesc(testCase.description, parentDescription,
+                    testCase.testSettings.annotations());
             parentDescription.addChild(description);
             testCases2DescriptionsMapBuilder.addDescMapping(testCase, description);
         }
