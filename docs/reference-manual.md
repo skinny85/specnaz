@@ -68,14 +68,14 @@ build tools that also do dependency management
 If you're not using a dependency manager, you need to manually download
 the needed JARs and put them on your classpath:
 
-* [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.3/specnaz-1.3.jar)
-* [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.3/specnaz-junit-1.3.jar)
+* [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.3.1/specnaz-1.3.1.jar)
+* [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.3.1/specnaz-junit-1.3.1.jar)
 
 If you want to use the Kotlin integration,
 in addition to the ones above, you also need:
 
-* [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.3/specnaz-kotlin-1.3.jar)
-* [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.3/specnaz-kotlin-junit-1.3.jar)
+* [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.3.1/specnaz-kotlin-1.3.1.jar)
+* [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.3.1/specnaz-kotlin-junit-1.3.1.jar)
 
 # Writing tests
 

@@ -1,3 +1,8 @@
+Version 1.3.1 (2018-05-06)
+--------------------------
+- corrected a bug where Specnaz worked only with JUnit version 4.12
+- corrected a bug where test method annotations were not being passed correctly to JUnit Test Rules
+
 Version 1.3 (2018-02-27)
 ------------------------
 - added support for JUnit Rules ([Issue #1](https://github.com/skinny85/specnaz/issues/1))

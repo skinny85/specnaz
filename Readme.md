@@ -184,7 +184,7 @@ demonstrating how you can structure your tests with Specnaz.
 Specnaz is available from the [JCenter](https://bintray.com/bintray/jcenter) Maven repository.
 
 * Group ID: `org.specnaz`
-* Latest version: `1.3`
+* Latest version: `1.3.1`
 
 The Artifact ID depends on the language and testing framework you want to use
 (Specnaz currently supports only JUnit, but there are plans to add support for others in the future):
@@ -214,7 +214,7 @@ The Artifact ID depends on the language and testing framework you want to use
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
-        <version>1.3</version>
+        <version>1.3.1</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -229,7 +229,7 @@ repositories {
 
 dependencies {
     // ...
-    testCompile "org.specnaz:specnaz-kotlin-junit:1.3"
+    testCompile "org.specnaz:specnaz-kotlin-junit:1.3.1"
 }
 ```
 
