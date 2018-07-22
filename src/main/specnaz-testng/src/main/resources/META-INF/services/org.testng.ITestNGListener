@@ -1,0 +1,2 @@
+org.specnaz.testng.SpecnazAlterSuiteListener
+org.specnaz.testng.SpecnazMethodInterceptor

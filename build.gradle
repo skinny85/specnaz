@@ -37,7 +37,7 @@ buildscript {
     }
 }
 
-configure(subprojects.findAll { it.name.contains('kotlin') }) {
+configure(subprojects.findAll { isAKotlinProject(it) }) {
     buildscript {
         ext.kotlin_version = '1.2.0'
 
@@ -57,7 +57,12 @@ configure(subprojects.findAll { it.name.contains('kotlin') }) {
     }
 }
 
+private boolean isAKotlinProject(Project it) {
+    it.name.contains('kotlin') || it.name == 'specnaz-testng-examples'
+}
+
 ext {
     junit_version = '4.12'
+    testng_version = '6.14.3'
     assertj_version = '3.5.2'
 }

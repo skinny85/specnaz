@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':src:main:specnaz')
+
+    provided "org.testng:testng:$testng_version"
+}
+
+test {
+    useTestNG()
+}

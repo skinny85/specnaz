@@ -3,6 +3,8 @@ package org.specnaz.impl;
 import org.specnaz.utils.TestClosure;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,6 +38,12 @@ public final class TestsGroupNodeExecutor {
         return this::invokeAfterAlls;
     }
 
+    public List<String> descriptionsPath() {
+        List<String> ret = new LinkedList<>();
+        descriptionsPath(testsGroupNode, ret);
+        return Collections.unmodifiableList(ret);
+    }
+
     private Stream<TestsGroupNodeExecutor> streamOfTestsGroupNodeExecutors() {
         Stream<TestsGroupNodeExecutor> ret = testCases().isEmpty()
                 ? Stream.empty()
@@ -45,6 +53,14 @@ public final class TestsGroupNodeExecutor {
                 testsGroupNode.children().stream()
                         .map(child -> new TestsGroupNodeExecutor(child, runOnlyFocusedTests))
                         .flatMap(TestsGroupNodeExecutor::streamOfTestsGroupNodeExecutors));
+    }
+
+    private void descriptionsPath(TreeNode<TestsGroup> testsGroupNode, List<String> ret) {
+        if (testsGroupNode == null)
+            return;
+
+        descriptionsPath(testsGroupNode.parent(), ret);
+        ret.add(testsGroupNode.value.description);
     }
 
     private Throwable invokeBeforeAlls() {

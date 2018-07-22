@@ -1,0 +1,10 @@
+dependencies {
+    compile project(':src:main:specnaz-testng')
+    compile project(':src:main:specnaz-kotlin-testng')
+
+    testCompile "org.testng:testng:$testng_version"
+}
+
+test {
+    useTestNG()
+}
