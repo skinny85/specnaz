@@ -1,6 +1,10 @@
 import org.specnaz.kotlin.params.testng.SpecnazKotlinParamsFactoryTestNG
 import org.testng.annotations.Test
 
+/**
+ * Example of a parametrized Kotlin spec,
+ * running using TestNG as the execution engine.
+ */
 @Test
 class ParametrizedKotlinSpec : SpecnazKotlinParamsFactoryTestNG { init {
     describes("A parametrized Kotlin spec") {

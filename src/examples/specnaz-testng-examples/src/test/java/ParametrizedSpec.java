@@ -3,6 +3,10 @@ import org.testng.annotations.Test;
 
 import static java.lang.String.format;
 
+/**
+ * An example of a parametrized Specnaz spec,
+ * running using TestNG as the execution engine.
+ */
 @Test
 public class ParametrizedSpec implements SpecnazParamsFactoryTestNG {{
     describes("A parametrized spec", it -> {

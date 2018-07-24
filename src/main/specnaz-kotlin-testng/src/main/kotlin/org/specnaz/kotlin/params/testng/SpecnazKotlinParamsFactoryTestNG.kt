@@ -5,7 +5,16 @@ import org.specnaz.kotlin.params.SpecnazKotlinParams
 import org.specnaz.testng.impl.SpecnazTestNgSpecFactory
 import org.testng.annotations.Factory
 
+/**
+ * The parametrized equivalent of [org.specnaz.kotlin.testng.SpecnazKotlinTestNG].
+ *
+ * @see xSpecnazKotlinParamsTestNG
+ * @see org.specnaz.kotlin.params.SpecnazKotlinParams
+ */
 interface SpecnazKotlinParamsFactoryTestNG : SpecnazKotlinParams {
+    /**
+     * The parametrized equivalent of [org.specnaz.kotlin.testng.SpecnazKotlinTestNG.specs].
+     */
     @Factory
     fun specs(): Array<Any> {
         try {

@@ -5,7 +5,8 @@ import org.testng.annotations.Test;
 import java.util.Stack;
 
 /**
- * This is the example spec from the Readme file, using the TestNG bindings.
+ * This is the example spec from the Readme file,
+ * running using TestNG as the execution engine.
  */
 @Test
 public class StackSpec implements SpecnazFactoryTestNG {{
