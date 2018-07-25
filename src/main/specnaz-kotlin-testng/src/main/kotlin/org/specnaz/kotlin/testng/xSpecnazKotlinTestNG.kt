@@ -9,7 +9,8 @@ import org.testng.annotations.Test
  * If you want to turn off all specs in a particular class,
  * you can't use the [org.specnaz.kotlin.SpecnazKotlin.xdescribes]
  * method if your spec class inherits from [SpecnazKotlinTestNG] -
- * the method call is buried in the constructor of [SpecnazKotlinTestNG].
+ * the method call to [org.specnaz.kotlin.SpecnazKotlin.describes]
+ * is buried in the constructor of [SpecnazKotlinTestNG].
  * To alleviate that, this class calls [org.specnaz.kotlin.SpecnazKotlin.xdescribes]
  * in its constructor instead of [org.specnaz.kotlin.SpecnazKotlin.describes].
  * Which means all you need to do to ignore all

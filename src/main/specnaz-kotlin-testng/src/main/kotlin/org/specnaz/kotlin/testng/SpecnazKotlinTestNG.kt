@@ -12,15 +12,17 @@ import org.testng.annotations.Test
  * [org.specnaz.kotlin.SpecnazKotlin.describes] in its constructor.
  *
  * It's useful if your test class does not need to extend any particular class.
- * In that case, you can extend this class and pass your description and
- * specification-building closure directly in the constructor,
+ * In that case, you can extend this class, annotate it with [Test],
+ * and pass your description and specification-building closure directly in the constructor,
  * thus saving some boilerplate (and two levels of indentation).
  *
  * Example:
  *
  * ```kotlin
  * import org.specnaz.kotlin.testng.SpecnazKotlinTestNG
+ * import org.testng.annotations.Test
  *
+ * @Test
  * class MySpec : SpecnazKotlinTestNG("My specification", {
  *     // use 'it' here to construct the specification...
  * })

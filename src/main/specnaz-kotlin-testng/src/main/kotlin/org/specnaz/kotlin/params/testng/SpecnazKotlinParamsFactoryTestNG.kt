@@ -6,10 +6,12 @@ import org.specnaz.testng.impl.SpecnazTestNgSpecFactory
 import org.testng.annotations.Factory
 
 /**
- * The parametrized equivalent of [org.specnaz.kotlin.testng.SpecnazKotlinTestNG].
+ * The parametrized equivalent of [org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG].
+ * You use it exactly like [org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG].
  *
- * @see xSpecnazKotlinParamsTestNG
+ * @see org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG
  * @see org.specnaz.kotlin.params.SpecnazKotlinParams
+ * @see SpecnazKotlinParamsTestNG
  */
 interface SpecnazKotlinParamsFactoryTestNG : SpecnazKotlinParams {
     /**
