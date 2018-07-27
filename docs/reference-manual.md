@@ -16,7 +16,10 @@ Table of Contents
     * [Manual configuration](#manual-configuration)
   * [Writing tests](#writing-tests)
     * [Basic test structure - the Specnaz interface](#basic-test-structure---the-specnaz-interface)
-    * [Framework integrations - JUnit](#framework-integrations---junit)
+    * [Framework integrations](#framework-integrations)
+      * [JUnit](#junit)
+      * [TestNG](#testng)
+        * [TestNG limitations](#testng-limitations)
     * [Calling describes](#calling-describes)
     * [Creating the spec](#creating-the-spec)
       * [should](#should)
@@ -36,6 +39,9 @@ Table of Contents
       * [xdescribes](#xdescribes)
     * [Using Boxes](#using-boxes)
     * [Parametrized test support](#parametrized-test-support)
+      * [Parametrized tests with JUnit](#parametrized-tests-with-junit)
+      * [Parametrized tests with TestNG](#parametrized-tests-with-testng)
+      * [Creating the parametrized spec](#creating-the-parametrized-spec)
       * [Parametrized sub-specifications](#parametrized-sub-specifications)
       * [Focusing and ignoring parametrized tests](#focusing-and-ignoring-parametrized-tests)
     * [Using Specnaz in other JVM languages](#using-specnaz-in-other-jvm-languages)
@@ -68,14 +74,16 @@ build tools that also do dependency management
 If you're not using a dependency manager, you need to manually download
 the needed JARs and put them on your classpath:
 
-* [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.3.1/specnaz-1.3.1.jar)
-* [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.3.1/specnaz-junit-1.3.1.jar)
+* [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.3.1/specnaz-1.3.1.jar), and one of either:
+  * [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.3.1/specnaz-junit-1.3.1.jar), or
+  * [specnaz-testng](https://jcenter.bintray.com/org/specnaz/specnaz-testng/1.3.1/specnaz-testng-1.3.1.jar)
 
 If you want to use the Kotlin integration,
 in addition to the ones above, you also need:
 
-* [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.3.1/specnaz-kotlin-1.3.1.jar)
-* [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.3.1/specnaz-kotlin-junit-1.3.1.jar)
+* [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.3.1/specnaz-kotlin-1.3.1.jar), and one of either:
+  * [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.3.1/specnaz-kotlin-junit-1.3.1.jar), or
+  * [specnaz-kotlin-testng](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-testng/1.3.1/specnaz-kotlin-testng-1.3.1.jar)
 
 # Writing tests
 
@@ -95,12 +103,11 @@ interface must be called *exactly once*.
     (usually called 'specifications' by convention)
     in Specnaz. We will look at that method in more details in later chapters.
 
-## Framework integrations - JUnit
+## Framework integrations
 
-Specnaz currently supports only JUnit as the testing harness
-(work is underway on adding others, like TestNG).
+### JUnit
 
-The easiest way to use it is to extend the `org.specnaz.junit.SpecnazJUnit`
+The easiest way to use Specnaz with JUnit is to extend the `org.specnaz.junit.SpecnazJUnit`
 helper class, which already implements the `Specnaz` interface:
 
 ```java
@@ -121,11 +128,77 @@ public class StackSpec extends CommonSpec implements Specnaz {
 }
 ```
 
+### TestNG
+
+To use Specnaz with TestNG, your test class needs to implement the
+`org.specnaz.testng.SpecnazFactoryTestNG` interface, which extends `org.specnaz.Specnaz`
+(like `Specnaz`, it's an interface with one default method,
+so your class doesn't need any additional code to implement it),
+and also needs to be annotated with the `org.testng.annotations.Test` annotation.
+
+Example:
+
+```java
+import org.specnaz.testng.SpecnazFactoryTestNG;
+import org.testng.annotations.Test;
+
+@Test
+public class StackSpec implements SpecnazFactoryTestNG {
+    // body of the spec here...
+}
+```
+
+#### TestNG limitations
+
+Note that TestNG is not as flexible as JUnit,
+and has some inherent limitations when used as the execution engine for Specnaz:
+
+* TestNG doesn't support the same arbitrary test results trees as JUnit -
+  which means the reports will be flattened,
+  regardless of the level of nesting in your specs.
+  The reported name of each test will be all of descriptions,
+  up to the root of the spec tree, concatenated with the test's own description.
+* All of the results will be reported under one root class,
+  `org.specnaz.testng.SpecnazTests`,
+  completely discarding the name of your test class.
+
+So, assuming you have the following 2 tests in your test suite:
+
+```java
+@Test
+public class FirstSpec implements SpecnazFactoryTestNG {{
+    describes("First TestNG spec", it -> {
+        it.should("run test nr one", () -> {
+            // test body here...
+        });
+
+        it.describes("with a subgroup", () -> {
+            it.should("run test nr two", () -> {
+                // test body here...
+            });
+        });
+    });
+}}
+
+@Test
+public class SecondSpec implements SpecnazFactoryTestNG {{
+    describes("Second TestNG spec", it -> {
+        it.should("run test nr three", () -> {
+            // test body here...
+        });
+    });
+}}
+```
+
+, the results of executing them will look something like this:
+
+![TestNG IDE report](img/testng-ide-report.png)
+
 ## Calling `describes`
 
 Because the `describes` method needs to be called in the default constructor,
 the most concise way of formulating your specification is by using Java's
-initializer block:
+'initializer blocks' feature:
 
 ```java
 public class StackSpec extends SpecnazJUnit {
@@ -817,6 +890,9 @@ Specnaz has built-in support for writing parametrized tests.
 In order to get access to the parametrized tests capabilities,
 you need to implement the `org.specnaz.params.SpecnazParams`
 interface in your test class instead of the regular `Specnaz` one.
+
+### Parametrized tests with JUnit
+
 There is a helper class, `org.specnaz.params.junit.SpecnazParamsJUnit`,
 which is analogous to the regular `SpecnazJUnit` helper, that you can extend:
 
@@ -843,6 +919,30 @@ public class MyParametrizedSpec extends MyParent implements SpecnazParams {
 }
 ```
 
+### Parametrized tests with TestNG
+
+When using TestNG as the execution engine, to create parametrized tests,
+you need to make your test class implement the `org.specnaz.params.testng.SpecnazParamsFactoryTestNG`
+interface instead of the regular `SpecnazFactoryTestNG` one
+(`SpecnazParamsFactoryTestNG` extends `SpecnazParams`,
+so you just need to implement the one interface).
+Also, just as with regular tests,
+your class needs to be annotated with the `org.testng.annotations.Test` annotation.
+
+Example:
+
+```java
+import org.specnaz.params.testng.SpecnazParamsFactoryTestNG;
+import org.testng.annotations.Test;
+
+@Test
+public class MyParametrizedSpec implements SpecnazParamsFactoryTestNG {
+    // body of the spec here...
+}
+```
+
+### Creating the parametrized spec
+
 The way you define parametrized tests is very similar to regular, non-parametrized ones.
 The difference is that instead of passing a no-argument lambda
 as the body of the test to a `should` or `shouldThrow` method,
@@ -856,8 +956,9 @@ where `X` is the arity of the lambda passed to `should` or `shouldThrow` -
 so, if you passed a two-argument lambda, you need to provide instances of the `Params2` class.
 
 Each of the `ParamsX` classes contains a static factory method named `pX`
-used for constructing instances of it (so, `Params2` has `p2`, `Params3` - `p3`, etc.).
-You can provide the instances directly, using variadic arguments,
+used for concisely constructing instances of it (so, `Params2` has `p2`, `Params3` - `p3`, etc.).
+The `provided` method is overloaded, so that you can supply the `ParamsX`
+instances directly, using variadic arguments,
 or through a Collection of the appropriate `ParamsX` type.
 Each instance of a `ParamsX` class you provide will result in a separate test being executed and reported.
 

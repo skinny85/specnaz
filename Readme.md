@@ -106,11 +106,11 @@ Specnaz allows you to easily create concise and type-safe parametrized tests.
 Example:
 
 ```java
-import org.junit.runner.RunWith;
-
 import org.specnaz.junit.SpecnazJUnitRunner;
 import org.specnaz.params.SpecnazParams;
 import org.specnaz.params.junit.SpecnazParamsJUnit;
+import org.junit.runner.RunWith;
+
 import static org.specnaz.params.Params3.p3;
 
 // You can also say:
@@ -138,9 +138,9 @@ See [here](docs/reference-manual.md#parametrized-test-support) for more informat
 Specnaz supports writing specs in idiomatic Kotlin:
 
 ```kotlin
-import java.util.Stack
-import org.junit.Assert
 import org.specnaz.kotlin.junit.SpecnazKotlinJUnit
+import org.junit.Assert
+import java.util.Stack
 
 class StackKotlinSpec : SpecnazKotlinJUnit("A Stack", {
     var stack = Stack<Int>()
@@ -178,10 +178,10 @@ Specnaz also supports [TestNG](https://testng.org) as the test execution engine.
 Example:
 
 ```java
-import java.util.Stack;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 import org.specnaz.testng.SpecnazFactoryTestNG;
+import org.testng.annotations.Test;
+import org.testng.Assert;
+import java.util.Stack;
 
 @Test
 public class StackSpec implements SpecnazFactoryTestNG {{
