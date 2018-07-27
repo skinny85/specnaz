@@ -5,6 +5,8 @@ Specnaz was built with extensibility in mind.
 This means that you can create your own Domain-Specific Languages
 (DSLs) for writing tests if the default one does not fit your needs.
 
+**Note**: custom DSLs are only supported when using JUnit as the execution engine.
+
 This project shows a simple example of implementing a Given-When-Then test DSL.
 The code is in [src/main/java/org/specnaz/examples/custom_dsl/given_when_then](src/main/java/org/specnaz/examples/custom_dsl/given_when_then),
 and [src/test/java](src/test/java) shows a sample usage.

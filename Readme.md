@@ -171,6 +171,52 @@ class StackKotlinSpec : SpecnazKotlinJUnit("A Stack", {
 ```
 See [here](docs/reference-manual.md#kotlin) for more information.
 
+#### TestNG support
+
+Specnaz also supports [TestNG](https://testng.org) as the test execution engine.
+
+Example:
+
+```java
+import java.util.Stack;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.specnaz.testng.SpecnazFactoryTestNG;
+
+@Test
+public class StackSpec implements SpecnazFactoryTestNG {{
+    describes("A Stack", it -> {
+        Stack<Integer> stack = new Stack<>();
+
+        it.endsEach(() -> {
+            stack.clear();
+        });
+
+        it.should("be empty when first created", () -> {
+            Assert.assertTrue(stack.isEmpty());
+        });
+
+        it.describes("with 10 and 20 pushed on it", () -> {
+            it.beginsEach(() -> {
+                stack.push(10);
+                stack.push(20);
+            });
+
+            it.should("have size equal to 2", () -> {
+                Assert.assertEquals(stack.size(), 2);
+            });
+
+            it.should("have 20 as the top element", () -> {
+                Assert.assertEquals((int) stack.peek(), 20);
+            });
+        });
+    });
+}}
+```
+
+Similarly like with JUnit, you can freely mix existing TestNG tests and Specnaz specs -
+you don't have to migrate your entire test suite to start using Specnaz.
+
 ##### Further reading
 
 Check out the [reference manual](docs/reference-manual.md) for more in-depth documentation.
@@ -186,13 +232,21 @@ Specnaz is available from the [JCenter](https://bintray.com/bintray/jcenter) Mav
 * Group ID: `org.specnaz`
 * Latest version: `1.3.1`
 
-The Artifact ID depends on the language and testing framework you want to use
-(Specnaz currently supports only JUnit, but there are plans to add support for others in the future):
+The Artifact ID depends on the language and testing framework you want to use:
 
-| Programming language | Testing framework | Artifact ID            |
-|----------------------|-------------------|------------------------|
-| Java                 | JUnit             | `specnaz-junit`        |
-| Kotlin               | JUnit             | `specnaz-kotlin-junit` |
+| Programming language | Testing framework | Artifact ID             |
+|----------------------|-------------------|-------------------------|
+| Java                 | JUnit             | `specnaz-junit`         |
+| Kotlin               | JUnit             | `specnaz-kotlin-junit`  |
+| Java                 | TestNG            | `specnaz-testng`        |
+| Kotlin               | TestNG            | `specnaz-kotlin-testng` |
+
+**Note**: the Specnaz libraries don't depend on their testing frameworks
+(neither JUnit, nor TestNG), and also not on the Kotlin runtime in the case of the Kotlin libraries.
+This is in order to prevent version conflicts.
+Make sure to add the appropriate dependencies on JUnit or TestNG 
+(and the Kotlin runtime if applicable)
+if your project doesn't include them already.
 
 ###### Example Maven settings
 
@@ -211,9 +265,52 @@ The Artifact ID depends on the language and testing framework you want to use
 <!-- ... -->
 
 <dependencies>
+    <!-- ... -->
+
+    <!-- For JUnit: -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- ... in Java: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
+        <version>1.3.1</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- ... or Kotlin: -->
+    <dependency>
+        <groupId>org.specnaz</groupId>
+        <artifactId>specnaz-kotlin-junit</artifactId>
+        <version>1.3.1</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- For TestNG: -->
+    <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>6.14.3</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- ... in Java: -->
+    <dependency>
+        <groupId>org.specnaz</groupId>
+        <artifactId>specnaz-testng</artifactId>
+        <version>1.3.1</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- ... or Kotlin: -->
+    <dependency>
+        <groupId>org.specnaz</groupId>
+        <artifactId>specnaz-kotlin-testng</artifactId>
         <version>1.3.1</version>
         <scope>test</scope>
     </dependency>
@@ -229,17 +326,22 @@ repositories {
 
 dependencies {
     // ...
+
+    // For JUnit:
+    testCompile "junit:junit:4.12"
+    // ... in Java:
+    testCompile "org.specnaz:specnaz-junit:1.3.1"
+    // ... or Kotlin:
     testCompile "org.specnaz:specnaz-kotlin-junit:1.3.1"
+
+    // For TestNG:
+    testCompile "org.testng:testng:6.14.3"
+    // ... in Java:
+    testCompile "org.specnaz:specnaz-testng:1.3.1"
+    // ... or Kotlin:
+    testCompile "org.specnaz:specnaz-kotlin-testng:1.3.1"
 }
 ```
-
-###### Note about JUnit
-
-It's important to know that Specnaz itself does not depend on JUnit directly.
-This is by design, in order to prevent version conflicts -
-the vast majority of existing Java projects already depend on a particular version of JUnit.
-If yours doesn't, remember to add it
-(check [here](https://mvnrepository.com/artifact/junit/junit) for the latest version and needed coordinates).
 
 ### License
 
