@@ -23,18 +23,16 @@ import org.testng.annotations.Factory
  * import org.testng.annotations.Test
  *
  * @Test
- * class MySpec : SpecnazKotlinFactoryTestNG {
- *     init {
- *         describes("My specification") {
- *             // use 'it' here to construct the specification...
- *         }
+ * class MySpec : SpecnazKotlinFactoryTestNG { init {
+ *     describes("My specification") {
+ *         // use 'it' here to construct the specification...
  *     }
- * }
+ * }}
  * ```
  *
  * If your test class does not need to extend a particular class,
  * you can use the [SpecnazKotlinTestNG] helper class
- * to make the test setup more concise (and save two levels of indentation).
+ * to make the test setup more concise (and save one level of indentation).
  *
  * @see SpecnazFactoryTestNG
  * @see SpecnazKotlin

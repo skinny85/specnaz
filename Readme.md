@@ -173,9 +173,7 @@ See [here](docs/reference-manual.md#kotlin) for more information.
 
 #### TestNG support
 
-Specnaz also supports [TestNG](https://testng.org) as the test execution engine.
-
-Example:
+Specnaz also supports [TestNG](https://testng.org) as the test execution engine. Example:
 
 ```java
 import org.specnaz.testng.SpecnazFactoryTestNG;

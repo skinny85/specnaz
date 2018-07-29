@@ -1153,7 +1153,7 @@ Another difference is the `shouldThrow` method.
 While in Java, you pass an instance of `java.lang.Class`
 as the first parameter to `shouldThrow`,
 in Kotlin, thanks to reified generics,
-you pass it as a type parameter when calling the method.
+you pass the type of the expected Exception as a type parameter when calling the method.
 
 Example:
 
@@ -1294,7 +1294,7 @@ If your spec class does need to extend a particular class,
 you can implement the `org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG`
 interface instead of the Java `SpecnazFactoryTestNG` one.
 `SpecnazKotlinFactoryTestNG` extends `SpecnazKotlin`,
-and gives you the idiomatic Kotlin experience in your TestNG specs.
+and gives you the idiomatic Kotlin experience in your TestNG specs:
 
 ```kotlin
 import org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG
@@ -1390,12 +1390,25 @@ class KotlinSpec : SpecnazKotlinJUnit("A spec", {
 
 #### Parametrized tests in Kotlin
 
-Kotlin also has its own version of the parametrized Specnaz interface, `SpecnazParams`:
+Kotlin has its own version of the parametrized Specnaz interface (`SpecnazParams`) -
 `org.specnaz.kotlin.params.SpecnazKotlinParams`.
-You can implement it directly, or inherit from a helper,
-`org.specnaz.kotlin.params.junit.SpecnazKotlinParamsJUnit`.
-There's also `xSpecnazKotlinParamsJUnit` in the same package if you need to ignore an
-entire parametrized specification.
+There are also analogous versions of the test execution engine integrations:
+* For JUnit, you can either extend the `org.specnaz.kotlin.params.junit.SpecnazKotlinParamsJUnit` class
+  (an analogous class to `org.specnaz.kotlin.junit.SpecnazKotlinJUnit` for non-parametrized tests),
+  or implement the `SpecnazKotlinParams` interface directly -
+  in that case, you provide the same JUnit Runner as for non-parametrized specs with the `@RunWith` annotation,
+  `org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner`.
+  If you're extending `SpecnazKotlinParamsJUnit`,
+  there's also `xSpecnazKotlinParamsJUnit` in the same package if you ever need to ignore
+  an entire parametrized specification.
+* For TestNG, you can either extend the `org.specnaz.kotlin.params.testng.SpecnazKotlinParamsTestNG` class
+  (an analogous class to `org.specnaz.kotlin.testng.SpecnazKotlinTestNG` for non-parametrized tests),
+  or implement the `org.specnaz.kotlin.params.testng.SpecnazKotlinParamsFactoryTestNG` interface directly
+  (an analogous interface to `org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG` for non-parametrized tests).
+  In both cases, your spec class needs to be annotated with TestNG's `@Test` annotation.
+  If you're extending `SpecnazKotlinParamsTestNG`,
+  there's also `xSpecnazKotlinParamsTestNG` in the same package if you ever need to ignore
+  an entire parametrized specification.
 
 Other than that, parametrized tests in Kotlin are basically the same as in Java:
 pass a lambda expression with up to nine arguments to `should`,

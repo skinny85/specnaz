@@ -14,7 +14,7 @@ import org.testng.annotations.Test
  * It's useful if your test class does not need to extend any particular class.
  * In that case, you can extend this class, annotate it with [Test],
  * and pass your description and specification-building closure directly in the constructor,
- * thus saving some boilerplate (and two levels of indentation).
+ * thus saving some boilerplate (and one level of indentation).
  *
  * Example:
  *
