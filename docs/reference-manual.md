@@ -48,7 +48,10 @@ Table of Contents
       * [Kotlin](#kotlin)
         * [Using native Java classes](#using-native-java-classes)
         * [Using the Kotlin bindings](#using-the-kotlin-bindings)
-          * [Ignoring specs inheriting from SpecnazKotlinJUnit](#ignoring-specs-inheriting-from-specnazkotlinjunit)
+          * [Kotlin with JUnit](#kotlin-with-junit)
+            * [Ignoring specs inheriting from SpecnazKotlinJUnit](#ignoring-specs-inheriting-from-specnazkotlinjunit)
+          * [Kotlin with TestNG](#kotlin-with-testng)
+            * [Ignoring specs inheriting from SpecnazKotlinTestNG](#ignoring-specs-inheriting-from-specnazkotlintestng)
         * [The Deferred helper](#the-deferred-helper)
         * [Parametrized tests in Kotlin](#parametrized-tests-in-kotlin)
       * [Groovy](#groovy)
@@ -111,6 +114,8 @@ The easiest way to use Specnaz with JUnit is to extend the `org.specnaz.junit.Sp
 helper class, which already implements the `Specnaz` interface:
 
 ```java
+import org.specnaz.junit.SpecnazJUnit;
+
 public class StackSpec extends SpecnazJUnit {
     // body of the spec here...
 }
@@ -122,6 +127,9 @@ you need to specify the JUnit `Runner` for Specnaz,
 using the `@RunWith` annotation:
 
 ```java
+import org.specnaz.Specnaz;
+import org.junit.runner.RunWith;
+
 @RunWith(SpecnazJUnitRunner.class)
 public class StackSpec extends CommonSpec implements Specnaz {
     // body of the spec here...
@@ -134,7 +142,7 @@ To use Specnaz with TestNG, your test class needs to implement the
 `org.specnaz.testng.SpecnazFactoryTestNG` interface, which extends `org.specnaz.Specnaz`
 (like `Specnaz`, it's an interface with one default method,
 so your class doesn't need any additional code to implement it),
-and also needs to be annotated with the `org.testng.annotations.Test` annotation.
+and also needs to be annotated with TestNG's `@Test` annotation.
 
 Example:
 
@@ -927,7 +935,7 @@ interface instead of the regular `SpecnazFactoryTestNG` one
 (`SpecnazParamsFactoryTestNG` extends `SpecnazParams`,
 so you just need to implement the one interface).
 Also, just as with regular tests,
-your class needs to be annotated with the `org.testng.annotations.Test` annotation.
+your class needs to be annotated with the `@Test` annotation.
 
 Example:
 
@@ -1115,12 +1123,62 @@ must be final or effectively final, which means you don't have to use the
 
 #### Using the Kotlin bindings
 
-Specnaz also includes a separate subproject that provides classes
-tailor-made to be used from Kotlin.
+While the Java bindings do work with Kotlin,
+Specnaz also ships with alternative versions of the core APIs,
+written in Kotlin and designed specifically to be consumed from that language.
+So, we have `org.specnaz.kotlin.SpecnazKotlin`
+instead of `org.specnaz.Koltin`,
+and `org.specnaz.kotlin.KotlinSpecBuilder`
+instead of `org.specnaz.SpecBuilder`.
+These classes and interfaces live in the `specnaz-kotlin` library.
+The methods in the Kotlin version are named exactly the same as their Java counterparts;
+the main difference is that they have signatures more idiomatic for Kotlin consumption.
 
-Here is an example of using them:
+For instance, `KotlinSpecBuilder` defines its own versions of all of the spec building methods like `should`,
+`beginsEach`, `describes` etc., with signatures using the Kotlin function types
+instead of the `org.specnaz.utils.TestClosure` functional interface that Java uses.
+This is better in 2 ways:
+  * the IDE support is better (for example, Intellij lists each
+  method of the `org.specnaz.SpecBuilder` twice in the auto-completion menu when using it from Kotlin,
+  once with the Kotlin function signature and once with the `TestClosure` signature,
+  which is irritating)
+  * you get better type-safety, as all of the redefined fixture functions
+  (`beginsAll` / `each`, `endsAll` / `each`) take a `Nothing?`
+  (Kotlin's equivalent of Java's `Void`) as their first argument,
+  which means that if you didn't override the default name of lambda parameter (`it`),
+  the type system will not allow you to do illegal things when building the spec
+  (like calling `should` from inside a `beginsEach`).
+
+Another difference is the `shouldThrow` method.
+While in Java, you pass an instance of `java.lang.Class`
+as the first parameter to `shouldThrow`,
+in Kotlin, thanks to reified generics,
+you pass it as a type parameter when calling the method.
+
+Example:
 
 ```kotlin
+it.shouldThrow<ArithmeticException>("when dividing by zero") {
+    1 / 0
+}
+```
+
+Just as there is a Kotlin version of the core library,
+there are also Kotlin-specific versions of the libraries that integrate Specnaz with test execution engines,
+like JUnit and TestNG:
+
+##### Kotlin with JUnit
+
+The Kotlin JUnit support lives in the `specnaz-kotlin-junit` library
+(which has a dependency on `specnaz-kotlin`).
+There is a Kotlin equivalent of the `org.specnaz.junit.SpecnazJUnit` class,
+`org.specnaz.kotlin.junit.SpecnazKotlinJUnit`:
+
+```kotlin
+import org.specnaz.kotlin.junit.SpecnazKotlinJUnit
+import org.junit.Assert
+import java.util.Stack
+
 class StackKotlinSpec : SpecnazKotlinJUnit("A Stack", {
     var stack = Stack<Int>()
 
@@ -1149,34 +1207,23 @@ class StackKotlinSpec : SpecnazKotlinJUnit("A Stack", {
 })
 ```
 
-They provide the following advantages:
+As you can see, `SpecnazKotlinJUnit` calls the `describes` method
+from the `SpecnazKotlin` interface in its primary constructor,
+which means you can save one level of indentation
+(and a little boilerplate)
+when your spec class doesn't need to extend a particular class.
 
-* The JUnit helper class, `org.specnaz.kotlin.junit.SpecnazKotlinJUnit`,
-implements the Kotlin analog of the `Specnaz` interface,
-`org.specnaz.kotlin.SpecnazKotlin`, and calls the `describes` method
-from that interface in its primary constructor.
-Which means you can save one level of indentation when you don't need
-to extend a particular superclass.
-* The Kotlin equivalent of `SpecBuilder`, `org.specnaz.kotlin.KotlinSpecBuilder`,
-defines its own versions of all of the spec building methods like `should`,
-`beginsEach`, `describes` etc., with signatures using the Kotlin function types.
-This is better in 2 ways:
-    * the IDE support is better (for example, Intellij lists each
-    method of the `SpecBuilder` twice in the auto-completion menu when using it from Kotlin,
-    once with the Kotlin function signature and once with the `TestClosure` signature,
-    which is irritating)
-    * you get better type-safety, as all of the redefined fixture functions
-    (`beginsAll` / `each`, `endsAll` / `each`) take a `Nothing?`
-    (Kotlin's equivalent of Java's `Void`) as their first argument,
-    which means that if you didn't override the default name of lambda parameter (`it`),
-    the type system will not allow you to do illegal things when building the spec
-    (like calling `should` from inside a `beginsEach`).
-
-If your test class has to extend a particular class, you can still get
-the last two benefits by using the `org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner`
-JUnit `Runner` and implementing `SpecnazKotlin`:
+If your spec class does need to extend a particular class,
+you have to provide the Kotlin JUnit Runner,
+`org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner`,
+instead of the Java `SpecnazJUnitRunner`,
+with JUnit's `@RunWith` annotation:
 
 ```kotlin
+import org.specnaz.kotlin.SpecnazKotlin
+import org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner
+import org.junit.runner.RunWith
+
 @RunWith(SpecnazKotlinJUnitRunner::class)
 class StackKotlinSpec : SpecCommon(), SpecnazKotlin { init {
     describes("A Stack") {
@@ -1185,14 +1232,88 @@ class StackKotlinSpec : SpecCommon(), SpecnazKotlin { init {
 }}
 ```
 
-##### Ignoring specs inheriting from `SpecnazKotlinJUnit`
+###### Ignoring specs inheriting from `SpecnazKotlinJUnit`
 
-If you want to ignore an entire class of specs, and that class inherits from `SpecnazKotlinJUnit`,
-you can't simply use the `xdescribes` method call, as that code is buried in the `SpecnazKotlinJUnit` constructor.
+If you want to ignore an entire class of specs,
+and that class inherits from `SpecnazKotlinJUnit`,
+you can't simply use the `xdescribes` method call,
+as that code is buried in the `SpecnazKotlinJUnit` constructor.
 To help with that case, there is a class called `xSpecnazKotlinJUnit` in the same,
-`org.specnaz.kotlin.junit` package.
+`org.specnaz.kotlin.junit`, package.
 With that, you can simply add an 'x' in front of `SpecnazKotlinJUnit`,
 and with that one change ignore all of the specs defined in that class.
+
+##### Kotlin with TestNG
+
+The Kotlin TestNG support lives in the `specnaz-kotlin-testng` library
+(which has a dependency on `specnaz-kotlin`).
+It contains an equivalent of the `SpecnazKotlinJUnit` class,
+`org.specnaz.kotlin.testng.SpecnazKotlinTestNG`:
+
+```kotlin
+import org.specnaz.kotlin.testng.SpecnazKotlinTestNG
+import org.testng.Assert
+import org.testng.annotations.Test
+import java.util.Stack
+
+@Test
+class StackKotlinSpec : SpecnazKotlinTestNG("A Stack", {
+    var stack = Stack<Int>()
+
+    it.endsEach {
+        stack = Stack()
+    }
+
+    it.should("be empty when first created") {
+        Assert.assertTrue(stack.isEmpty())
+    }
+
+    it.describes("with 10 and 20 pushed on it") {
+        it.beginsEach {
+            stack.push(10)
+            stack.push(20)
+        }
+
+        it.should("have size equal to 2") {
+            Assert.assertEquals(stack.size, 2)
+        }
+
+        it.should("have 20 as the top element") {
+            Assert.assertEquals(stack.peek(), 20)
+        }
+    }
+})
+```
+
+Exactly like `SpecnazKotlinJUnit`,
+`SpecnazKotlinTestNG` allows you to save one level of indentation
+(and a little boilerplate)
+when your spec class doesn't need to extend a particular class.
+
+If your spec class does need to extend a particular class,
+you can implement the `org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG`
+interface instead of the Java `SpecnazFactoryTestNG` one.
+`SpecnazKotlinFactoryTestNG` extends `SpecnazKotlin`,
+and gives you the idiomatic Kotlin experience in your TestNG specs.
+
+```kotlin
+import org.specnaz.kotlin.testng.SpecnazKotlinFactoryTestNG
+import org.testng.annotations.Test
+
+@Test
+class StackKotlinSpec : SpecCommon(), SpecnazKotlinFactoryTestNG { init {
+    describes("A Stack") {
+        // spec body...
+    }
+}}
+```
+
+###### Ignoring specs inheriting from `SpecnazKotlinTestNG`
+
+Similarly to `xSpecnazKotlinJUnit` above,
+there's also an `org.specnaz.kotlin.testng.xSpecnazKotlinTestNG`
+class for ignoring an entire specification extending from
+`SpecnazKotlinTestNG`.
 
 #### The `Deferred` helper
 

@@ -1,11 +1,13 @@
 import org.specnaz.kotlin.testng.SpecnazKotlinTestNG
 import org.testng.Assert
+import org.testng.annotations.Test
 import java.util.Stack
 
 /**
  * This is the example spec from the Readme file, using Kotlin,
  * and running with TestNG as the execution engine.
  */
+@Test
 class StackKotlinSpec : SpecnazKotlinTestNG("A Stack (Kotlin)", {
     var stack = Stack<Int>()
 
