@@ -1339,7 +1339,7 @@ class KotlinSpec : SpecnazKotlinJUnit("A spec", {
 The above snippet will not work - the compiler will complain that
 `someDomainClass` must be initialized before being used.
 
-The easiest way to solve this problem is to use the `lazyinit` modifier -
+The easiest way to solve this problem is to use the `lateinit` modifier -
 so, simply replace `var someDomainClass: MyDomainClass` above with
 `lateinit var someDomainClass: MyDomainClass`.
 However, that's allowed on local variables only with Kotlin version 1.2 or later -
