@@ -6,5 +6,5 @@
 
     <groupId>org.specnaz</groupId>
     <artifactId>specnaz</artifactId>
-    <version>1.4-alpha1</version>
+    <version>1.4</version>
 </project>

@@ -228,7 +228,7 @@ demonstrating how you can structure your tests with Specnaz.
 Specnaz is available from the [JCenter](https://bintray.com/bintray/jcenter) Maven repository.
 
 * Group ID: `org.specnaz`
-* Latest version: `1.3.1`
+* Latest version: `1.4`
 
 The Artifact ID depends on the language and testing framework you want to use:
 
@@ -277,7 +277,7 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
-        <version>1.3.1</version>
+        <version>1.4</version>
         <scope>test</scope>
     </dependency>
 
@@ -285,7 +285,7 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-junit</artifactId>
-        <version>1.3.1</version>
+        <version>1.4</version>
         <scope>test</scope>
     </dependency>
 
@@ -301,7 +301,7 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-testng</artifactId>
-        <version>1.3.1</version>
+        <version>1.4</version>
         <scope>test</scope>
     </dependency>
 
@@ -309,7 +309,7 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-testng</artifactId>
-        <version>1.3.1</version>
+        <version>1.4</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -328,16 +328,16 @@ dependencies {
     // For JUnit:
     testCompile "junit:junit:4.12"
     // ... in Java:
-    testCompile "org.specnaz:specnaz-junit:1.3.1"
+    testCompile "org.specnaz:specnaz-junit:1.4"
     // ... or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-junit:1.3.1"
+    testCompile "org.specnaz:specnaz-kotlin-junit:1.4"
 
     // For TestNG:
     testCompile "org.testng:testng:6.14.3"
     // ... in Java:
-    testCompile "org.specnaz:specnaz-testng:1.3.1"
+    testCompile "org.specnaz:specnaz-testng:1.4"
     // ... or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-testng:1.3.1"
+    testCompile "org.specnaz:specnaz-kotlin-testng:1.4"
 }
 ```
 
