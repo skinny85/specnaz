@@ -1,3 +1,7 @@
+Version 1.4 (2018-07-29)
+------------------------
+- added TestNG support
+
 Version 1.3.1 (2018-05-06)
 --------------------------
 - corrected a bug where Specnaz worked only with JUnit version 4.12
