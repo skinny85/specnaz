@@ -52,7 +52,9 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
 
     @Override
     public void execute(ExecutionRequest request) {
-//        throw new UnsupportedOperationException("execute");
+        System.out.println("Execute was called!");
+        TestDescriptor rootTestDescriptor = request.getRootTestDescriptor();
+        rootTestDescriptor
     }
 
     private void handleClass(UniqueId uniqueId, SpecnazEngineTestDescriptor engineTestDescriptor, Class<?> specClass) {
