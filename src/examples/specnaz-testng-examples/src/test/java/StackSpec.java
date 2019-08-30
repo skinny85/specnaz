@@ -1,5 +1,3 @@
-package org.specnaz.examples.testng;
-
 import org.specnaz.testng.SpecnazFactoryTestNG;
 import org.testng.Assert;
 import org.testng.annotations.Test;

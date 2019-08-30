@@ -2,8 +2,12 @@
 
 <suite name="Suite1" verbose="1">
     <test name="PackageLevel">
-        <packages>
-            <package name="org.specnaz.examples.testng"/>
-        </packages>
+        <classes>
+            <class name="StackSpec"/>
+        </classes>
     </test>
+
+    <packages>
+        <package name="org.specnaz.examples.testng"/>
+    </packages>
 </suite>
