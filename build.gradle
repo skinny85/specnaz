@@ -63,6 +63,6 @@ private boolean isAKotlinProject(Project it) {
 
 ext {
     junit_version = '4.12'
-    testng_version = '6.14.3'
+    testng_version = '7.0.0'
     assertj_version = '3.5.2'
 }
