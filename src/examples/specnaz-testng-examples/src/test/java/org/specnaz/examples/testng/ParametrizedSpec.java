@@ -1,3 +1,5 @@
+package org.specnaz.examples.testng;
+
 import org.specnaz.params.testng.SpecnazParamsFactoryTestNG;
 import org.testng.annotations.Test;
 
