@@ -12,24 +12,24 @@ import java.util.List;
 
 public final class SpecnazAlterSuiteListener implements IAlterSuiteListener {
     @Override
-    public void alter(List<XmlSuite> xmlSuites) {
-        xmlSuites.forEach(xmlSuite -> alterXmlSuite(xmlSuite));
+    public void alter(List<XmlSuite> suites) {
+        suites.forEach(suite -> alterSuite(suite));
     }
 
-    private void alterXmlSuite(XmlSuite xmlSuite) {
-        xmlSuite.getTests().forEach(xmlTest -> alterXmlTest(xmlTest));
+    private void alterSuite(XmlSuite suite) {
+        suite.getTests().forEach(test -> alterTest(test));
 
-        xmlSuite.getPackages().forEach(xmlPackage -> alterXmlPackage(xmlPackage));
+        suite.getPackages().forEach(package_ -> alterPackage(package_));
     }
 
-    private void alterXmlTest(XmlTest xmlTest) {
-        xmlTest.getPackages().forEach(xmlPackage -> alterXmlPackage(xmlPackage));
+    private void alterTest(XmlTest test) {
+        test.getXmlPackages().forEach(package_ -> alterPackage(package_));
 
-        xmlTest.getClasses().forEach(xmlClass -> alterXmlClass(xmlClass));
+        test.getXmlClasses().forEach(xmlClass -> alterXmlClass(xmlClass));
     }
 
-    private void alterXmlPackage(XmlPackage xmlPackage) {
-        xmlPackage.getXmlClasses().forEach(xmlClass -> alterXmlClass(xmlClass));
+    private void alterPackage(XmlPackage package_) {
+        package_.getXmlClasses().forEach(xmlClass -> alterXmlClass(xmlClass));
     }
 
     private void alterXmlClass(XmlClass xmlClass) {
