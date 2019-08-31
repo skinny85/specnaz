@@ -1,3 +1,5 @@
+package org.specnaz.examples.testng.kotlin
+
 import org.specnaz.kotlin.params.testng.SpecnazKotlinParamsFactoryTestNG
 import org.testng.annotations.Test
 
