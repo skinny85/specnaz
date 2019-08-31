@@ -4,37 +4,38 @@ import org.specnaz.Specnaz;
 import org.specnaz.params.SpecnazParams;
 import org.testng.IAlterSuiteListener;
 import org.testng.xml.XmlClass;
+import org.testng.xml.XmlPackage;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class SpecnazAlterSuiteListener implements IAlterSuiteListener {
     @Override
-    public void alter(List<XmlSuite> xmlSuites) {
-        for (XmlSuite xmlSuite : xmlSuites) {
-            alterXmlSuite(xmlSuite);
-        }
+    public void alter(List<XmlSuite> suites) {
+        suites.forEach(suite -> alterSuite(suite));
     }
 
-    private void alterXmlSuite(XmlSuite xmlSuite) {
-        xmlSuite.setTests(xmlSuite.getTests().stream()
-                .map(xmlTest -> alterXmlTest(xmlTest))
-                .collect(Collectors.toList()));
+    private void alterSuite(XmlSuite suite) {
+        suite.getTests().forEach(test -> alterTest(test));
+
+        suite.getPackages().forEach(package_ -> alterPackage(package_));
     }
 
-    private XmlTest alterXmlTest(XmlTest xmlTest) {
-        xmlTest.setClasses(xmlTest.getClasses().stream()
-                .map(xmlClass -> alterXmlClass(xmlClass))
-                .collect(Collectors.toList()));
-        return xmlTest;
+    private void alterTest(XmlTest test) {
+        test.getXmlPackages().forEach(package_ -> alterPackage(package_));
+
+        test.getXmlClasses().forEach(xmlClass -> alterXmlClass(xmlClass));
     }
 
-    private XmlClass alterXmlClass(XmlClass xmlClass) {
-        if (isSpecnazClass(xmlClass))
+    private void alterPackage(XmlPackage package_) {
+        package_.getXmlClasses().forEach(xmlClass -> alterXmlClass(xmlClass));
+    }
+
+    private void alterXmlClass(XmlClass xmlClass) {
+        if (isSpecnazClass(xmlClass)) {
             xmlClass.getExcludedMethods().add(".*describes");
-        return xmlClass;
+        }
     }
 
     private boolean isSpecnazClass(XmlClass xmlClass) {

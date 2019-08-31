@@ -6,5 +6,9 @@ dependencies {
 }
 
 test {
-    useTestNG()
+    useTestNG() {
+        suites 'src/test/resources/suite.xml'
+    }
 }
+
+test.outputs.upToDateWhen { false }
