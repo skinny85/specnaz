@@ -1,3 +1,8 @@
+Version 1.4.1 (2019-09-01)
+--------------------------
+- fixed a bug where test suites using TestNG XML files with `<package>` elements failed
+  ([Issue #10](https://github.com/skinny85/specnaz/issues/10))
+
 Version 1.4 (2018-07-29)
 ------------------------
 - added TestNG support
