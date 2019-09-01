@@ -234,9 +234,9 @@ The Artifact ID depends on the language and testing framework you want to use:
 
 | Programming language | Testing framework | Artifact ID             |
 |----------------------|-------------------|-------------------------|
-| Java                 | JUnit             | `specnaz-junit`         |
+| Java (or Groovy)     | JUnit             | `specnaz-junit`         |
 | Kotlin               | JUnit             | `specnaz-kotlin-junit`  |
-| Java                 | TestNG            | `specnaz-testng`        |
+| Java (or Groovy)     | TestNG            | `specnaz-testng`        |
 | Kotlin               | TestNG            | `specnaz-kotlin-testng` |
 
 **Note**: the Specnaz libraries don't depend on their testing frameworks
@@ -272,16 +272,14 @@ if your project doesn't include them already.
         <version>4.12</version>
         <scope>test</scope>
     </dependency>
-
-    <!-- ... in Java: -->
+    <!-- ...in Java (or Groovy): -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
         <version>1.4</version>
         <scope>test</scope>
     </dependency>
-
-    <!-- ... or Kotlin: -->
+    <!-- ...in Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-junit</artifactId>
@@ -296,16 +294,14 @@ if your project doesn't include them already.
         <version>6.14.3</version>
         <scope>test</scope>
     </dependency>
-
-    <!-- ... in Java: -->
+    <!-- ...in Java (or Groovy): -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-testng</artifactId>
         <version>1.4</version>
         <scope>test</scope>
     </dependency>
-
-    <!-- ... or Kotlin: -->
+    <!-- ...in Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-testng</artifactId>
@@ -327,16 +323,16 @@ dependencies {
 
     // For JUnit:
     testCompile "junit:junit:4.12"
-    // ... in Java:
+    // ...in Java (or Groovy):
     testCompile "org.specnaz:specnaz-junit:1.4"
-    // ... or Kotlin:
+    // ...in Kotlin:
     testCompile "org.specnaz:specnaz-kotlin-junit:1.4"
 
     // For TestNG:
     testCompile "org.testng:testng:6.14.3"
-    // ... in Java:
+    // ...in Java (or Groovy):
     testCompile "org.specnaz:specnaz-testng:1.4"
-    // ... or Kotlin:
+    // ...in Kotlin:
     testCompile "org.specnaz:specnaz-kotlin-testng:1.4"
 }
 ```
