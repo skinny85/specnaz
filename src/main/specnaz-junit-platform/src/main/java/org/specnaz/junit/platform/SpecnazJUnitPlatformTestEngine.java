@@ -4,9 +4,11 @@ import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.support.ReflectionSupport;
 import org.junit.platform.engine.EngineDiscoveryRequest;
+import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.ExecutionRequest;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestEngine;
+import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.discovery.ClassSelector;
 import org.junit.platform.engine.discovery.PackageSelector;
@@ -54,7 +56,10 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
     public void execute(ExecutionRequest request) {
         System.out.println("Execute was called!");
         TestDescriptor rootTestDescriptor = request.getRootTestDescriptor();
-        rootTestDescriptor
+        EngineExecutionListener engineExecutionListener = request.getEngineExecutionListener();
+
+        recursivelyStartDescriptors(rootTestDescriptor, engineExecutionListener);
+        recursivelyEndDescriptors(rootTestDescriptor, engineExecutionListener);
     }
 
     private void handleClass(UniqueId uniqueId, SpecnazEngineTestDescriptor engineTestDescriptor, Class<?> specClass) {
@@ -86,19 +91,29 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
                 classDescriptor.addChild(rootDescribeDescriptor);
 
                 TreeNode<TestsGroup> testsPlan = specParser.testsPlan();
-                addTestsGroupTreeToDescription(testsPlan, rootDescribeDescriptor);
+                for (SingleTestCase testCase : testsPlan.value.testCases) {
+                    rootDescribeDescriptor.addChild(
+                            new SingleTestCaseDescriptor(rootDescribeDescriptor.getUniqueId(), testCase));
+                }
             }
-        }
-    }
-
-    private void addTestsGroupTreeToDescription(TreeNode<TestsGroup> testsGroupNode,
-            SpecnazRootDescribeDescriptor parent) {
-        for (SingleTestCase testCase : testsGroupNode.value.testCases) {
-            parent.addChild(new SingleTestCaseDescriptor(parent.getUniqueId(), testCase));
         }
     }
 
     private boolean isSpecnazClass(Class<?> classs) {
         return IsSpecnazClassPredicate.INSTANCE.test(classs);
+    }
+
+    private void recursivelyStartDescriptors(TestDescriptor testDescriptor, EngineExecutionListener engineExecutionListener) {
+        engineExecutionListener.executionStarted(testDescriptor);
+        for (TestDescriptor child : testDescriptor.getChildren()) {
+            recursivelyStartDescriptors(child, engineExecutionListener);
+        }
+    }
+
+    private void recursivelyEndDescriptors(TestDescriptor testDescriptor, EngineExecutionListener engineExecutionListener) {
+        for (TestDescriptor child : testDescriptor.getChildren()) {
+            recursivelyEndDescriptors(child, engineExecutionListener);
+        }
+        engineExecutionListener.executionFinished(testDescriptor, TestExecutionResult.successful());
     }
 }
