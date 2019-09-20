@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class ExampleTest {
     @BeforeAll
-    public static void beforeAll() throws InterruptedException {
+    static void beforeAll() throws InterruptedException {
         Thread.sleep(5_000);
     }
 

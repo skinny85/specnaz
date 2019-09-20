@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.specnaz.Specnaz;
 
 public class ExampleSpecnazTest implements Specnaz {{
+    System.out.println("ExampleSpecnazTest constructor called");
+
     describes("root describe", it -> {
         it.should("execute this test", () -> {
             Assertions.fail();

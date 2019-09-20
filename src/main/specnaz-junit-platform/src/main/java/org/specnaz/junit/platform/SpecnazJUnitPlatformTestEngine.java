@@ -18,12 +18,16 @@ import org.specnaz.impl.SpecsRegistryViolation;
 import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 
 public class SpecnazJUnitPlatformTestEngine implements TestEngine {
     private static final Logger log = LoggerFactory.getLogger(SpecnazJUnitPlatformTestEngine.class);
+
+    private final Map<Class, SpecParser> cache = new HashMap<>();
 
     @Override
     public String getId() {
@@ -36,17 +40,17 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
 
         List<PackageSelector> packageSelectors = discoveryRequest.getSelectorsByType(PackageSelector.class);
         for (PackageSelector packageSelector : packageSelectors) {
-            List<Class<?>> allClassesInPackage = ReflectionSupport.findAllClassesInPackage(
+            List<Class<?>> allSpecClassesInPackage = ReflectionSupport.findAllClassesInPackage(
                     packageSelector.getPackageName(), IsSpecnazClassPredicate.INSTANCE, className -> true);
-            for (Class<?> classs : allClassesInPackage) {
-                handleClass(uniqueId, engineTestDescriptor, classs);
+            for (Class<?> specClass : allSpecClassesInPackage) {
+                discoverClass(uniqueId, engineTestDescriptor, specClass);
             }
         }
 
         List<ClassSelector> classSelectors = discoveryRequest.getSelectorsByType(ClassSelector.class);
         for (ClassSelector classSelector : classSelectors) {
             Class<?> specClass = classSelector.getJavaClass();
-            handleClass(uniqueId, engineTestDescriptor, specClass);
+            discoverClass(uniqueId, engineTestDescriptor, specClass);
         }
 
         return engineTestDescriptor;
@@ -54,7 +58,6 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
 
     @Override
     public void execute(ExecutionRequest request) {
-        System.out.println("Execute was called!");
         TestDescriptor rootTestDescriptor = request.getRootTestDescriptor();
         EngineExecutionListener engineExecutionListener = request.getEngineExecutionListener();
 
@@ -62,10 +65,32 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
         recursivelyEndDescriptors(rootTestDescriptor, engineExecutionListener);
     }
 
-    private void handleClass(UniqueId uniqueId, SpecnazEngineTestDescriptor engineTestDescriptor, Class<?> specClass) {
+    private void discoverClass(UniqueId uniqueId, SpecnazEngineTestDescriptor engineTestDescriptor, Class<?> specClass) {
         if (!isSpecnazClass(specClass))
             return;
 
+        SpecParser specParser = getSpecParserForClass(specClass);
+
+        SpecnazClassTestDescriptor classDescriptor = new SpecnazClassTestDescriptor(uniqueId, specClass);
+        engineTestDescriptor.addChild(classDescriptor);
+        if (specParser != null) {
+            SpecnazRootDescribeDescriptor rootDescribeDescriptor =
+                    new SpecnazRootDescribeDescriptor(classDescriptor.getUniqueId(), specParser.name());
+            classDescriptor.addChild(rootDescribeDescriptor);
+
+            TreeNode<TestsGroup> testsPlan = specParser.testsPlan();
+            for (SingleTestCase testCase : testsPlan.value.testCases) {
+                rootDescribeDescriptor.addChild(
+                        new SingleTestCaseDescriptor(rootDescribeDescriptor.getUniqueId(), testCase));
+            }
+        }
+    }
+
+    private SpecParser getSpecParserForClass(Class<?> specClass) {
+        if (cache.containsKey(specClass))
+            return cache.get(specClass);
+
+        SpecParser ret = null;
         Object specInstance = null;
         try {
             specInstance = specClass.newInstance();
@@ -76,27 +101,16 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
         }
 
         if (specInstance != null) {
-            SpecParser specParser = null;
             try {
-                specParser = new SpecParser(specInstance);
+                ret = new SpecParser(specInstance);
             } catch (SpecsRegistryViolation e) {
-                log.error(() -> "SpecnazCoreDsl.specification() was never called in the " +
+                log.error(() -> "describes() was never called in the " +
                         "no-argument constructor of " + specClass.getSimpleName());
             }
-            SpecnazClassTestDescriptor classDescriptor = new SpecnazClassTestDescriptor(uniqueId, specClass);
-            engineTestDescriptor.addChild(classDescriptor);
-            if (specParser != null) {
-                SpecnazRootDescribeDescriptor rootDescribeDescriptor =
-                        new SpecnazRootDescribeDescriptor(classDescriptor.getUniqueId(), specParser.name());
-                classDescriptor.addChild(rootDescribeDescriptor);
-
-                TreeNode<TestsGroup> testsPlan = specParser.testsPlan();
-                for (SingleTestCase testCase : testsPlan.value.testCases) {
-                    rootDescribeDescriptor.addChild(
-                            new SingleTestCaseDescriptor(rootDescribeDescriptor.getUniqueId(), testCase));
-                }
-            }
         }
+
+        cache.put(specClass, ret);
+        return ret;
     }
 
     private boolean isSpecnazClass(Class<?> classs) {
