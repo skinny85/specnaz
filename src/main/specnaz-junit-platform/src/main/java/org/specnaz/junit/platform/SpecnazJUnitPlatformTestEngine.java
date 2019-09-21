@@ -12,11 +12,8 @@ import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.discovery.ClassSelector;
 import org.junit.platform.engine.discovery.PackageSelector;
-import org.specnaz.impl.SingleTestCase;
 import org.specnaz.impl.SpecParser;
 import org.specnaz.impl.SpecsRegistryViolation;
-import org.specnaz.impl.TestsGroup;
-import org.specnaz.impl.TreeNode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,21 +33,21 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
 
     @Override
     public TestDescriptor discover(EngineDiscoveryRequest discoveryRequest, UniqueId uniqueId) {
-        SpecnazEngineTestDescriptor engineTestDescriptor = new SpecnazEngineTestDescriptor(uniqueId);
+        SpecnazEngineDescriptor engineTestDescriptor = new SpecnazEngineDescriptor(uniqueId);
 
         List<PackageSelector> packageSelectors = discoveryRequest.getSelectorsByType(PackageSelector.class);
         for (PackageSelector packageSelector : packageSelectors) {
             List<Class<?>> allSpecClassesInPackage = ReflectionSupport.findAllClassesInPackage(
                     packageSelector.getPackageName(), IsSpecnazClassPredicate.INSTANCE, className -> true);
             for (Class<?> specClass : allSpecClassesInPackage) {
-                discoverClass(uniqueId, engineTestDescriptor, specClass);
+                discoverClass(engineTestDescriptor, specClass);
             }
         }
 
         List<ClassSelector> classSelectors = discoveryRequest.getSelectorsByType(ClassSelector.class);
         for (ClassSelector classSelector : classSelectors) {
             Class<?> specClass = classSelector.getJavaClass();
-            discoverClass(uniqueId, engineTestDescriptor, specClass);
+            discoverClass(engineTestDescriptor, specClass);
         }
 
         return engineTestDescriptor;
@@ -65,25 +62,14 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
         recursivelyEndDescriptors(rootTestDescriptor, engineExecutionListener);
     }
 
-    private void discoverClass(UniqueId uniqueId, SpecnazEngineTestDescriptor engineTestDescriptor, Class<?> specClass) {
+    private void discoverClass(SpecnazEngineDescriptor engineTestDescriptor, Class<?> specClass) {
         if (!isSpecnazClass(specClass))
             return;
 
         SpecParser specParser = getSpecParserForClass(specClass);
 
-        SpecnazClassTestDescriptor classDescriptor = new SpecnazClassTestDescriptor(uniqueId, specClass);
-        engineTestDescriptor.addChild(classDescriptor);
-        if (specParser != null) {
-            SpecnazRootDescribeDescriptor rootDescribeDescriptor =
-                    new SpecnazRootDescribeDescriptor(classDescriptor.getUniqueId(), specParser.name());
-            classDescriptor.addChild(rootDescribeDescriptor);
-
-            TreeNode<TestsGroup> testsPlan = specParser.testsPlan();
-            for (SingleTestCase testCase : testsPlan.value.testCases) {
-                rootDescribeDescriptor.addChild(
-                        new SingleTestCaseDescriptor(rootDescribeDescriptor.getUniqueId(), testCase));
-            }
-        }
+        new SpecnazClassDescriptor(
+                engineTestDescriptor, specClass, specParser);
     }
 
     private SpecParser getSpecParserForClass(Class<?> specClass) {

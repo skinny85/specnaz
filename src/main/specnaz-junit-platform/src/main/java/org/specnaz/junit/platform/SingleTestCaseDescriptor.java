@@ -5,8 +5,8 @@ import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
 import org.specnaz.impl.SingleTestCase;
 
 public class SingleTestCaseDescriptor extends AbstractTestDescriptor {
-    public SingleTestCaseDescriptor(UniqueId parentId, SingleTestCase testCase) {
-        super(parentId.append("test", testCase.description), testCase.description);
+    public SingleTestCaseDescriptor(SpecnazRootDescribeDescriptor rootDescribeDescriptor, SingleTestCase testCase) {
+        super(rootDescribeDescriptor.getUniqueId().append("test", testCase.description), testCase.description);
     }
 
     @Override
