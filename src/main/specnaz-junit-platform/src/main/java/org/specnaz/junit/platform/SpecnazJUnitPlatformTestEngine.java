@@ -33,43 +33,43 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
 
     @Override
     public TestDescriptor discover(EngineDiscoveryRequest discoveryRequest, UniqueId uniqueId) {
-        SpecnazEngineDescriptor engineTestDescriptor = new SpecnazEngineDescriptor(uniqueId);
+        SpecnazEngineDescriptor engineDescriptor = new SpecnazEngineDescriptor(uniqueId);
 
         List<PackageSelector> packageSelectors = discoveryRequest.getSelectorsByType(PackageSelector.class);
         for (PackageSelector packageSelector : packageSelectors) {
             List<Class<?>> allSpecClassesInPackage = ReflectionSupport.findAllClassesInPackage(
                     packageSelector.getPackageName(), IsSpecnazClassPredicate.INSTANCE, className -> true);
             for (Class<?> specClass : allSpecClassesInPackage) {
-                discoverClass(engineTestDescriptor, specClass);
+                discoverClass(engineDescriptor, specClass);
             }
         }
 
         List<ClassSelector> classSelectors = discoveryRequest.getSelectorsByType(ClassSelector.class);
         for (ClassSelector classSelector : classSelectors) {
             Class<?> specClass = classSelector.getJavaClass();
-            discoverClass(engineTestDescriptor, specClass);
+            discoverClass(engineDescriptor, specClass);
         }
 
-        return engineTestDescriptor;
+        return engineDescriptor;
     }
 
     @Override
     public void execute(ExecutionRequest request) {
-        TestDescriptor rootTestDescriptor = request.getRootTestDescriptor();
+        TestDescriptor rootDescriptor = request.getRootTestDescriptor();
         EngineExecutionListener engineExecutionListener = request.getEngineExecutionListener();
 
-        recursivelyStartDescriptors(rootTestDescriptor, engineExecutionListener);
-        recursivelyEndDescriptors(rootTestDescriptor, engineExecutionListener);
+        if (rootDescriptor instanceof SpecnazEngineDescriptor) {
+            ((SpecnazEngineDescriptor) rootDescriptor).execute(engineExecutionListener);
+        }
     }
 
-    private void discoverClass(SpecnazEngineDescriptor engineTestDescriptor, Class<?> specClass) {
+    private void discoverClass(SpecnazEngineDescriptor engineDescriptor, Class<?> specClass) {
         if (!isSpecnazClass(specClass))
             return;
 
         SpecParser specParser = getSpecParserForClass(specClass);
 
-        new SpecnazClassDescriptor(
-                engineTestDescriptor, specClass, specParser);
+        new SpecnazClassDescriptor(engineDescriptor, specClass, specParser);
     }
 
     private SpecParser getSpecParserForClass(Class<?> specClass) {
@@ -101,19 +101,5 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
 
     private boolean isSpecnazClass(Class<?> classs) {
         return IsSpecnazClassPredicate.INSTANCE.test(classs);
-    }
-
-    private void recursivelyStartDescriptors(TestDescriptor testDescriptor, EngineExecutionListener engineExecutionListener) {
-        engineExecutionListener.executionStarted(testDescriptor);
-        for (TestDescriptor child : testDescriptor.getChildren()) {
-            recursivelyStartDescriptors(child, engineExecutionListener);
-        }
-    }
-
-    private void recursivelyEndDescriptors(TestDescriptor testDescriptor, EngineExecutionListener engineExecutionListener) {
-        for (TestDescriptor child : testDescriptor.getChildren()) {
-            recursivelyEndDescriptors(child, engineExecutionListener);
-        }
-        engineExecutionListener.executionFinished(testDescriptor, TestExecutionResult.successful());
     }
 }
