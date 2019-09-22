@@ -6,9 +6,13 @@ import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
 import org.specnaz.impl.ExecutableTestCase;
 
 public class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
+    private final ExecutableTestCase executableTestCase;
+
     public ExecutableTestCaseDescriptor(SpecnazGroupDescriptor groupDescriptor, ExecutableTestCase executableTestCase) {
         super(groupDescriptor.getUniqueId().append("test", executableTestCase.testCase.description),
                 executableTestCase.testCase.description);
+
+        this.executableTestCase = executableTestCase;
 
         groupDescriptor.attach(this);
     }
@@ -20,6 +24,11 @@ public class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
 
     public void execute(EngineExecutionListener listener) {
         listener.executionStarted(this);
-        listener.executionFinished(this, TestExecutionResult.successful());
+
+        Throwable throwable = executableTestCase.execute();
+
+        listener.executionFinished(this, throwable == null
+                ? TestExecutionResult.successful()
+                : TestExecutionResult.failed(throwable));
     }
 }

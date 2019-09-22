@@ -1,5 +1,6 @@
 dependencies {
     testCompile project(':src:main:specnaz-junit-platform')
+    testCompile("org.assertj:assertj-core:$assertj_version")
 
     testCompile("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.4.2")
