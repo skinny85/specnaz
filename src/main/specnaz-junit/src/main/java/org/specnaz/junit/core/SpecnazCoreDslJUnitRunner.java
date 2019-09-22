@@ -221,13 +221,13 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
         return executableTestCase.isIgnored()
                 ? null
                 : new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                Throwable throwable = executableTestCase.execute();
-                if (throwable != null)
-                    throw throwable;
-            }
-        };
+                    @Override
+                    public void evaluate() throws Throwable {
+                        Throwable throwable = executableTestCase.execute();
+                        if (throwable != null)
+                            throw throwable;
+                    }
+                };
     }
 
     private List<Rule.Wrapper<?>> discoverInstanceRules(Class<?> classs) {

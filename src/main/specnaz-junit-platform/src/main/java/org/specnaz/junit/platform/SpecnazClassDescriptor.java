@@ -6,6 +6,8 @@ import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
 import org.junit.platform.engine.support.descriptor.ClassSource;
 import org.specnaz.impl.SpecParser;
+import org.specnaz.impl.TestsGroup;
+import org.specnaz.impl.TreeNode;
 
 public final class SpecnazClassDescriptor extends AbstractTestDescriptor {
     public SpecnazClassDescriptor(SpecnazEngineDescriptor engineDescriptor,
@@ -16,19 +18,20 @@ public final class SpecnazClassDescriptor extends AbstractTestDescriptor {
         engineDescriptor.attach(this);
 
         if (specParser != null) {
-            new SpecnazRootDescribeDescriptor(this, specParser);
+            TreeNode<TestsGroup> testsGroupTreeNode = specParser.testsPlan();
+            new SpecnazGroupDescriptor(this, testsGroupTreeNode);
         }
     }
 
-    void attach(SpecnazRootDescribeDescriptor rootDescribeDescriptor) {
-        super.addChild(rootDescribeDescriptor);
+    void attach(SpecnazGroupDescriptor groupDescriptor) {
+        super.addChild(groupDescriptor);
     }
 
     public void execute(EngineExecutionListener listener) {
         listener.executionStarted(this);
 
-        for (SpecnazRootDescribeDescriptor rootDescribeDescriptor : rootDescribeDescriptors()) {
-            rootDescribeDescriptor.execute(listener);
+        for (SpecnazGroupDescriptor groupDescriptor : rootDescribeDescriptors()) {
+            groupDescriptor.execute(listener);
         }
 
         listener.executionFinished(this, TestExecutionResult.successful());
@@ -39,9 +42,9 @@ public final class SpecnazClassDescriptor extends AbstractTestDescriptor {
         throw new UnsupportedOperationException("addChild() is not supported for SpecnazClassDescriptor");
     }
 
-    private Iterable<SpecnazRootDescribeDescriptor> rootDescribeDescriptors() {
-        // safe because we ban children other than SpecnazRootDescribeDescriptor by overriding addChild()
-        return (Iterable<SpecnazRootDescribeDescriptor>) getChildren();
+    private Iterable<SpecnazGroupDescriptor> rootDescribeDescriptors() {
+        // safe because we ban children other than SpecnazGroupDescriptor by overriding addChild()
+        return (Iterable<SpecnazGroupDescriptor>) getChildren();
     }
 
     @Override
