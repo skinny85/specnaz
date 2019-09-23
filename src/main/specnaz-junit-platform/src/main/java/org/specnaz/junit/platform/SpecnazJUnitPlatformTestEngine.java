@@ -8,9 +8,9 @@ import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.ExecutionRequest;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestEngine;
-import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.UniqueId;
 import org.junit.platform.engine.discovery.ClassSelector;
+import org.junit.platform.engine.discovery.ClasspathRootSelector;
 import org.junit.platform.engine.discovery.PackageSelector;
 import org.specnaz.impl.SpecParser;
 import org.specnaz.impl.SpecsRegistryViolation;
@@ -34,6 +34,15 @@ public class SpecnazJUnitPlatformTestEngine implements TestEngine {
     @Override
     public TestDescriptor discover(EngineDiscoveryRequest discoveryRequest, UniqueId uniqueId) {
         SpecnazEngineDescriptor engineDescriptor = new SpecnazEngineDescriptor(uniqueId);
+
+        List<ClasspathRootSelector> classpathRootSelectors = discoveryRequest.getSelectorsByType(ClasspathRootSelector.class);
+        for (ClasspathRootSelector classpathRootSelector : classpathRootSelectors) {
+            List<Class<?>> allSpecClassesInClasspathRoot = ReflectionSupport.findAllClassesInClasspathRoot(
+                    classpathRootSelector.getClasspathRoot(), IsSpecnazClassPredicate.INSTANCE, className -> true);
+            for (Class<?> specClass : allSpecClassesInClasspathRoot) {
+                discoverClass(engineDescriptor, specClass);
+            }
+        }
 
         List<PackageSelector> packageSelectors = discoveryRequest.getSelectorsByType(PackageSelector.class);
         for (PackageSelector packageSelector : packageSelectors) {
