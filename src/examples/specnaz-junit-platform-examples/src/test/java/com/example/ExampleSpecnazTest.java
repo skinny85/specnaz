@@ -1,11 +1,13 @@
 package com.example;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.platform.commons.annotation.Testable;
 import org.specnaz.Specnaz;
 import org.specnaz.utils.IntBox;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Testable
 public class ExampleSpecnazTest implements Specnaz {{
     System.out.println("ExampleSpecnazTest constructor called");
 
