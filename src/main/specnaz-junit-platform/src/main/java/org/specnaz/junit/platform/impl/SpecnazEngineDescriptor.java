@@ -1,4 +1,4 @@
-package org.specnaz.junit.platform;
+package org.specnaz.junit.platform.impl;
 
 import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestDescriptor;

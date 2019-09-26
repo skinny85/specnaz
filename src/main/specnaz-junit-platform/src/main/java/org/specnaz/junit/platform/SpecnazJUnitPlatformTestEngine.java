@@ -14,6 +14,9 @@ import org.junit.platform.engine.discovery.ClasspathRootSelector;
 import org.junit.platform.engine.discovery.PackageSelector;
 import org.specnaz.impl.SpecParser;
 import org.specnaz.impl.SpecsRegistryViolation;
+import org.specnaz.junit.platform.impl.IsSpecnazClassPredicate;
+import org.specnaz.junit.platform.impl.SpecnazClassDescriptor;
+import org.specnaz.junit.platform.impl.SpecnazEngineDescriptor;
 
 import java.util.HashMap;
 import java.util.List;

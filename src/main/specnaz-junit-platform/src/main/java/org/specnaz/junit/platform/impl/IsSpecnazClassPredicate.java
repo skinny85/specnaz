@@ -1,4 +1,4 @@
-package org.specnaz.junit.platform;
+package org.specnaz.junit.platform.impl;
 
 import org.specnaz.Specnaz;
 import org.specnaz.params.SpecnazParams;

@@ -1,11 +1,11 @@
 package com.example;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.platform.commons.annotation.Testable;
 import org.specnaz.Specnaz;
 import org.specnaz.utils.IntBox;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @Testable
 public class ExampleSpecnazTest implements Specnaz {{
@@ -27,7 +27,7 @@ public class ExampleSpecnazTest implements Specnaz {{
 
         it.describes("with a subgroup", () -> {
             it.should("execute the subgroup tests", () -> {
-                Assertions.fail("subgroup test");
+                fail("subgroup test");
             });
         });
     });
