@@ -14,6 +14,10 @@ public class ExampleSpecnazTest implements Specnaz {{
     IntBox i = IntBox.boxWith(0);
 
     describes("root describe", it -> {
+        it.beginsAll(() -> {
+            fail("beginsAll");
+        });
+
         it.beginsEach(() -> {
             i.$ = 10;
         });
@@ -27,7 +31,6 @@ public class ExampleSpecnazTest implements Specnaz {{
 
         it.describes("with a subgroup", () -> {
             it.should("execute the subgroup tests", () -> {
-                fail("subgroup test");
             });
         });
     });

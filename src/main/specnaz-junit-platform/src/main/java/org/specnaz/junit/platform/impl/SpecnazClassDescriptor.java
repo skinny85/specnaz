@@ -18,8 +18,14 @@ public final class SpecnazClassDescriptor extends AbstractTestDescriptor {
         engineDescriptor.attach(this);
 
         if (specParser != null) {
-            TreeNode<TestsGroup> testsGroupTreeNode = specParser.testsPlan();
-            new SpecnazGroupDescriptor(this, testsGroupTreeNode);
+            walkTestsGroupTree(specParser.testsPlan());
+        }
+    }
+
+    private void walkTestsGroupTree(TreeNode<TestsGroup> testsGroupTreeNode) {
+        new SpecnazGroupDescriptor(this, testsGroupTreeNode);
+        for (TreeNode<TestsGroup> childTestsGroupTreeNode : testsGroupTreeNode.children()) {
+            walkTestsGroupTree(childTestsGroupTreeNode);
         }
     }
 
@@ -30,7 +36,7 @@ public final class SpecnazClassDescriptor extends AbstractTestDescriptor {
     public void execute(EngineExecutionListener listener) {
         listener.executionStarted(this);
 
-        for (SpecnazGroupDescriptor groupDescriptor : rootDescribeDescriptors()) {
+        for (SpecnazGroupDescriptor groupDescriptor : groupDescriptors()) {
             groupDescriptor.execute(listener);
         }
 
@@ -42,7 +48,7 @@ public final class SpecnazClassDescriptor extends AbstractTestDescriptor {
         throw new UnsupportedOperationException("addChild() is not supported for SpecnazClassDescriptor");
     }
 
-    private Iterable<SpecnazGroupDescriptor> rootDescribeDescriptors() {
+    private Iterable<SpecnazGroupDescriptor> groupDescriptors() {
         // safe because we ban children other than SpecnazGroupDescriptor by overriding addChild()
         return (Iterable<SpecnazGroupDescriptor>) getChildren();
     }
