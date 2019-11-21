@@ -9,15 +9,19 @@ import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TestsGroupNodeExecutor;
 import org.specnaz.impl.TreeNode;
 
-public final class SpecnazGroupDescriptor extends AbstractTestDescriptor {
-    private final TestsGroupNodeExecutor testsGroupNodeExecutor;
+import java.util.LinkedList;
+import java.util.List;
 
-    public SpecnazGroupDescriptor(SpecnazClassDescriptor classDescriptor,
+public final class SpecnazGroupDescriptor extends SpecnazClassOrGroupDescriptor {
+    private final TestsGroupNodeExecutor testsGroupNodeExecutor;
+    private final List<ExecutableTestCaseDescriptor> childTestCases = new LinkedList<>();
+
+    public SpecnazGroupDescriptor(SpecnazClassOrGroupDescriptor descriptor,
             TreeNode<TestsGroup> testsGroupTreeNode) {
-        super(classDescriptor.getUniqueId().append("group", testsGroupTreeNode.value.description),
+        super(descriptor.getUniqueId().append("group", testsGroupTreeNode.value.description),
                 testsGroupTreeNode.value.description);
 
-        classDescriptor.attach(this);
+        descriptor.attach(this);
 
         // ToDo fix the runOnlyFocusedTests parameter
         testsGroupNodeExecutor = new TestsGroupNodeExecutor(testsGroupTreeNode, false);
@@ -28,13 +32,18 @@ public final class SpecnazGroupDescriptor extends AbstractTestDescriptor {
 
     void attach(ExecutableTestCaseDescriptor executableTestCaseDescriptor) {
         super.addChild(executableTestCaseDescriptor);
+        this.childTestCases.add(executableTestCaseDescriptor);
     }
 
     public void execute(EngineExecutionListener listener) {
         listener.executionStarted(this);
 
-        for (ExecutableTestCaseDescriptor executableTestCaseDescriptor : executableTestCasseDescriptors()) {
+        for (ExecutableTestCaseDescriptor executableTestCaseDescriptor : this.childTestCases) {
             executableTestCaseDescriptor.execute(listener);
+        }
+
+        for (SpecnazGroupDescriptor groupDescriptor : groupDescriptors()) {
+            groupDescriptor.execute(listener);
         }
 
         listener.executionFinished(this, TestExecutionResult.successful());
@@ -43,15 +52,5 @@ public final class SpecnazGroupDescriptor extends AbstractTestDescriptor {
     @Override
     public void addChild(TestDescriptor child) {
         throw new UnsupportedOperationException("addChild() is not supported for SpecnazGroupDescriptor");
-    }
-
-    private Iterable<ExecutableTestCaseDescriptor> executableTestCasseDescriptors() {
-        // safe because we ban children other than ExecutableTestCaseDescriptor by overriding addChild()
-        return (Iterable<ExecutableTestCaseDescriptor>) getChildren();
-    }
-
-    @Override
-    public Type getType() {
-        return Type.CONTAINER;
     }
 }
