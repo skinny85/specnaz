@@ -22,13 +22,15 @@ public class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
         return Type.TEST;
     }
 
-    public void execute(EngineExecutionListener listener) {
+    public void execute(EngineExecutionListener listener, Throwable setupError) {
         listener.executionStarted(this);
 
-        Throwable throwable = executableTestCase.execute();
+        Throwable result = setupError == null
+                ? executableTestCase.execute()
+                : setupError;
 
-        listener.executionFinished(this, throwable == null
+        listener.executionFinished(this, result == null
                 ? TestExecutionResult.successful()
-                : TestExecutionResult.failed(throwable));
+                : TestExecutionResult.failed(result));
     }
 }

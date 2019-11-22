@@ -27,15 +27,7 @@ public abstract class SpecnazClassOrGroupDescriptor extends AbstractTestDescript
         this.childGroupDescriptors.add(groupDescriptor);
     }
 
-    public void execute(EngineExecutionListener listener) {
-        listener.executionStarted(this);
-
-        for (SpecnazGroupDescriptor groupDescriptor : groupDescriptors()) {
-            groupDescriptor.execute(listener);
-        }
-
-        listener.executionFinished(this, TestExecutionResult.successful());
-    }
+    public abstract void execute(EngineExecutionListener listener);
 
     protected Iterable<SpecnazGroupDescriptor> groupDescriptors() {
         return Collections.unmodifiableList(this.childGroupDescriptors);

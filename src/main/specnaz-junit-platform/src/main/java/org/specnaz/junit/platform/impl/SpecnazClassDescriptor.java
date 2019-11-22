@@ -1,6 +1,8 @@
 package org.specnaz.junit.platform.impl;
 
+import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestDescriptor;
+import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.support.descriptor.ClassSource;
 import org.specnaz.impl.SpecParser;
 import org.specnaz.impl.TestsGroup;
@@ -17,6 +19,16 @@ public final class SpecnazClassDescriptor extends SpecnazClassOrGroupDescriptor 
         if (specParser != null) {
             walkTestsGroupTree(specParser.testsPlan(), this);
         }
+    }
+
+    public void execute(EngineExecutionListener listener) {
+        listener.executionStarted(this);
+
+        for (SpecnazGroupDescriptor groupDescriptor : groupDescriptors()) {
+            groupDescriptor.execute(listener);
+        }
+
+        listener.executionFinished(this, TestExecutionResult.successful());
     }
 
     private void walkTestsGroupTree(TreeNode<TestsGroup> testsGroupTreeNode, SpecnazClassOrGroupDescriptor parent) {

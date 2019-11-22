@@ -3,7 +3,6 @@ package org.specnaz.junit.platform.impl;
 import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestDescriptor;
 import org.junit.platform.engine.TestExecutionResult;
-import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
 import org.specnaz.impl.ExecutableTestCase;
 import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TestsGroupNodeExecutor;
@@ -38,15 +37,26 @@ public final class SpecnazGroupDescriptor extends SpecnazClassOrGroupDescriptor 
     public void execute(EngineExecutionListener listener) {
         listener.executionStarted(this);
 
+        // execute the beginsAll for this group
+        Throwable beforeAllsError = this.testsGroupNodeExecutor.beforeAllsExecutable().execute();
+
         for (ExecutableTestCaseDescriptor executableTestCaseDescriptor : this.childTestCases) {
-            executableTestCaseDescriptor.execute(listener);
+            executableTestCaseDescriptor.execute(listener, beforeAllsError);
         }
+
+        Throwable afterAllsError = this.testsGroupNodeExecutor.afterAllsExecutable().execute();
 
         for (SpecnazGroupDescriptor groupDescriptor : groupDescriptors()) {
             groupDescriptor.execute(listener);
         }
 
-        listener.executionFinished(this, TestExecutionResult.successful());
+        Throwable reportedError = beforeAllsError == null
+                ? afterAllsError
+                : beforeAllsError;
+
+        listener.executionFinished(this, reportedError == null
+                ? TestExecutionResult.successful()
+                : TestExecutionResult.failed(reportedError));
     }
 
     @Override
