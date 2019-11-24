@@ -16,14 +16,13 @@ public final class SpecnazGroupDescriptor extends SpecnazClassOrGroupDescriptor 
     private final List<ExecutableTestCaseDescriptor> childTestCases = new LinkedList<>();
 
     public SpecnazGroupDescriptor(SpecnazClassOrGroupDescriptor descriptor,
-            TreeNode<TestsGroup> testsGroupTreeNode) {
+            TreeNode<TestsGroup> testsGroupTreeNode, boolean runOnlyFocusedTests) {
         super(descriptor.getUniqueId().append("group", testsGroupTreeNode.value.description),
                 testsGroupTreeNode.value.description);
 
         descriptor.attach(this);
 
-        // ToDo fix the runOnlyFocusedTests parameter
-        testsGroupNodeExecutor = new TestsGroupNodeExecutor(testsGroupTreeNode, false);
+        testsGroupNodeExecutor = new TestsGroupNodeExecutor(testsGroupTreeNode, runOnlyFocusedTests);
         for (ExecutableTestCase executableTestCase : testsGroupNodeExecutor.executableTestCases(null)) {
             new ExecutableTestCaseDescriptor(this, executableTestCase);
         }

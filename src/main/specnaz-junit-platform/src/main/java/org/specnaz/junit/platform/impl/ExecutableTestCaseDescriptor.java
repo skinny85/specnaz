@@ -23,14 +23,18 @@ public class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
     }
 
     public void execute(EngineExecutionListener listener, Throwable setupError) {
-        listener.executionStarted(this);
+        if (this.executableTestCase.isIgnored()) {
+            listener.executionSkipped(this, "test ignored");
+        } else {
+            listener.executionStarted(this);
 
-        Throwable result = setupError == null
-                ? executableTestCase.execute()
-                : setupError;
+            Throwable result = setupError == null
+                    ? executableTestCase.execute()
+                    : setupError;
 
-        listener.executionFinished(this, result == null
-                ? TestExecutionResult.successful()
-                : TestExecutionResult.failed(result));
+            listener.executionFinished(this, result == null
+                    ? TestExecutionResult.successful()
+                    : TestExecutionResult.failed(result));
+        }
     }
 }

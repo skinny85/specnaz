@@ -9,6 +9,8 @@ import org.specnaz.impl.TestsGroup;
 import org.specnaz.impl.TreeNode;
 
 public final class SpecnazClassDescriptor extends SpecnazClassOrGroupDescriptor {
+    private final boolean runOnlyFocusedTests;
+
     public SpecnazClassDescriptor(SpecnazEngineDescriptor engineDescriptor,
             Class<?> classs, SpecParser specParser) {
         super(engineDescriptor.getUniqueId().append("class", classs.getCanonicalName()),
@@ -17,7 +19,11 @@ public final class SpecnazClassDescriptor extends SpecnazClassOrGroupDescriptor 
         engineDescriptor.attach(this);
 
         if (specParser != null) {
-            walkTestsGroupTree(specParser.testsPlan(), this);
+            TreeNode<TestsGroup> testPlan = specParser.testsPlan();
+            this.runOnlyFocusedTests = testPlan.value.containsFocusedTests;
+            walkTestsGroupTree(testPlan, this);
+        } else {
+            this.runOnlyFocusedTests = false;
         }
     }
 
@@ -32,7 +38,8 @@ public final class SpecnazClassDescriptor extends SpecnazClassOrGroupDescriptor 
     }
 
     private void walkTestsGroupTree(TreeNode<TestsGroup> testsGroupTreeNode, SpecnazClassOrGroupDescriptor parent) {
-        SpecnazGroupDescriptor specnazGroupDescriptor = new SpecnazGroupDescriptor(parent, testsGroupTreeNode);
+        SpecnazGroupDescriptor specnazGroupDescriptor = new SpecnazGroupDescriptor(parent, testsGroupTreeNode,
+                this.runOnlyFocusedTests);
         for (TreeNode<TestsGroup> childTestsGroupTreeNode : testsGroupTreeNode.children()) {
             walkTestsGroupTree(childTestsGroupTreeNode, specnazGroupDescriptor);
         }
