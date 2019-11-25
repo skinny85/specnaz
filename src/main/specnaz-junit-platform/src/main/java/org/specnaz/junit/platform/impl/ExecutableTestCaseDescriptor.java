@@ -5,7 +5,7 @@ import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
 import org.specnaz.impl.ExecutableTestCase;
 
-public class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
+public final class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
     private final ExecutableTestCase executableTestCase;
 
     public ExecutableTestCaseDescriptor(SpecnazGroupDescriptor groupDescriptor, ExecutableTestCase executableTestCase) {

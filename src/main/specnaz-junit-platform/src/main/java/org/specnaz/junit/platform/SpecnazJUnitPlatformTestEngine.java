@@ -24,7 +24,7 @@ import java.util.Map;
 
 import static java.lang.String.format;
 
-public class SpecnazJUnitPlatformTestEngine implements TestEngine {
+public final class SpecnazJUnitPlatformTestEngine implements TestEngine {
     private static final Logger log = LoggerFactory.getLogger(SpecnazJUnitPlatformTestEngine.class);
 
     private final Map<Class, SpecParser> cache = new HashMap<>();
