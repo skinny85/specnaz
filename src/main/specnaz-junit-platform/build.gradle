@@ -1,5 +1,5 @@
 dependencies {
     compile project(':src:main:specnaz')
 
-    provided "org.junit.platform:junit-platform-engine:$junit_platform_version"
+    implementation "org.junit.platform:junit-platform-engine:$junit_platform_version"
 }
