@@ -38,10 +38,12 @@ public final class SpecnazClassDescriptor extends SpecnazClassOrGroupDescriptor 
     }
 
     private void walkTestsGroupTree(TreeNode<TestsGroup> testsGroupTreeNode, SpecnazClassOrGroupDescriptor parent) {
-        SpecnazGroupDescriptor specnazGroupDescriptor = new SpecnazGroupDescriptor(parent, testsGroupTreeNode,
-                this.runOnlyFocusedTests);
-        for (TreeNode<TestsGroup> childTestsGroupTreeNode : testsGroupTreeNode.children()) {
-            walkTestsGroupTree(childTestsGroupTreeNode, specnazGroupDescriptor);
+        if (testsGroupTreeNode.value.testsInTree > 0) {
+            SpecnazGroupDescriptor specnazGroupDescriptor = new SpecnazGroupDescriptor(parent, testsGroupTreeNode,
+                    this.runOnlyFocusedTests);
+            for (TreeNode<TestsGroup> childTestsGroupTreeNode : testsGroupTreeNode.children()) {
+                walkTestsGroupTree(childTestsGroupTreeNode, specnazGroupDescriptor);
+            }
         }
     }
 
