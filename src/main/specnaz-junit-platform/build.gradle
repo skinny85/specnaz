@@ -2,4 +2,10 @@ dependencies {
     compile project(':src:main:specnaz')
 
     implementation "org.junit.platform:junit-platform-engine:$junit_platform_version"
+
+    testCompile("org.assertj:assertj-core:$assertj_version")
+}
+
+test {
+    useJUnitPlatform()
 }
