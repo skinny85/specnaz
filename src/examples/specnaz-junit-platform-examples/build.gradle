@@ -1,9 +1,6 @@
-ext {
-    spring_version = '5.0.2.RELEASE'
-}
-
 dependencies {
     testCompile project(':src:main:specnaz-junit-platform')
+    testCompile project(':src:main:specnaz-kotlin-junit-platform')
     testCompile("org.junit.platform:junit-platform-engine:$junit_platform_version")
     testCompile("org.assertj:assertj-core:$assertj_version")
 }

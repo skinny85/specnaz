@@ -58,7 +58,8 @@ configure(subprojects.findAll { isAKotlinProject(it) }) {
 }
 
 private boolean isAKotlinProject(Project it) {
-    it.name.contains('kotlin') || it.name == 'specnaz-testng-examples'
+    it.name.contains('kotlin') || it.name == 'specnaz-testng-examples' ||
+            it.name == 'specnaz-junit-platform-examples'
 }
 
 ext {
