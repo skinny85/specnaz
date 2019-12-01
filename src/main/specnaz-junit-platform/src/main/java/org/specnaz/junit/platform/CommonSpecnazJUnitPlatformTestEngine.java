@@ -1,7 +1,5 @@
 package org.specnaz.junit.platform;
 
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.support.ReflectionSupport;
 import org.junit.platform.engine.EngineDiscoveryRequest;
 import org.junit.platform.engine.EngineExecutionListener;
@@ -25,8 +23,7 @@ import java.util.function.Predicate;
 import static java.lang.String.format;
 
 public abstract class CommonSpecnazJUnitPlatformTestEngine implements TestEngine {
-    private static final Logger log = LoggerFactory.getLogger(SpecnazJUnitPlatformTestEngine.class);
-    private final Map<Class, SpecParser> cache = new HashMap<>();
+    private final Map<Class, SpecRecord> cache = new HashMap<>();
 
     @Override
     public TestDescriptor discover(EngineDiscoveryRequest discoveryRequest, UniqueId uniqueId) {
@@ -75,39 +72,52 @@ public abstract class CommonSpecnazJUnitPlatformTestEngine implements TestEngine
         if (!isSpecnazClass(specClass))
             return;
 
-        SpecParser specParser = getSpecParserForClass(specClass);
+        SpecRecord specRecord = getSpecRecordForClass(specClass);
 
-        new SpecnazClassDescriptor(engineDescriptor, specClass, specParser);
+        SpecnazClassDescriptor.create(engineDescriptor, specClass,
+                specRecord.specParser, specRecord.error);
     }
 
-    private SpecParser getSpecParserForClass(Class<?> specClass) {
+    private SpecRecord getSpecRecordForClass(Class<?> specClass) {
         if (cache.containsKey(specClass))
             return cache.get(specClass);
 
-        SpecParser ret = null;
+        Throwable error = null;
+        SpecParser specParser = null;
         Object specInstance = null;
         try {
             specInstance = specClass.newInstance();
         } catch (Exception e) {
-            log.error(e, () -> format(
+            error = new Exception(format(
                     "Could not instantiate test class '%s' with no-argument constructor",
-                    specClass.getSimpleName()));
+                    specClass.getSimpleName()), e);
         }
 
         if (specInstance != null) {
             try {
-                ret = new SpecParser(specInstance);
+                specParser = new SpecParser(specInstance);
             } catch (SpecsRegistryViolation e) {
-                log.error(() -> "describes() was never called in the " +
+                error = new Exception("describes() was never called in the " +
                         "no-argument constructor of " + specClass.getSimpleName());
             }
         }
 
+        SpecRecord ret = new SpecRecord(specParser, error);
         cache.put(specClass, ret);
         return ret;
     }
 
     private boolean isSpecnazClass(Class<?> classs) {
         return classPredicate().test(classs);
+    }
+}
+
+final class SpecRecord {
+    public final SpecParser specParser;
+    public final Throwable error;
+
+    public SpecRecord(SpecParser specParser, Throwable error) {
+        this.specParser = specParser;
+        this.error = error;
     }
 }
