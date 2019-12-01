@@ -10,4 +10,5 @@ This directory contains various projects demonstrating using Specnaz in differen
    including using third-party Rules from [Mockito](http://site.mockito.org/),
    [Spring](https://spring.io/) and [Dropwizard](http://www.dropwizard.io).
 * [specnaz-testng-examples](specnaz-testng-examples) contains examples of using Specnaz with TestNG in Java and Kotlin.
+* [specnaz-junit-platform-examples](specnaz-junit-platform-examples) shows how to use Specnaz with JUnit 5 as the test runner, in Java and Kotlin.
 * [specnaz-custom-dsl-example](specnaz-custom-dsl-example) walks you through extending Specnaz by creating your own custom DSL for defining tests.
