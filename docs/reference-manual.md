@@ -1451,9 +1451,9 @@ The above snippet will not work - the compiler will complain that
 The easiest way to solve this problem is to use the `lateinit` modifier -
 so, simply replace `var someDomainClass: MyDomainClass` above with
 `lateinit var someDomainClass: MyDomainClass`.
-However, that's allowed on local variables only with Kotlin version 1.2 or later -
+However, that's allowed on local variables only with Kotlin version `1.2` or later -
 before that `lateinit` was limited to class attributes.
-If you're on a version of Kotlin before 1.2,
+If you're on a version of Kotlin before `1.2`,
 you can still use local variables instead of class attributes in this case
 by leveraging a simple helper class that ships with Specnaz,
 `org.specnaz.kotlin.utils.Deferred`.
@@ -1570,7 +1570,7 @@ for more info.
 ### JUnit 4 Rules
 
 Specnaz supports the [JUnit 4 Rules API](https://github.com/junit-team/junit4/wiki/rules) natively.
-The integration looks a tiny bit different than in 'vanilla' JUnit,
+The integration looks a tiny bit different than in 'vanilla' JUnit 4,
 mostly because of the different object lifecycle
 (in 'vanilla' JUnit 4, each test executes with its own instance of the test class;
 in Specnaz, all tests share the same object instance).
@@ -1585,7 +1585,7 @@ Let's start with class Rules, as they are simpler.
 
 #### Class JUnit Rules
 
-Class Rules work pretty much exactly the same as 'vanilla' JUnit.
+Class Rules work pretty much exactly the same as 'vanilla' JUnit 4.
 It's a `public`, `static` field of the test class,
 annotated with [@ClassRule](http://junit.org/junit4/javadoc/4.12/org/junit/ClassRule.html).
 
@@ -1619,7 +1619,7 @@ that you want to be executed exactly once for the whole class
 (and not, like `beginsAll` / `endsAll` methods, for every nested subgroup).
 Probably the easiest way to do that is to extend the
 [ExternalResource](https://junit.org/junit4/javadoc/4.12/org/junit/rules/ExternalResource.html)
-Rule that ships with JUnit.
+Rule that ships with JUnit 4.
 
 Example:
 
@@ -1652,11 +1652,11 @@ If you want to have multiple class Rules in the same class,
 it's important to know that the order in which they will be chained is unspecified -
 it won't necessarily be the same order that they were declared in in source code.
 If you need to control that ordering, you should use the [RuleChain](https://junit.org/junit4/javadoc/4.12/org/junit/rules/RuleChain.html) class
-that ships with JUnit.
+that ships with JUnit 4.
 
 #### Instance JUnit Rules
 
-Instance Rules work a little bit differently than in 'vanilla' JUnit.
+Instance Rules work a little bit differently than in 'vanilla' JUnit 4.
 Instead of annotating fields with [@Rule](http://junit.org/junit4/javadoc/4.12/org/junit/Rule.html),
 you use the class `org.specnaz.junit.rules.Rule`.
 
@@ -1699,11 +1699,11 @@ public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
 
 The same remark about multiple class Rules applies to instance Rules as well -
 if you need control over the order in which multiple instance Rules in the same class are applied,
-use the [RuleChain](https://junit.org/junit4/javadoc/4.12/org/junit/rules/RuleChain.html) class that ships with JUnit.
+use the [RuleChain](https://junit.org/junit4/javadoc/4.12/org/junit/rules/RuleChain.html) class that ships with JUnit 4.
 
 #### Setting the test method
 
-Some JUnit Rules recognize certain annotations placed on the test method in a 'vanilla' JUnit test class
+Some JUnit Rules recognize certain annotations placed on the test method in a 'vanilla' JUnit 4 test class
 (it's quite common in Spring, for example - see
 [here](https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#integration-testing-annotations)
 for a list of recognized annotations).
@@ -1749,7 +1749,7 @@ you have to use `should` and some alternative mechanism of specifying the except
 * If you're using [AssertJ](http://joel-costigliola.github.io/assertj/index.html) for assertions,
   you have [a lot of options](http://joel-costigliola.github.io/assertj/assertj-core-features-highlight.html#exception-assertion)
 * The [ExpectedException](http://junit.org/junit4/javadoc/4.12/org/junit/rules/ExpectedException.html)
-  Rule that ships with JUnit
+  Rule that ships with JUnit 4
 * You can always use an explicit `try`-`catch` inside the `should` test
 
 #### JUnit Rules examples
