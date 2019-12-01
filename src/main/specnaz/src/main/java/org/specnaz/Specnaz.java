@@ -68,7 +68,7 @@ public interface Specnaz {
      * instead of commenting code out, simply add an 'x' in front of the call
      * to {@link #describes}, and the entire specification will be skipped,
      * like if you placed the {@code Ignore} annotation on a class containing
-     * 'standard' JUnit tests.
+     * 'standard' JUnit 4 tests.
      *
      * @param description
      *     the top-level description of the spec

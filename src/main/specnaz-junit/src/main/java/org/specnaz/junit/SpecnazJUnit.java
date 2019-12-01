@@ -6,7 +6,7 @@ import org.specnaz.Specnaz;
 
 /**
  * A utility class that implements the {@link Specnaz} interface
- * and declares {@link SpecnazJUnitRunner} as the JUnit test {@link Runner}
+ * and declares {@link SpecnazJUnitRunner} as the JUnit 4 test {@link Runner}
  * with the {@link RunWith} annotation.
  * Useful in cases where your test class doesn't have to extend any particular class.
  */

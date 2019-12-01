@@ -17,9 +17,10 @@ Table of Contents
   * [Writing tests](#writing-tests)
     * [Basic test structure - the Specnaz interface](#basic-test-structure---the-specnaz-interface)
     * [Framework integrations](#framework-integrations)
-      * [JUnit](#junit)
+      * [JUnit 4](#junit-4)
       * [TestNG](#testng)
         * [TestNG limitations](#testng-limitations)
+      * [JUnit 5](#junit-5)
     * [Calling describes](#calling-describes)
     * [Creating the spec](#creating-the-spec)
       * [should](#should)
@@ -39,8 +40,9 @@ Table of Contents
       * [xdescribes](#xdescribes)
     * [Using Boxes](#using-boxes)
     * [Parametrized test support](#parametrized-test-support)
-      * [Parametrized tests with JUnit](#parametrized-tests-with-junit)
+      * [Parametrized tests with JUnit 4](#parametrized-tests-with-junit-4)
       * [Parametrized tests with TestNG](#parametrized-tests-with-testng)
+      * [Parametrized tests with JUnit 5](#parametrized-tests-with-junit-5)
       * [Creating the parametrized spec](#creating-the-parametrized-spec)
       * [Parametrized sub-specifications](#parametrized-sub-specifications)
       * [Focusing and ignoring parametrized tests](#focusing-and-ignoring-parametrized-tests)
@@ -48,15 +50,17 @@ Table of Contents
       * [Kotlin](#kotlin)
         * [Using native Java classes](#using-native-java-classes)
         * [Using the Kotlin bindings](#using-the-kotlin-bindings)
-          * [Kotlin with JUnit](#kotlin-with-junit)
+          * [Kotlin with JUnit 4](#kotlin-with-junit-4)
             * [Ignoring specs inheriting from SpecnazKotlinJUnit](#ignoring-specs-inheriting-from-specnazkotlinjunit)
           * [Kotlin with TestNG](#kotlin-with-testng)
             * [Ignoring specs inheriting from SpecnazKotlinTestNG](#ignoring-specs-inheriting-from-specnazkotlintestng)
+          * [Kotlin with JUnit 5](#kotlin-with-junit-5)
+            * [Ignoring specs inheriting from SpecnazKotlinJUnitPlatform](#ignoring-specs-inheriting-from-specnazkotlinjunitplatform)
         * [The Deferred helper](#the-deferred-helper)
         * [Parametrized tests in Kotlin](#parametrized-tests-in-kotlin)
       * [Groovy](#groovy)
     * [Framework extensions](#framework-extensions)
-      * [JUnit Rules](#junit-rules)
+      * [JUnit 4 Rules](#junit-4-rules)
         * [Class JUnit Rules](#class-junit-rules)
         * [Instance JUnit Rules](#instance-junit-rules)
         * [Setting the test method](#setting-the-test-method)
@@ -79,14 +83,16 @@ the needed JARs and put them on your classpath:
 
 * [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.4.1/specnaz-1.4.1.jar), and one of either:
   * [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.4.1/specnaz-junit-1.4.1.jar), or
-  * [specnaz-testng](https://jcenter.bintray.com/org/specnaz/specnaz-testng/1.4.1/specnaz-testng-1.4.1.jar)
+  * [specnaz-testng](https://jcenter.bintray.com/org/specnaz/specnaz-testng/1.4.1/specnaz-testng-1.4.1.jar), or
+  * [specnaz-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-junit-platform/1.4.1/specnaz-junit-platform-1.4.1.jar)
 
 If you want to use the Kotlin integration,
 in addition to the ones above, you also need:
 
 * [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.4.1/specnaz-kotlin-1.4.1.jar), and one of either:
   * [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.4.1/specnaz-kotlin-junit-1.4.1.jar), or
-  * [specnaz-kotlin-testng](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-testng/1.4.1/specnaz-kotlin-testng-1.4.1.jar)
+  * [specnaz-kotlin-testng](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-testng/1.4.1/specnaz-kotlin-testng-1.4.1.jar), or
+  * [specnaz-kotlin-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit-platform/1.4.1/specnaz-kotlin-junit-platform-1.4.1.jar)
 
 # Writing tests
 
@@ -108,9 +114,9 @@ interface must be called *exactly once*.
 
 ## Framework integrations
 
-### JUnit
+### JUnit 4
 
-The easiest way to use Specnaz with JUnit is to extend the `org.specnaz.junit.SpecnazJUnit`
+The easiest way to use Specnaz with JUnit 4 is to extend the `org.specnaz.junit.SpecnazJUnit`
 helper class, which already implements the `Specnaz` interface:
 
 ```java
@@ -122,7 +128,7 @@ public class StackSpec extends SpecnazJUnit {
 ```
 
 If you want to extend a class other than `SpecnazJUnit`,
-you need to specify the JUnit `Runner` for Specnaz,
+you need to specify the JUnit 4 `Runner` for Specnaz,
 `org.specnaz.junit.SpecnazJUnitRunner`,
 using the `@RunWith` annotation:
 
@@ -201,6 +207,21 @@ public class SecondSpec implements SpecnazFactoryTestNG {{
 , the results of executing them will look something like this:
 
 ![TestNG IDE report](img/testng-ide-report.png)
+
+### JUnit 5
+
+To use Specnaz with JUnit 5,
+the only thing you need to do is annotate your spec class with the
+`org.junit.platform.commons.annotation.Testable` annotation:
+
+```java
+import org.junit.platform.commons.annotation.Testable;
+
+@Testable
+public class StackSpec implements Specnaz {
+    // body of the spec here...
+}
+```
 
 ## Calling `describes`
 
@@ -746,7 +767,7 @@ For these reasons, Specnaz changes the traditional behavior of the
 `beginsAll` and `endsAll` fixtures.
 
 If you need to perform some setup and/or teardown that should happen once per class
-(and not once per group), you can achieve that using the [JUnit Class Rules API](#class-junit-rules)
+(and not once per group), you can achieve that using the [JUnit 4 Class Rules API](#class-junit-rules)
 that Specnaz supports natively.
 
 ### fshould
@@ -899,7 +920,7 @@ In order to get access to the parametrized tests capabilities,
 you need to implement the `org.specnaz.params.SpecnazParams`
 interface in your test class instead of the regular `Specnaz` one.
 
-### Parametrized tests with JUnit
+### Parametrized tests with JUnit 4
 
 There is a helper class, `org.specnaz.params.junit.SpecnazParamsJUnit`,
 which is analogous to the regular `SpecnazJUnit` helper, that you can extend:
@@ -946,6 +967,21 @@ import org.testng.annotations.Test;
 @Test
 public class MyParametrizedSpec implements SpecnazParamsFactoryTestNG {
     // body of the spec here...
+}
+```
+
+### Parametrized tests with JUnit 5
+
+The only difference between regular and parametrized tests when using JUnit 5 as the test execution engine
+is the need to implement the `SpecnazParams` interface instead of `Specnaz`:
+
+```java
+import org.junit.platform.commons.annotation.Testable;
+import org.specnaz.params.SpecnazParams;
+
+@Testable
+public class MyParametrizedSpec implements SpecnazParams {
+    // body of the spec here...   
 }
 ```
 
@@ -1167,9 +1203,9 @@ Just as there is a Kotlin version of the core library,
 there are also Kotlin-specific versions of the libraries that integrate Specnaz with test execution engines,
 like JUnit and TestNG:
 
-##### Kotlin with JUnit
+##### Kotlin with JUnit 4
 
-The Kotlin JUnit support lives in the `specnaz-kotlin-junit` library
+The Kotlin JUnit 4 support lives in the `specnaz-kotlin-junit` library
 (which has a dependency on `specnaz-kotlin`).
 There is a Kotlin equivalent of the `org.specnaz.junit.SpecnazJUnit` class,
 `org.specnaz.kotlin.junit.SpecnazKotlinJUnit`:
@@ -1214,7 +1250,7 @@ which means you can save one level of indentation
 when your spec class doesn't need to extend a particular class.
 
 If your spec class does need to extend a particular class,
-you have to provide the Kotlin JUnit Runner,
+you have to provide the Kotlin JUnit 4 Runner,
 `org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner`,
 instead of the Java `SpecnazJUnitRunner`,
 with JUnit's `@RunWith` annotation:
@@ -1315,6 +1351,79 @@ there's also an `org.specnaz.kotlin.testng.xSpecnazKotlinTestNG`
 class for ignoring an entire specification extending from
 `SpecnazKotlinTestNG`.
 
+##### Kotlin with JUnit 5
+
+The Kotlin JUnit 5 support lives in the `specnaz-kotlin-junit-platform` library
+(which has a dependency on `specnaz-kotlin`).
+There is a Kotlin equivalent of the `org.specnaz.junit.SpecnazJUnit` class,
+`org.specnaz.kotlin.junit.platform.SpecnazKotlinJUnitPlatform`:
+
+```kotlin
+import org.specnaz.kotlin.junit.platform.SpecnazKotlinJUnitPlatform
+import java.util.Stack
+import org.assertj.core.api.Assertions.assertThat
+
+class StackKotlinSpec : SpecnazKotlinJUnitPlatform("A Stack", {
+    var stack = Stack<Int>()
+
+    it.endsEach {
+        stack = Stack()
+    }
+
+    it.should("be empty when first created") {
+        assertThat(stack).isEmpty()
+    }
+
+    it.describes("with 10 and 20 pushed on it") {
+        it.beginsEach {
+            stack.push(10)
+            stack.push(20)
+        }
+
+        it.should("have size equal to 2") {
+            assertThat(stack.size).isEqualTo(2)
+        }
+
+        it.should("have 20 as the top element") {
+            assertThat(stack.peek()).isEqualTo(20)
+        }
+    }
+})
+```
+
+As you can see, `SpecnazKotlinJUnitPlatform` calls the `describes` method
+from the `SpecnazKotlin` interface in its primary constructor,
+which means you can save one level of indentation
+(and a little boilerplate)
+when your spec class doesn't need to extend a particular class.
+
+If your spec class does need to extend a particular class,
+you need to implement the `SpecnazKotlin` interface,
+and annotate your class with the `org.junit.platform.commons.annotation.Testable` annotation:
+
+```kotlin
+import org.junit.platform.commons.annotation.Testable
+import org.specnaz.kotlin.SpecnazKotlin
+
+@Testable
+class StackKotlinSpec : SpecCommon(), SpecnazKotlin { init {
+    describes("A Stack") {
+        // spec body...
+    }
+}}
+```
+
+###### Ignoring specs inheriting from `SpecnazKotlinJUnitPlatform`
+
+If you want to ignore an entire class of specs,
+and that class inherits from `SpecnazKotlinJUnitPlatform`,
+you can't simply use the `xdescribes` method call,
+as that code is buried in the `SpecnazKotlinJUnitPlatform` constructor.
+To help with that case, there is a class called `xSpecnazKotlinJUnitPlatform` in the same,
+`org.specnaz.kotlin.junit.platform`, package.
+With that, you can simply add an 'x' in front of `SpecnazKotlinJUnitPlatform`,
+and with that one change ignore all of the specs defined in that class.
+
 #### The `Deferred` helper
 
 One irritating thing about writing tests in Kotlin is that the compiler
@@ -1393,10 +1502,10 @@ class KotlinSpec : SpecnazKotlinJUnit("A spec", {
 Kotlin has its own version of the parametrized Specnaz interface (`SpecnazParams`) -
 `org.specnaz.kotlin.params.SpecnazKotlinParams`.
 There are also analogous versions of the test execution engine integrations:
-* For JUnit, you can either extend the `org.specnaz.kotlin.params.junit.SpecnazKotlinParamsJUnit` class
+* For JUnit 4, you can either extend the `org.specnaz.kotlin.params.junit.SpecnazKotlinParamsJUnit` class
   (an analogous class to `org.specnaz.kotlin.junit.SpecnazKotlinJUnit` for non-parametrized tests),
   or implement the `SpecnazKotlinParams` interface directly -
-  in that case, you provide the same JUnit Runner as for non-parametrized specs with the `@RunWith` annotation,
+  in that case, you provide the same JUnit 4 Runner as for non-parametrized specs with the `@RunWith` annotation,
   `org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner`.
   If you're extending `SpecnazKotlinParamsJUnit`,
   there's also `xSpecnazKotlinParamsJUnit` in the same package if you ever need to ignore
@@ -1408,6 +1517,13 @@ There are also analogous versions of the test execution engine integrations:
   In both cases, your spec class needs to be annotated with TestNG's `@Test` annotation.
   If you're extending `SpecnazKotlinParamsTestNG`,
   there's also `xSpecnazKotlinParamsTestNG` in the same package if you ever need to ignore
+  an entire parametrized specification.
+* For JUnit 5, you can either extend the `org.specnaz.kotlin.params.junit.platform.SpecnazKotlinParamsJUnitPlatform` class
+  (an analogous class to `org.specnaz.kotlin.junit.platform.SpecnazKotlinJUnitPlatform` for non-parametrized tests),
+  or implement the `SpecnazKotlinParams` interface directly -
+  in that case, you need to annotate your class with the `org.junit.platform.commons.annotation.Testable` annotation.
+  If you're extending `SpecnazKotlinParamsJUnitPlatform`,
+  there's also `xSpecnazKotlinParamsJUnitPlatform` in the same package if you ever need to ignore
   an entire parametrized specification.
 
 Other than that, parametrized tests in Kotlin are basically the same as in Java:
@@ -1451,16 +1567,16 @@ for more info.
 
 ## Framework extensions
 
-### JUnit Rules
+### JUnit 4 Rules
 
-Specnaz supports the [JUnit Rules API](https://github.com/junit-team/junit4/wiki/rules) natively.
+Specnaz supports the [JUnit 4 Rules API](https://github.com/junit-team/junit4/wiki/rules) natively.
 The integration looks a tiny bit different than in 'vanilla' JUnit,
 mostly because of the different object lifecycle
-(in 'vanilla' JUnit, each test executes with its own instance of the test class;
+(in 'vanilla' JUnit 4, each test executes with its own instance of the test class;
 in Specnaz, all tests share the same object instance).
 However, the basic idea is exactly the same.
 
-JUnit supports 2 types of Rules:
+JUnit 4 supports 2 types of Rules:
 class Rules (those annotated with [@ClassRule](http://junit.org/junit4/javadoc/4.12/org/junit/ClassRule.html))
 and instance Rules (those annotated with [@Rule](http://junit.org/junit4/javadoc/4.12/org/junit/Rule.html)).
 Both of them are supported in Specnaz.
@@ -1473,7 +1589,7 @@ Class Rules work pretty much exactly the same as 'vanilla' JUnit.
 It's a `public`, `static` field of the test class,
 annotated with [@ClassRule](http://junit.org/junit4/javadoc/4.12/org/junit/ClassRule.html).
 
-**Note**: 'vanilla' JUnit also allows class Rules returned by (`static`) methods.
+**Note**: 'vanilla' JUnit 4 also allows class Rules returned by (`static`) methods.
 This is not supported by Specnaz.
 
 Example:
@@ -1548,7 +1664,7 @@ Every `public`, non-`static` field of the test class of this type will be picked
 and included in your tests.
 
 **Note**: similarly as with class Rules,
-'vanilla' JUnit allows you to have instance Rules returned by methods.
+'vanilla' JUnit 4 allows you to have instance Rules returned by methods.
 This is also not supported by Specnaz.
 
 You create instances of `Rule` by calling the `of` static factory method,
@@ -1597,7 +1713,7 @@ and you can't place annotations on calls.
 For that reason, the `should` method returns an instance of a class, `org.specnaz.TestSettings`,
 that allows you to set a custom method for a Specnaz test by calling its
 `usingMethod(java.lang.reflect.Method)` method.
-The provided `Method` will be passed to all instance JUnit Rules defined in this class.
+The provided `Method` will be passed to all instance JUnit 4 Rules defined in this class.
 Because obtaining method instances is somewhat cumbersome in Java,
 Specnaz includes a utility method that helps with that,
 `org.specnaz.utils.Utils.findMethod`.
@@ -1627,7 +1743,7 @@ public class SomeSpringSpec extends SpecnazJUnit {
 
 **Note**: because the `shouldThrow` method returns an instance of a different class (`ThrowableExpectations`),
 you can't call `usingMethod` for tests defined using `shouldThrow`.
-If you need to combine a JUnit Rule with an exception throwing test that requires annotations on the method,
+If you need to combine a JUnit 4 Rule with an exception throwing test that requires annotations on the method,
 you have to use `should` and some alternative mechanism of specifying the exception, such as:
 * [CatchException](https://github.com/Codearte/catch-exception)
 * If you're using [AssertJ](http://joel-costigliola.github.io/assertj/index.html) for assertions,
@@ -1640,7 +1756,7 @@ you have to use `should` and some alternative mechanism of specifying the except
 
 Check out the [specnaz-junit-rules-examples subproject](../src/examples/specnaz-junit-rules-examples) -
 it contains examples of Specnaz specs using various Rules,
-both those that ship with the standard JUnit distribution,
+both those that ship with the standard JUnit 4 distribution,
 as well as third-party Rules from [Mockito](http://site.mockito.org/),
 [Spring](https://spring.io/) and [Dropwizard](http://www.dropwizard.io).
 

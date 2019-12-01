@@ -5,7 +5,7 @@ Specnaz was built with extensibility in mind.
 This means that you can create your own Domain-Specific Languages
 (DSLs) for writing tests if the default one does not fit your needs.
 
-**Note**: custom DSLs are only supported when using JUnit as the execution engine.
+**Note**: custom DSLs are only supported when using JUnit 4 as the execution engine.
 
 This project shows a simple example of implementing a Given-When-Then test DSL.
 The code is in [src/main/java/org/specnaz/examples/custom_dsl/given_when_then](src/main/java/org/specnaz/examples/custom_dsl/given_when_then),
@@ -140,7 +140,7 @@ public class GivenWhenThenBuilder implements GivenBuilder, ThensBuilder {
 
 You can provide a helper class for your clients, similar to
 `org.specnaz.junit.SpecnazJUnit`, which specifies your interface and the
-JUnit Runner with the `@RunWith` annotation:
+JUnit 4 Runner with the `@RunWith` annotation:
 
 ```java
 @RunWith(SpecnazCoreDslJUnitRunner.class)
@@ -303,12 +303,12 @@ public interface SpecnazGivenWhenThenStandalone {
 }
 ```
 
-### Step 3: implement a JUnit runner
+### Step 3: implement a JUnit 4 runner
 
 Now, in order to run the tests implementing your custom interface,
 you can't just use `SpecnazCoreDslJUnitRunner` -
 it has no idea about your new DSL!
-For that reason, you need to create your own JUnit runner.
+For that reason, you need to create your own JUnit 4 runner.
 Fortunately, it's very simple:
 
 - you declare a class extending `org.junit.runner.Runner`

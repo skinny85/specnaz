@@ -12,7 +12,7 @@ import org.specnaz.kotlin.params.SpecnazKotlinParams
 
 /**
  * The equivalent of [SpecnazJUnitRunner] for Kotlin -
- * the JUnit [Runner] for running [SpecnazKotlin] specifications.
+ * the JUnit 4 [Runner] for running [SpecnazKotlin] specifications.
  *
  * The easiest way to use it is to extend [SpecnazKotlinJUnit].
  * If your test class has to extend from a particular class,

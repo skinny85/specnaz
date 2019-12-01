@@ -1,4 +1,4 @@
-Demonstrates using [Spring JUnit Rules](https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit4-rules) in Specnaz.
+Demonstrates using [Spring JUnit 4 Rules](https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit4-rules) in Specnaz.
 
 The integration is straightforward, except for one detail:
 you need to declare a `public` 'dummy' field, of type

@@ -381,7 +381,7 @@ public interface SpecBuilder {
      * If you ever need to ignore a test for any reason,
      * simply add an 'x' in front of the call to {@link #should},
      * and it will be skipped (just like if you placed an
-     * {@code @Ignore} annotation on a JUnit test).
+     * {@code @Ignore} annotation on a JUnit 4 test).
      *
      * @param description
      *     the description of this test.
@@ -415,7 +415,7 @@ public interface SpecBuilder {
      * If you ever need to ignore a test for any reason,
      * simply add an 'x' in front of the call to {@link #shouldThrow},
      * and it will be skipped (just like if you placed an
-     * {@code @Ignore} annotation on a JUnit test).
+     * {@code @Ignore} annotation on a JUnit 4 test).
      *
      * @param expectedException
      *    the class of the expected Exception (will never be used in this case)

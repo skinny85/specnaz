@@ -6,7 +6,7 @@ import org.specnaz.kotlin.junit.SpecnazKotlinJUnitRunner
 /**
  * This spec uses the Specnaz Kotlin bindings.
  * It also doesn't inherit from [org.specnaz.kotlin.junit.SpecnazKotlinJUnit],
- * but sets the JUnit Runner explicitly with the [RunWith] annotation.
+ * but sets the JUnit 4 Runner explicitly with the [RunWith] annotation.
  */
 @RunWith(SpecnazKotlinJUnitRunner::class)
 class ArithmeticSpecWithKotlinBindings : SpecnazKotlin { init {

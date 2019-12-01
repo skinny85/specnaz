@@ -10,7 +10,7 @@ import static org.specnaz.utils.IntBox.boxWith;
  * This spec illustrates how are the various fixtures
  * ({@code begins/ends}) executed.
  * It also doesn't inherit from {@link org.specnaz.junit.SpecnazJUnit},
- * instead setting the JUnit Runner explicitly with the {@link RunWith} annotation.
+ * instead setting the JUnit 4 Runner explicitly with the {@link RunWith} annotation.
  * <p>
  * Addiotionally, it demonstrates the usage of a {@link org.specnaz.utils.Box}
  * (more specifically, an {@link IntBox}) to get around Java's

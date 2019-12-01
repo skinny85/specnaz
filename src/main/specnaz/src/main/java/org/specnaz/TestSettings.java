@@ -15,7 +15,7 @@ public final class TestSettings {
     /**
      * Sets the {@link Method} used for this test.
      * This is mainly useful for external integrations -
-     * for example, Spring's JUnit Rules use annotations on the test
+     * for example, Spring's JUnit 4 Rules use annotations on the test
      * method for different behaviors.
      * <p>
      * There's a helper included with Specnaz that tries to make finding the parameter

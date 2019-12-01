@@ -12,7 +12,7 @@ import org.specnaz.params.SpecnazParams;
 import static java.lang.String.format;
 
 /**
- * The JUnit {@link Runner} used for running {@link Specnaz} specifications.
+ * The JUnit 4 {@link Runner} used for running {@link Specnaz} specifications.
  * The shortest way to use it is to extend {@link SpecnazJUnit}.
  * If your test class needs to extend a different class,
  * you can always specify this runner with the {@link RunWith} annotation:

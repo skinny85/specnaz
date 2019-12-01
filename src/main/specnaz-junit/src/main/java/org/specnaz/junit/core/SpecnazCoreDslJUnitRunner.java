@@ -32,7 +32,7 @@ import static java.lang.String.format;
 import static org.junit.runner.Description.createSuiteDescription;
 
 /**
- * The JUnit {@link Runner} for {@link SpecnazCoreDsl}.
+ * The JUnit 4 {@link Runner} for {@link SpecnazCoreDsl}.
  * This is the runner you should use when writing your own custom Specnaz DSL.
  */
 public final class SpecnazCoreDslJUnitRunner extends Runner {
@@ -57,7 +57,7 @@ public final class SpecnazCoreDslJUnitRunner extends Runner {
 
     /**
      * This is the extension point for custom {@link Runner}s that want
-     * to leverage existing JUnit infrastructure provided by this class.
+     * to leverage existing JUnit 4 infrastructure provided by this class.
      * <p>
      * It's used by the Kotlin Specnaz bindings, for example.
      *
