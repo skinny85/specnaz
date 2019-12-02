@@ -4,7 +4,7 @@
 [![Download](https://api.bintray.com/packages/skinny85/maven-repo/Specnaz/images/download.svg)](https://bintray.com/skinny85/maven-repo/Specnaz/_latestVersion)
 [![Build Status](https://travis-ci.org/skinny85/specnaz.svg?branch=develop)](https://travis-ci.org/skinny85/specnaz)
 
-### Library for writing beautiful, [RSpec](http://rspec.info/)/[Jasmine](http://jasmine.github.io/)/[Mocha](https://mochajs.org/)/[Jest](https://facebook.github.io/jest/)-style specifications in Java, [Kotlin](https://kotlinlang.org/) and [Groovy](http://www.groovy-lang.org/)
+### Library for writing beautiful, [RSpec](http://rspec.info)/[Jasmine](http://jasmine.github.io)/[Mocha](https://mochajs.org)/[Jest](https://facebook.github.io/jest)-style specifications in Java, [Kotlin](https://kotlinlang.org) and [Groovy](http://www.groovy-lang.org)
 
 ![Specnaz logo](docs/img/specnaz-logo.png)
 
@@ -58,47 +58,24 @@ This is how the above test looks like when executed from an IDE:
 
 ### Notable features
 
-#### Fully compatible with JUnit
+#### Interoperability with existing Java testing frameworks
 
-Specnaz is 100% compatible with the JUnit API,
-which means it works out of the box with existing IDEs and build tools,
-without requiring any additional plugins.
+Specnaz has connectors that allow it to integrate with every major Java testing framework:
 
-It also means Specnaz specs and your existing JUnit tests can coexist next to each other -
-you're not forced to do any migration when starting to use Specnaz.
+* JUnit 4, which was shown in the above example -
+  including support for the [Rules API](docs/reference-manual.md#junit-4-rules)
+* [TestNG](docs/reference-manual.md#testng)
+* [JUnit 5](docs/reference-manual.md#junit-5)
 
-Specnaz also supports the [JUnit Rules API](https://github.com/junit-team/junit4/wiki/rules) natively,
-which means you can leverage existing third-party Rules when writing Specnaz specs.
-Here is an example of integrating with [Mockito](http://site.mockito.org/):
+This is important for 2 reasons.
+First, it means Specnaz works out of the box with your existing IDEs and build tools,
+without requiring the installation of any additional plugins.
+And second, it means adopting Specnaz is not an all or nothing decision:
+you can introduce it gradually to your test suite, on a trial basis,
+and the new Specnaz tests and any existing JUnit or TestNG tests will coexist next to each other seamlessly.
+Adopting Specnaz does not force you into any sort of migration.
 
-```java
-import org.specnaz.junit.SpecnazJUnit;
-import org.specnaz.junit.rules.Rule;
-
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import static org.mockito.Mockito.when;
-
-public class MockitoExampleSpec extends SpecnazJUnit {
-    public Rule<MockitoRule> mockitoRule = Rule.of(() -> MockitoJUnit.rule());
-
-    @Mock
-    private List<Integer> listMock;
-
-    {
-        describes("Using the JUnit Mockito Rule in Specnaz", it -> {
-            it.should("initialize fields annotated with @Mock", () -> {
-                when(listMock.get(0)).thenReturn(400 + 56);
-
-                assertEquals(456, (int) listMock.get(0));
-            });
-        });
-    }
-}
-```
-
-See [here](docs/reference-manual.md#junit-rules) for more information about this feature.
+See [below](#getting-specnaz) for a summary of which Specnaz library to use with each testing framework.
 
 #### Built-in parametrized test capabilities
 
@@ -169,53 +146,10 @@ class StackKotlinSpec : SpecnazKotlinJUnit("A Stack", {
     }
 })
 ```
+
 See [here](docs/reference-manual.md#kotlin) for more information.
 
-#### TestNG support
-
-Specnaz also supports [TestNG](https://testng.org) as the test execution engine. Example:
-
-```java
-import org.specnaz.testng.SpecnazFactoryTestNG;
-import org.testng.annotations.Test;
-import org.testng.Assert;
-import java.util.Stack;
-
-@Test
-public class StackSpec implements SpecnazFactoryTestNG {{
-    describes("A Stack", it -> {
-        Stack<Integer> stack = new Stack<>();
-
-        it.endsEach(() -> {
-            stack.clear();
-        });
-
-        it.should("be empty when first created", () -> {
-            Assert.assertTrue(stack.isEmpty());
-        });
-
-        it.describes("with 10 and 20 pushed on it", () -> {
-            it.beginsEach(() -> {
-                stack.push(10);
-                stack.push(20);
-            });
-
-            it.should("have size equal to 2", () -> {
-                Assert.assertEquals(stack.size(), 2);
-            });
-
-            it.should("have 20 as the top element", () -> {
-                Assert.assertEquals((int) stack.peek(), 20);
-            });
-        });
-    });
-}}
-```
-
-Similarly like with JUnit, you can freely mix existing TestNG tests and Specnaz specs -
-you don't have to migrate your entire test suite to start using Specnaz.
-
-##### Further reading
+### Further reading
 
 Check out the [reference manual](docs/reference-manual.md) for more in-depth documentation.
 There is also an [examples directory](src/examples) with code samples.
@@ -232,12 +166,14 @@ Specnaz is available from the [JCenter](https://bintray.com/bintray/jcenter) Mav
 
 The Artifact ID depends on the language and testing framework you want to use:
 
-| Programming language | Testing framework | Artifact ID             |
-|----------------------|-------------------|-------------------------|
-| Java (or Groovy)     | JUnit             | `specnaz-junit`         |
-| Kotlin               | JUnit             | `specnaz-kotlin-junit`  |
-| Java (or Groovy)     | TestNG            | `specnaz-testng`        |
-| Kotlin               | TestNG            | `specnaz-kotlin-testng` |
+| Programming language | Testing framework |           Artifact ID           |
+|----------------------|-------------------|---------------------------------|
+| Java / Groovy        | JUnit 4           | `specnaz-junit`                 |
+| Kotlin               | JUnit 4           | `specnaz-kotlin-junit`          |
+| Java / Groovy        | TestNG            | `specnaz-testng`                |
+| Kotlin               | TestNG            | `specnaz-kotlin-testng`         |
+| Java / Groovy        | JUnit 5           | `specnaz-junit-platform`        |
+| Kotlin               | JUnit 5           | `specnaz-kotlin-junit-platform` |
 
 **Note**: the Specnaz libraries don't depend on their testing frameworks
 (neither JUnit, nor TestNG), and also not on the Kotlin runtime in the case of the Kotlin libraries.
@@ -265,21 +201,21 @@ if your project doesn't include them already.
 <dependencies>
     <!-- ... -->
 
-    <!-- For JUnit: -->
+    <!-- For JUnit 4: -->
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
         <scope>test</scope>
     </dependency>
-    <!-- ...in Java (or Groovy): -->
+    <!-- ...in Java / Groovy: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
         <version>1.4.1</version>
         <scope>test</scope>
     </dependency>
-    <!-- ...in Kotlin: -->
+    <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-junit</artifactId>
@@ -294,17 +230,39 @@ if your project doesn't include them already.
         <version>6.14.3</version>
         <scope>test</scope>
     </dependency>
-    <!-- ...in Java (or Groovy): -->
+    <!-- ...in Java / Groovy: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-testng</artifactId>
         <version>1.4.1</version>
         <scope>test</scope>
     </dependency>
-    <!-- ...in Kotlin: -->
+    <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-testng</artifactId>
+        <version>1.4.1</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- For JUnit 5: -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.5.2</version>
+        <scope>test</scope>
+    </dependency>
+    <!-- ...in Java / Groovy: -->
+    <dependency>
+        <groupId>org.specnaz</groupId>
+        <artifactId>specnaz-junit-platform</artifactId>
+        <version>1.4.1</version>
+        <scope>test</scope>
+    </dependency>
+    <!-- ...or Kotlin: -->
+    <dependency>
+        <groupId>org.specnaz</groupId>
+        <artifactId>specnaz-kotlin-junit-platform</artifactId>
         <version>1.4.1</version>
         <scope>test</scope>
     </dependency>
@@ -321,19 +279,26 @@ repositories {
 dependencies {
     // ...
 
-    // For JUnit:
+    // For JUnit 4:
     testCompile "junit:junit:4.12"
-    // ...in Java (or Groovy):
+    // ...in Java / Groovy:
     testCompile "org.specnaz:specnaz-junit:1.4.1"
-    // ...in Kotlin:
+    // ...or Kotlin:
     testCompile "org.specnaz:specnaz-kotlin-junit:1.4.1"
 
     // For TestNG:
     testCompile "org.testng:testng:6.14.3"
-    // ...in Java (or Groovy):
+    // ...in Java / Groovy:
     testCompile "org.specnaz:specnaz-testng:1.4.1"
-    // ...in Kotlin:
+    // ...or Kotlin:
     testCompile "org.specnaz:specnaz-kotlin-testng:1.4.1"
+
+    // For JUnit 5:
+    testCompile "org.junit.jupiter:junit-jupiter:5.5.2"
+    // ...in Java / Groovy:
+    testCompile "org.specnaz:specnaz-junit-platform:1.4.1"
+    // ...or Kotlin:
+    testCompile "org.specnaz:specnaz-kotlin-junit-platform:1.4.1"
 }
 ```
 
