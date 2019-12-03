@@ -58,9 +58,9 @@ This is how the above test looks like when executed from an IDE:
 
 ### Notable features
 
-#### Interoperability with existing Java testing frameworks
+#### Compatible with existing Java testing frameworks
 
-Specnaz has connectors that allow it to integrate with every major Java testing framework:
+Specnaz integrates with every major Java testing framework:
 
 * JUnit 4, which was shown in the above example -
   including support for the [Rules API](docs/reference-manual.md#junit-4-rules)
