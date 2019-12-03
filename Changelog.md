@@ -1,3 +1,7 @@
+Version 1.5 (2019-11-30)
+------------------------
+- added JUnit 5 support
+
 Version 1.4.1 (2019-09-01)
 --------------------------
 - fixed a bug where test suites using TestNG XML files with `<package>` elements failed
