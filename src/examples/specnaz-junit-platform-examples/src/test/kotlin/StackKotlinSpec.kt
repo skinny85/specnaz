@@ -27,7 +27,7 @@ class StackKotlinSpec : SpecnazKotlinJUnitPlatform("A Stack", {
         }
 
         it.should("have size equal to 2") {
-            assertThat(stack.size).isEqualTo(2)
+            assertThat(stack).hasSize(2)
         }
 
         it.should("have 20 as the top element") {
