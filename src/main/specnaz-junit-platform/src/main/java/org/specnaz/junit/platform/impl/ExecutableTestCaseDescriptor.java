@@ -3,6 +3,7 @@ package org.specnaz.junit.platform.impl;
 import org.junit.platform.engine.EngineExecutionListener;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.support.descriptor.AbstractTestDescriptor;
+import org.opentest4j.TestAbortedException;
 import org.specnaz.impl.ExecutableTestCase;
 
 public final class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
@@ -32,9 +33,13 @@ public final class ExecutableTestCaseDescriptor extends AbstractTestDescriptor {
                     ? executableTestCase.execute()
                     : setupError;
 
-            listener.executionFinished(this, result == null
+            TestExecutionResult testExecutionResult = result == null
                     ? TestExecutionResult.successful()
-                    : TestExecutionResult.failed(result));
+                    : (result instanceof TestAbortedException
+                        ? TestExecutionResult.aborted(result)
+                        : TestExecutionResult.failed(result));
+
+            listener.executionFinished(this, testExecutionResult);
         }
     }
 }

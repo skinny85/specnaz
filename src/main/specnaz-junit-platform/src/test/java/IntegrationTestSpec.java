@@ -1,4 +1,5 @@
 import org.junit.platform.commons.annotation.Testable;
+import org.opentest4j.TestAbortedException;
 import org.specnaz.params.SpecnazParams;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,5 +19,9 @@ public class IntegrationTestSpec implements SpecnazParams {{
         it.should("work with parametrized tests (%1 > 0)", (Integer i) -> {
             assertThat(i).isGreaterThan(0);
         }).provided(1, 2);
+
+        it.should("respect a failed assumption by aborting the test", () -> {
+            throw new TestAbortedException("assumption deliberately failed");
+        });
     });
 }}
