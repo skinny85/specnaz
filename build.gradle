@@ -1,6 +1,6 @@
 allprojects {
     group 'org.specnaz'
-    version '1.5'
+    version '1.5.1'
 }
 
 subprojects {

@@ -81,18 +81,18 @@ build tools that also do dependency management
 If you're not using a dependency manager, you need to manually download
 the needed JARs and put them on your classpath:
 
-* [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.5/specnaz-1.5.jar), and one of either:
-  * [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.5/specnaz-junit-1.5.jar), or
-  * [specnaz-testng](https://jcenter.bintray.com/org/specnaz/specnaz-testng/1.5/specnaz-testng-1.5.jar), or
-  * [specnaz-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-junit-platform/1.5/specnaz-junit-platform-1.5.jar)
+* [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.5.1/specnaz-1.5.1.jar), and one of either:
+  * [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.5.1/specnaz-junit-1.5.1.jar), or
+  * [specnaz-testng](https://jcenter.bintray.com/org/specnaz/specnaz-testng/1.5.1/specnaz-testng-1.5.1.jar), or
+  * [specnaz-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-junit-platform/1.5.1/specnaz-junit-platform-1.5.1.jar)
 
 If you want to use the Kotlin integration,
 in addition to the ones above, you also need:
 
-* [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.5/specnaz-kotlin-1.5.jar), and one of either:
-  * [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.5/specnaz-kotlin-junit-1.5.jar), or
-  * [specnaz-kotlin-testng](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-testng/1.5/specnaz-kotlin-testng-1.5.jar), or
-  * [specnaz-kotlin-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit-platform/1.5/specnaz-kotlin-junit-platform-1.5.jar)
+* [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.5.1/specnaz-kotlin-1.5.1.jar), and one of either:
+  * [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.5.1/specnaz-kotlin-junit-1.5.1.jar), or
+  * [specnaz-kotlin-testng](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-testng/1.5.1/specnaz-kotlin-testng-1.5.1.jar), or
+  * [specnaz-kotlin-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit-platform/1.5.1/specnaz-kotlin-junit-platform-1.5.1.jar)
 
 # Writing tests
 

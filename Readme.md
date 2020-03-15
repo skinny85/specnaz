@@ -162,7 +162,7 @@ demonstrating how you can structure your tests with Specnaz.
 Specnaz is available from the [JCenter](https://bintray.com/bintray/jcenter) Maven repository.
 
 * Group ID: `org.specnaz`
-* Latest version: `1.5`
+* Latest version: `1.5.1`
 
 The Artifact ID depends on the language and testing framework you want to use:
 
@@ -212,14 +212,14 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
-        <version>1.5</version>
+        <version>1.5.1</version>
         <scope>test</scope>
     </dependency>
     <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-junit</artifactId>
-        <version>1.5</version>
+        <version>1.5.1</version>
         <scope>test</scope>
     </dependency>
 
@@ -234,14 +234,14 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-testng</artifactId>
-        <version>1.5</version>
+        <version>1.5.1</version>
         <scope>test</scope>
     </dependency>
     <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-testng</artifactId>
-        <version>1.5</version>
+        <version>1.5.1</version>
         <scope>test</scope>
     </dependency>
 
@@ -256,14 +256,14 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit-platform</artifactId>
-        <version>1.5</version>
+        <version>1.5.1</version>
         <scope>test</scope>
     </dependency>
     <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-junit-platform</artifactId>
-        <version>1.5</version>
+        <version>1.5.1</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -282,23 +282,23 @@ dependencies {
     // For JUnit 4:
     testCompile "junit:junit:4.12"
     // ...in Java / Groovy:
-    testCompile "org.specnaz:specnaz-junit:1.5"
+    testCompile "org.specnaz:specnaz-junit:1.5.1"
     // ...or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-junit:1.5"
+    testCompile "org.specnaz:specnaz-kotlin-junit:1.5.1"
 
     // For TestNG:
     testCompile "org.testng:testng:6.14.3"
     // ...in Java / Groovy:
-    testCompile "org.specnaz:specnaz-testng:1.5"
+    testCompile "org.specnaz:specnaz-testng:1.5.1"
     // ...or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-testng:1.5"
+    testCompile "org.specnaz:specnaz-kotlin-testng:1.5.1"
 
     // For JUnit 5:
     testCompile "org.junit.jupiter:junit-jupiter:5.5.2"
     // ...in Java / Groovy:
-    testCompile "org.specnaz:specnaz-junit-platform:1.5"
+    testCompile "org.specnaz:specnaz-junit-platform:1.5.1"
     // ...or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-junit-platform:1.5"
+    testCompile "org.specnaz:specnaz-kotlin-junit-platform:1.5.1"
 }
 ```
 
