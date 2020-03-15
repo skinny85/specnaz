@@ -1,3 +1,7 @@
+Version 1.5.1 (2020-03-15)
+--------------------------
+- correctly handle JUnit 5 test assumptions
+
 Version 1.5 (2019-11-30)
 ------------------------
 - added JUnit 5 support
