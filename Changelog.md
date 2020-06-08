@@ -1,3 +1,8 @@
+Version 1.5.2 (2020-06-07)
+--------------------------
+- add the received exception's stacktrace to the displayed message for failing `shouldThrow` tests
+  ([Issue #12](https://github.com/skinny85/specnaz/issues/12))
+
 Version 1.5.1 (2020-03-15)
 --------------------------
 - correctly handle JUnit 5 test assumptions
