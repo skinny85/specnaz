@@ -229,10 +229,13 @@ public final class ThrowableExpectations<T extends Throwable> {
 
     private void verify(Throwable throwable) {
         if (throwable == null)
-            throw new AssertionError("Expected exception: " + expectedException.getName());
+            throw new AssertionError("Expected exception: " + expectedException.getName() + ", but nothing was thrown");
         if (!expectedException.isAssignableFrom(throwable.getClass()))
-                throw new AssertionError(format("Unexpected exception, expected: %s but was: %s",
-                        expectedException.getName(), throwable.getClass().getName()));
+            throw new AssertionError(
+                    format("Unexpected exception, expected: %s but was: %s",
+                            expectedException.getName(), throwable.getClass().getName()),
+                    throwable);
+
         T cast = expectedException.cast(throwable);
 
         for (Consumer<T> assertion : assertions)
