@@ -192,7 +192,7 @@ if your project doesn't include them already.
         </snapshots>
         <id>jcenter</id>
         <name>jcenter</name>
-        <url>http://jcenter.bintray.com</url>
+        <url>https://jcenter.bintray.com</url>
     </repository>
 </repositories>
 
