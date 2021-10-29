@@ -11,7 +11,7 @@ import static java.lang.String.format;
 
 /**
  * The class returned from {@link SpecBuilder#shouldThrow}
- * that allows you specify assertions on the Exception thrown in the test.
+ * that allows you to specify assertions on the Exception thrown in the test.
  * <p>
  * By default, the only thing checked is that the class of the thrown Exception matches the class passed to
  * {@link SpecBuilder#shouldThrow}.
