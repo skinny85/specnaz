@@ -24,6 +24,7 @@ import org.specnaz.utils.ThrowableExpectations;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -341,7 +342,8 @@ public final class Conversions {
         // but it's probably better to be aware of this issue
         // sooner rather than later :)
         for (int i = size; i > 0; i--) {
-            ret = ret.replaceAll("%" + i, String.valueOf(params.get(i - 1)));
+            ret = ret.replaceAll("%" + i,
+                    Matcher.quoteReplacement(String.valueOf(params.get(i - 1))));
         }
 
         return ret;

@@ -13,7 +13,7 @@ class ParametrizedKotlinSpec : SpecnazKotlinParams { init {
     describes("A parametrized Kotlin spec") {
         it.shouldThrow<NumberFormatException, String>("when parsing '%1' as an Int") { str ->
             Integer.parseInt(str)
-        }.provided("cafe", "BABE").withoutCause()
+        }.provided("cafe", "BABE", "$").withoutCause()
 
         it.should("respect failed assumptions by aborting the test execution") {
             assumeTrue(false)
