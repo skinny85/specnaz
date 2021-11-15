@@ -4,7 +4,7 @@ package org.specnaz.params;
  * The equivalent of {@link Runnable} for parametrized
  * sub-specifications taking 6 parameters.
  *
- * @see #invoke(P1, P2, P3, P4, P5, P6)
+ * @see #invoke
  * @see ParamsSpecBuilder#describes(String, RunnableParams6)
  */
 @FunctionalInterface

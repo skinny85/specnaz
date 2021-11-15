@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * You need call one of the {@code provided} methods on it,
  * passing the parameters for each version of the sub-specification.
  *
- * @see #provided(P...)
+ * @see #provided
  * @see #provided(Iterable)
  */
 public final class ParamsExpectedSubgroup1<P> {

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  * You need to call one of the {@code provided} methods on it,
  * passing the parameters for the test to run with.
  *
- * @see #provided(P...)
+ * @see #provided
  * @see #provided(Iterable)
  */
 public final class ParamsExpected1<P> {

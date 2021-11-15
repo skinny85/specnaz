@@ -29,11 +29,11 @@ import org.junit.runners.model.Statement;
  * import org.specnaz.junit.rules.Rule;
  *
  * public class ExpectedExceptionRuleSpec extends SpecnazJUnit {
- *       public Rule&lt;ExpectedException&gt; expectedException = Rule.of(() -> ExpectedException.none());
+ *       public Rule&lt;ExpectedException&gt; expectedException = Rule.of(() -&gt; ExpectedException.none());
  *
  *       {
- *           describes("Using the ExpectedException JUnit Rule in Specnaz", it -> {
- *               it.should("correctly set the expected Exception", () -> {
+ *           describes("Using the ExpectedException JUnit Rule in Specnaz", it -&gt; {
+ *               it.should("correctly set the expected Exception", () -&gt; {
  *                   expectedException.r().expect(IllegalArgumentException.class);
  *                   throw new IllegalArgumentException();
  *               });

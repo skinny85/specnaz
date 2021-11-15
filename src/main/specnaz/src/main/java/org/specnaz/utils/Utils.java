@@ -16,8 +16,8 @@ public final class Utils {
      * <pre class="code"><code class="java">
      * public class SomeSpec extends SpecnazJUnit {
      *       {
-     *           describes("some example tests", it -> {
-     *               it.should("correctly find the method", () -> {
+     *           describes("some example tests", it -&gt; {
+     *               it.should("correctly find the method", () -&gt; {
      *                   // test body...
      *               }).usingMethod(Utils.findMethod(this, "someMethod"));
      *           });

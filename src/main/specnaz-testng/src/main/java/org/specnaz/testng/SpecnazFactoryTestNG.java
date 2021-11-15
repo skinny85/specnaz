@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  *
  * &#64;Test
  * public class MySpec implements SpecnazFactoryTestNG {{
- *     describes("My specification", it -> {
+ *     describes("My specification", it -&gt; {
  *         // use 'it' here to construct your specification...
  *     });
  * }}
