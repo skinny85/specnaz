@@ -1,3 +1,9 @@
+Version 1.5.3 (2021-11-21)
+--------------------------
+- fix a bug where the placeholder in a parametrized test failed expansion 
+  if the parameter contained the `$` character
+  ([Issue #16](https://github.com/skinny85/specnaz/issues/16))
+
 Version 1.5.2 (2020-06-07)
 --------------------------
 - add the received exception's stacktrace to the displayed message for failing `shouldThrow` tests
