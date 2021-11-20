@@ -20,6 +20,11 @@ subprojects {
     }
 }
 
+// defaults if the value of the username and password for Maven Central is not found -
+// they are only needed when running the 'uploadArchives' task to release a new version
+def ossrhUsername = findProperty('ossrhUsername') ?: 'username'
+def ossrhPassword = findProperty('ossrhPassword') ?: 'password'
+
 configure(subprojects.findAll { isAMainProject(it) }) {
     apply plugin: 'signing'
     apply plugin: 'maven'
