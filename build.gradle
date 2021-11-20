@@ -9,7 +9,6 @@ subprojects {
     }
 
     apply plugin: 'java'
-    apply plugin: 'signing'
 
     configurations {
         provided {
@@ -19,6 +18,11 @@ subprojects {
         }
         compile.extendsFrom provided
     }
+}
+
+configure(subprojects.findAll { isAMainProject(it) }) {
+    apply plugin: 'signing'
+    apply plugin: 'maven'
 
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
@@ -38,6 +42,50 @@ subprojects {
         useGpgCmd()
         sign configurations.archives
     }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                pom.project {
+                    name 'Specnaz'
+                    packaging 'jar'
+                    description 'Library for writing beautiful, RSpec/Jasmine/Mocha/Jest-stylespecifications in Java, Kotlin and Groovy'
+                    url 'https://github.com/skinny85/specnaz'
+
+                    scm {
+                        url 'https://github.com/skinny85/specnaz.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            name 'Adam Ruka'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private boolean isAMainProject(Project it) {
+    it.name.startsWith('specnaz') && !it.name.contains('example')
 }
 
 buildscript {
@@ -68,7 +116,7 @@ configure(subprojects.findAll { isAKotlinProject(it) }) {
     apply plugin: 'kotlin'
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+        provided "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     }
 }
 
