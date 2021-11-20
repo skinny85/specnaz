@@ -56,6 +56,9 @@ configure(subprojects.findAll { isAMainProject(it) }) {
                     authentication(userName: ossrhUsername, password: ossrhPassword)
                 }
 
+                // map between our custom 'provided' Gradle configuration defined above, and Maven's 'provided' scope
+                project.conf2ScopeMappings.addMapping(MavenPlugin.COMPILE_PRIORITY + 1, configurations.provided, Conf2ScopeMappingContainer.PROVIDED)
+
                 pom.project {
                     name 'Specnaz'
                     packaging 'jar'
