@@ -159,10 +159,10 @@ demonstrating how you can structure your tests with Specnaz.
 
 ### Getting Specnaz
 
-Specnaz is available from the [JCenter](https://bintray.com/bintray/jcenter) Maven repository.
+Specnaz is available through the [Maven Central](https://search.maven.org/search?q=g:org.specnaz) repository.
 
 * Group ID: `org.specnaz`
-* Latest version: `1.5.2`
+* Latest version: `1.5.3`
 
 The Artifact ID depends on the language and testing framework you want to use:
 
@@ -185,22 +185,7 @@ if your project doesn't include them already.
 ###### Example Maven settings
 
 ```xml
-<repositories>
-    <repository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>jcenter</id>
-        <name>jcenter</name>
-        <url>https://jcenter.bintray.com</url>
-    </repository>
-</repositories>
-
-<!-- ... -->
-
 <dependencies>
-    <!-- ... -->
-
     <!-- For JUnit 4: -->
     <dependency>
         <groupId>junit</groupId>
@@ -212,14 +197,14 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
     <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-junit</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
 
@@ -234,14 +219,14 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-testng</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
     <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-testng</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
 
@@ -256,14 +241,14 @@ if your project doesn't include them already.
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-junit-platform</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
     <!-- ...or Kotlin: -->
     <dependency>
         <groupId>org.specnaz</groupId>
         <artifactId>specnaz-kotlin-junit-platform</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
 </dependencies>
@@ -273,32 +258,30 @@ if your project doesn't include them already.
 
 ```groovy
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    // ...
-
     // For JUnit 4:
     testCompile "junit:junit:4.12"
     // ...in Java / Groovy:
-    testCompile "org.specnaz:specnaz-junit:1.5.2"
+    testCompile "org.specnaz:specnaz-junit:1.5.3"
     // ...or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-junit:1.5.2"
+    testCompile "org.specnaz:specnaz-kotlin-junit:1.5.3"
 
     // For TestNG:
     testCompile "org.testng:testng:6.14.3"
     // ...in Java / Groovy:
-    testCompile "org.specnaz:specnaz-testng:1.5.2"
+    testCompile "org.specnaz:specnaz-testng:1.5.3"
     // ...or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-testng:1.5.2"
+    testCompile "org.specnaz:specnaz-kotlin-testng:1.5.3"
 
     // For JUnit 5:
     testCompile "org.junit.jupiter:junit-jupiter:5.5.2"
     // ...in Java / Groovy:
-    testCompile "org.specnaz:specnaz-junit-platform:1.5.2"
+    testCompile "org.specnaz:specnaz-junit-platform:1.5.3"
     // ...or Kotlin:
-    testCompile "org.specnaz:specnaz-kotlin-junit-platform:1.5.2"
+    testCompile "org.specnaz:specnaz-kotlin-junit-platform:1.5.3"
 }
 ```
 

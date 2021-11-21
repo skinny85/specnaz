@@ -1,6 +1,6 @@
 allprojects {
     group 'org.specnaz'
-    version '1.5.2'
+    version '1.5.3'
 }
 
 subprojects {
@@ -67,7 +67,7 @@ configure(subprojects.findAll { isAMainProject(it) }) {
                 pom.project {
                     name 'Specnaz'
                     packaging 'jar'
-                    description 'Library for writing beautiful, RSpec/Jasmine/Mocha/Jest-stylespecifications in Java, Kotlin and Groovy'
+                    description 'Library for writing beautiful, RSpec/Jasmine/Mocha/Jest-style specifications in Java, Kotlin and Groovy'
                     url 'https://github.com/skinny85/specnaz'
 
                     scm {

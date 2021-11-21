@@ -71,7 +71,7 @@ Table of Contents
 
 ## Using dependency managers (Maven, Gradle etc.)
 
-Specnaz is available through the [JCenter](https://bintray.com/bintray/jcenter) Maven repository.
+Specnaz is available through the [Maven Central](https://search.maven.org/search?q=g:org.specnaz) repository.
 Take a look at the [main Readme file](../Readme.md#getting-specnaz) on how to get it using
 build tools that also do dependency management
 (Maven, Gradle, SBT, Ivy etc.).
@@ -81,18 +81,18 @@ build tools that also do dependency management
 If you're not using a dependency manager, you need to manually download
 the needed JARs and put them on your classpath:
 
-* [specnaz](https://jcenter.bintray.com/org/specnaz/specnaz/1.5.2/specnaz-1.5.2.jar), and one of either:
-  * [specnaz-junit](https://jcenter.bintray.com/org/specnaz/specnaz-junit/1.5.2/specnaz-junit-1.5.2.jar), or
-  * [specnaz-testng](https://jcenter.bintray.com/org/specnaz/specnaz-testng/1.5.2/specnaz-testng-1.5.2.jar), or
-  * [specnaz-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-junit-platform/1.5.2/specnaz-junit-platform-1.5.2.jar)
+* [specnaz](https://repo1.maven.org/maven2/org/specnaz/specnaz/1.5.3/specnaz-1.5.3.jar), and one of either:
+  * [specnaz-junit](https://repo1.maven.org/maven2/org/specnaz/specnaz-junit/1.5.3/specnaz-junit-1.5.3.jar), or
+  * [specnaz-testng](https://repo1.maven.org/maven2/org/specnaz/specnaz-testng/1.5.3/specnaz-testng-1.5.3.jar), or
+  * [specnaz-junit-platform](https://repo1.maven.org/maven2/org/specnaz/specnaz-junit-platform/1.5.3/specnaz-junit-platform-1.5.3.jar)
 
 If you want to use the Kotlin integration,
 in addition to the ones above, you also need:
 
-* [specnaz-kotlin](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin/1.5.2/specnaz-kotlin-1.5.2.jar), and one of either:
-  * [specnaz-kotlin-junit](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit/1.5.2/specnaz-kotlin-junit-1.5.2.jar), or
-  * [specnaz-kotlin-testng](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-testng/1.5.2/specnaz-kotlin-testng-1.5.2.jar), or
-  * [specnaz-kotlin-junit-platform](https://jcenter.bintray.com/org/specnaz/specnaz-kotlin-junit-platform/1.5.2/specnaz-kotlin-junit-platform-1.5.2.jar)
+* [specnaz-kotlin](https://repo1.maven.org/maven2/org/specnaz/specnaz-kotlin/1.5.3/specnaz-kotlin-1.5.3.jar), and one of either:
+  * [specnaz-kotlin-junit](https://repo1.maven.org/maven2/org/specnaz/specnaz-kotlin-junit/1.5.3/specnaz-kotlin-junit-1.5.3.jar), or
+  * [specnaz-kotlin-testng](https://repo1.maven.org/maven2/org/specnaz/specnaz-kotlin-testng/1.5.3/specnaz-kotlin-testng-1.5.3.jar), or
+  * [specnaz-kotlin-junit-platform](https://repo1.maven.org/maven2/org/specnaz/specnaz-kotlin-junit-platform/1.5.3/specnaz-kotlin-junit-platform-1.5.3.jar)
 
 # Writing tests
 
