@@ -1,7 +1,7 @@
 # Specnaz
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Download](https://api.bintray.com/packages/skinny85/maven-repo/Specnaz/images/download.svg)](https://bintray.com/skinny85/maven-repo/Specnaz/_latestVersion)
+[![Download](https://maven-badges.herokuapp.com/maven-central/org.specnaz/specnaz/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.specnaz/specnaz)
 [![Build Status](https://travis-ci.org/skinny85/specnaz.svg?branch=develop)](https://travis-ci.org/skinny85/specnaz)
 
 ### Library for writing beautiful, [RSpec](http://rspec.info)/[Jasmine](http://jasmine.github.io)/[Mocha](https://mochajs.org)/[Jest](https://facebook.github.io/jest)-style specifications in Java, [Kotlin](https://kotlinlang.org) and [Groovy](http://www.groovy-lang.org)
