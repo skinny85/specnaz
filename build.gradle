@@ -47,6 +47,11 @@ configure(subprojects.findAll { isAMainProject(it) }) {
         useGpgCmd()
         sign configurations.archives
     }
+    // turn off signing unless we're uploading archives to Maven Central,
+    // as it will fail if a valid PGP key is not set
+    tasks.withType(Sign) {
+        onlyIf { gradle.taskGraph.hasTask("uploadArchives") }
+    }
 
     uploadArchives {
         repositories {
